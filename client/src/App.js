@@ -1,9 +1,10 @@
 import React from 'react';
+import SignUp from './containers/SignUp/SignUp';
 
 function App() {
   return (
     <div className="App">
-      <h1>Client</h1>
+      <SignUp />
     </div>
   );
 }
