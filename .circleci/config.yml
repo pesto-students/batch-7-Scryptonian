@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: circleci/node:8.11.1
+    steps:
+    - checkout
+    - run:
+        name: Code Linting
+        command: |
+          yarn && yarn lint
+  client-test:
+    docker:
+    - image: circleci/node:8.11.1
+    steps:
+    - checkout
+    - run:
+        name: run client tests
+        command: |
+          cd client && yarn test
+  
+  server-test:
+    docker:
+    - image: circleci/node:8.11.1
+    steps:
+    - checkout
+    - run:
+        name: run server tests
+        command: |
+          cd server && yarn test
