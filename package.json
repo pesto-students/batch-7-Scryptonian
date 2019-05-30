@@ -28,5 +28,10 @@
     "*.js": [
       "eslint"
     ]
+  },
+  "scripts": {
+    "test": "yarn test:client && yarn test:server",
+    "test:client": "cd client && yarn test",
+    "test:server": "cd server && yarn test"
   }
 }
