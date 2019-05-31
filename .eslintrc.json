@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": ["airbnb", "plugin:react/recommended"],
   "globals": {
@@ -16,12 +17,22 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "jest"],
   "rules": {
     "import/prefer-default-export": 0,
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "no-unused-vars":"warn"
   },
-  "settings": {
+  "overrides": [
+	  {
+		  "files": ["*-test.js","*.spec.js"]
+	  }],
+	  "settings": {
     "react": {
       "pragma": "React",
       "version": "^16.8.6"

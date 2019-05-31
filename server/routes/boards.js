@@ -1,9 +1,13 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import { PORT } from '../configs/config';
 
-const router = express.Router();
+const app = express();
 
-router.get('/', (req, res) => {
-  res.send('Hey from GET boards/');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.get('/', (req, res) => {
+  res.status(200).send('Server');
 });
 
-export default router;
+module.exports = app;
