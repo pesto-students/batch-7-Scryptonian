@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
-    "test": "echo '123'"
+    "test": "echo '123'",
+    "pretest": "yarn"
   },
   "dependencies": {
     "express": "^4.17.1",
