@@ -25,13 +25,18 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint"
+    "*.{js,jsx}": [
+      "yarn lint"
     ]
   },
   "scripts": {
+    "lint": "eslint . --ext js,jsx",
+    "lintfix": "eslint . --ext js,jsx --fix",
+    "postinstall": "yarn install:client && yarn install:server",
+    "install:client": "cd client && yarn",
+    "install:server": "cd server && yarn",
     "test": "yarn test:client && yarn test:server",
-    "test:client": "cd client && yarn test",
-    "test:server": "cd server && yarn test"
+    "test:client": "cd client && yarn && yarn test",
+    "test:server": "cd server && yarn && yarn test"
   }
 }

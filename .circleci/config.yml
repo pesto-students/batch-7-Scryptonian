@@ -8,8 +8,7 @@ jobs:
     - run:
         name: Code Linting
         command: |
-          yarn && yarn lint
-    - test 
+          yarn && yarn lint 
     - run:
         name: Client and Server Testing
         command: |
