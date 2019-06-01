@@ -1,0 +1,8 @@
+.Lifecycle {
+  width: 350px;
+  margin: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
