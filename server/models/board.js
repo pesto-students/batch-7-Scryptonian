@@ -23,7 +23,7 @@ const BoardSchema = new Schema(
         role: {
           type: String,
           enum: ['SUPERADMIN', 'ADMIN', 'USER', 'INVITED'],
-          default: 'USER',
+          default: 'INVITED',
           required: true,
         },
       },

@@ -3,10 +3,14 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 const IssueSchema = new Schema(
   {
-    description: {
+    issue: {
       type: String,
       trim: true,
       required: true,
+    },
+    description: {
+      type: String,
+      trim: true,
     },
     createdBy: {
       type: Schema.Types.ObjectId,
