@@ -31,6 +31,7 @@
     ]
   },
   "scripts": {
+    "start": "cd server && yarn start",
     "lint": "eslint . --ext js,jsx",
     "lintfix": "eslint . --ext js,jsx --fix",
     "postinstall": "yarn install:client && yarn install:server",
