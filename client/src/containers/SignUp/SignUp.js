@@ -8,7 +8,11 @@ const SignUp = props => {
   return (
     <div className={classes.SignUp}>
       <h1>Issue Tracker</h1>
-      {isAuthenticated ? <p>Welcome</p> : <GoogleSignIn className={classes.GoogleButton} />}
+      {isAuthenticated ? (
+        <p>Welcome</p>
+      ) : (
+        <GoogleSignIn className={classes.GoogleButton} />
+      )}
     </div>
   );
 };

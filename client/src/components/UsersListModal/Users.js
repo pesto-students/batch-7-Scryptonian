@@ -12,14 +12,16 @@ class Users extends React.Component {
       <div className="row">
         <div className="column">
           <h3>Users</h3>
-          {this.state.users.map(user => (
-            <div className="content">{user}</div>
+          {this.state.users.map((user, i) => (
+            <div key={i} className="content">
+              {user}
+            </div>
           ))}
         </div>
         <div className="column">
           <h3>Role</h3>
-          {this.state.roles.map(role => (
-            <div className="content">
+          {this.state.roles.map((role, i) => (
+            <div key={i} className="content">
               <Button intent="success" small="true">
                 {role}
               </Button>
