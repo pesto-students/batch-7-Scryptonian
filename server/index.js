@@ -1,25 +1,38 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import passport from 'passport';
+import cookieSession from 'cookie-session';
+import passportSetup from './configs/passport-setup';
 
 import users from './routes/users';
 import boards from './routes/boards';
 import issues from './routes/issues';
+import router from './routes/auth-routes';
 
-import { PORT, MONGO_CONNECTION_STRING } from './configs/config';
+import { PORT, MONGO_CONNECTION_STRING, session } from './configs/config';
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(
+  cookieSession({
+    maxAge: session.maxAge,
+    keys: session.keys,
+  }),
+);
+
+app.use(cors());
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', router);
 app.use('/users/', users);
 app.use('/boards/', boards);
 app.use('/issues/', issues);
-
-app.get('/', (req, res) => {
-  res.send('Hey!');
-});
 
 export const server = app.listen(PORT, (err) => {
   if (err) {
@@ -40,5 +53,10 @@ export const server = app.listen(PORT, (err) => {
     server.close(() => console.log('Server stopped.'));
   }
 }());
+
+// ERROR HANDLING MIDDLEWARE
+app.use((err, req, res, next) => {
+  res.status(500).send(`Something went wrong!!${err}`);
+});
 
 export const db = mongoose.connection;
