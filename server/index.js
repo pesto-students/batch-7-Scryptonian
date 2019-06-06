@@ -24,15 +24,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', router);
 
+// Connect Database
 mongoose.connect(config.mongo.connectionString, { useNewUrlParser: true }, (err) => {
   console.log(err);
 });
+
 // Signup start
-
 app.get('/', (req, res) => {
-  res.render('home');
+  res.status(200).send();
 });
-
 // Signup end
 
 app.use('/users/', users);

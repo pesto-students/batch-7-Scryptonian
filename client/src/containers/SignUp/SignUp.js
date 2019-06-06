@@ -7,8 +7,14 @@ const SignUp = props => {
 
   return (
     <div className={classes.SignUp}>
+      <a href="http://localhost:8000/auth/google">Login</a>
+      <a href="http://localhost:8000">check</a>
       <h1>Issue Tracker</h1>
-      {isAuthenticated ? <p>Welcome</p> : <GoogleSignIn className={classes.GoogleButton} />}
+      {isAuthenticated ? (
+        <p>Welcome</p>
+      ) : (
+        <GoogleSignIn className={classes.GoogleButton} />
+      )}
     </div>
   );
 };

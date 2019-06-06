@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import querystring from 'querystring';
+import config from '../configs/config';
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     const userData = req.user;
-    res.redirect(`http://localhost:3000/userdata?${querystring.stringify(userData)}`);
+    res.redirect(`${config.redirectUrlAfterLogin}/userdata?${querystring.stringify(userData)}`);
   },
 );
 
