@@ -1,0 +1,10 @@
+.board-container {
+    background-color: rgb(236, 233, 233);
+    border: 1px solid black;
+    box-shadow: 2px;
+    border-radius: 9px;
+    width: 150px;
+    height: 70px;
+    margin: 20px;
+    text-align: center;
+}
