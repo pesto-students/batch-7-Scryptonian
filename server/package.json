@@ -6,7 +6,9 @@
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
     "test": "jest",
-    "pretest": "yarn"
+    "pretest": "yarn",
+    "build": "yarn babel . -d dist --ignore 'node_modules/**/*.js' --source-maps",
+    "serve": "yarn && yarn build && node dist/index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
