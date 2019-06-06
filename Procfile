@@ -1,1 +1,1 @@
-web: cd server | yarn serve
+web: cd server && yarn serve
