@@ -1,0 +1,33 @@
+.issue {
+  margin: 10px 0;
+  overflow: wrap;
+  display: flex;
+  flex-direction: column;
+}
+
+.labels {
+  margin: 10px 0;
+}
+
+.meta {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.metaRight {
+  display: flex;
+  flex-direction: row;
+}
+
+ul {
+  margin: auto 0;
+  padding: 0;
+  list-style: none;
+  display: inline-flex;
+}
+
+li {
+  margin-right: 10px;
+}
