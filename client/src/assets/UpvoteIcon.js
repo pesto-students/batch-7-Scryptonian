@@ -9,7 +9,6 @@ const UpvoteIcon = props => (
     style={{ marginRight: '4px', marginTop: '1px' }}
     height="1em"
     viewBox="0 0 444.819 444.819"
-    {...props}
   >
     <path
       fill={props.upvoted ? UPVOTED_COLOR : DEFAULT_COLOR}
