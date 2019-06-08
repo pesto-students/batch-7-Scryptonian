@@ -3,8 +3,9 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
+import bodyParser from 'body-parser';
 import users from './routes/users';
-import boards from './routes/boards';
+import boards from './routes/boards-routes';
 import config from './configs/config';
 import router from './routes/auth-routes';
 import passportSetup from './configs/passport-setup';
@@ -20,6 +21,8 @@ app.use(
 );
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', router);
@@ -33,6 +36,14 @@ mongoose.connect(config.mongo.connectionString, { useNewUrlParser: true }, (err)
 app.get('/', (req, res) => {
   res.status(200).send();
 });
+
+// function isLoggedIn(req, res, next) {
+//   if (req.session.user !== undefined) {
+//     next();
+//   } else {
+//     res.redirect(`${config.redirectUrlAfterLogin}`);
+//   }
+// }
 // Signup end
 
 app.use('/users/', users);

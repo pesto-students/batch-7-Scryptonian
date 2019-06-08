@@ -7,10 +7,12 @@ const GoogleStrategy = Strategy;
 // After passsport callback user will be passed here were it will serialize user.id
 // and pass it to cookie-session for encryption
 passport.serializeUser((user, done) => {
+  console.log('serialize');
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
+  console.log(id, 'deserialize');
   if (id) {
     User.findById(id)
       .then(existingUser => done(null, existingUser))
