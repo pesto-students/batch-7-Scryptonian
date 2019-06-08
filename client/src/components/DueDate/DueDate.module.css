@@ -1,0 +1,14 @@
+.dueDate {
+  display: inline-flex;
+  margin: auto 5px;
+}
+
+.date {
+  font-weight: bold;
+  color: darkgray;
+}
+
+.month {
+  text-align: center;
+  color: darkgray;
+}
