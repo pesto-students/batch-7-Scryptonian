@@ -1,0 +1,9 @@
+.assignee {
+  border: 1px solid #eeeeee;
+  background-color: #eeeeee;
+  overflow: hidden;
+  padding: 2px 5px;
+  color: gray;
+  display: block;
+  margin: auto 5px;
+}
