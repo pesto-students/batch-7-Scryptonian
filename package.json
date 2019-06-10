@@ -5,7 +5,9 @@
   "repository": "https://github.com/pesto-students/batch-7-Scryptonian.git",
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "query-string": "^6.7.0"
+  },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",

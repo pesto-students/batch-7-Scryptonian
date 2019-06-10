@@ -10,7 +10,7 @@ router.get('/login', (req, res) => {
 router.get(
   '/google',
   passport.authenticate('google', {
-    scope: ['profile'],
+    scope: ['profile', 'email'],
   }),
 );
 
@@ -18,15 +18,17 @@ router.get(
   '/google/redirect',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    const userData = req.user;
-    res.redirect('http://localhost:3000/boards');
-    // res.redirect(`${config.redirectUrlAfterLogin}/userdata?${querystring.stringify(userData)}`);
+    const { name, emailId, imageUrl } = req.user;
+    res.redirect(
+      `http://localhost:3000/boards/userdata?name=${name}&emailId=${emailId}&imageUrl=${imageUrl}`,
+    );
   },
 );
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  console.log(res);
+  res.redirect('http://localhost:3000');
 });
 
 module.exports = router;
