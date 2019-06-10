@@ -20,6 +20,7 @@
   "plugins": ["react", "jest"],
   "rules": {
     "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
