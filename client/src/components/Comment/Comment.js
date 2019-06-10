@@ -8,7 +8,7 @@ const Comment = props => {
   return (
     <div className={classes.comment}>
       <CommentIcon />
-      {!props.condensed ? null : (
+      {props.condensed ? null : (
         <>
           Comments
           <Divider className={classes.divider} />

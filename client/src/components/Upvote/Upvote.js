@@ -5,7 +5,7 @@ import { Divider } from '@blueprintjs/core';
 
 const Upvote = props => {
   const upvoteComponentClass = props.upvoted ? classes.upvoted : classes.didNotUpvote;
-  const upvoteIcon = props.upvoted ? <UpvoteIcon upvoted /> : <UpvoteIcon />;
+  const upvoteIcon = props.upvoted ? <UpvoteIcon upvoted={true} /> : <UpvoteIcon />;
   return (
     <div className={upvoteComponentClass}>
       {upvoteIcon}

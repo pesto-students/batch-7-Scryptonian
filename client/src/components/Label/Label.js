@@ -6,7 +6,7 @@ export const DEFAULT_COLOR = '#5C7080';
 const Label = props => {
   const color = props.color ? props.color : DEFAULT_COLOR;
   return (
-    <Tag round style={{ backgroundColor: color, margin: '0 2px' }}>
+    <Tag round style={{ backgroundColor: color, margin: '2px 2px' }}>
       {props.label}
     </Tag>
   );

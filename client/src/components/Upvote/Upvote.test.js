@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import Upvote from './Upvote';
+import UpvoteIcon from '../../assets/UpvoteIcon';
 
 describe('<Upvote />', () => {
   let wrapper;
@@ -14,9 +15,11 @@ describe('<Upvote />', () => {
     if (upvoted) {
       expect(wrapper.find('.upvoted')).toHaveLength(1);
       expect(wrapper.find('.didNotUpvote')).toHaveLength(0);
+      expect(wrapper.find(UpvoteIcon).props().upvoted).toBe(true);
     } else {
       expect(wrapper.find('.upvoted')).toHaveLength(0);
       expect(wrapper.find('.didNotUpvote')).toHaveLength(1);
+      expect(wrapper.find(UpvoteIcon).props().upvoted).toBeFalsy();
     }
   }
 

@@ -9,16 +9,16 @@ describe('<Comment />', () => {
 
   beforeEach(() => {
     wrapper = shallow(<Comment />);
-  })
+  });
 
   function testSubComponent(condensed = false) {
     expect(wrapper.find('.comment')).toHaveLength(1);
     expect(wrapper.find(CommentIcon)).toHaveLength(1);
     expect(wrapper.find('.commentCount')).toHaveLength(1);
     if (condensed) {
-      expect(wrapper.contains('Comments')).toEqual(true);
-    } else {
       expect(wrapper.contains('Comments')).toEqual(false);
+    } else {
+      expect(wrapper.contains('Comments')).toEqual(true);
     }
   }
 
@@ -36,5 +36,5 @@ describe('<Comment />', () => {
   it('should render condensed form of comments component', () => {
     wrapper.setProps({ condensed: true });
     testSubComponent(true);
-  })
-})
+  });
+});
