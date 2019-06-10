@@ -1,8 +1,7 @@
 import React from 'react';
 import classes from './DueDate.module.css';
 
-const DueDate = props => {
-  const completeDate = new Date(props.date);
+export const getMonthString = monthIndex => {
   const months = [
     'JAN',
     'FEB',
@@ -17,7 +16,12 @@ const DueDate = props => {
     'NOV',
     'DEC',
   ];
-  const month = months[completeDate.getMonth()];
+  return months[monthIndex];
+}
+
+const DueDate = props => {
+  const completeDate = new Date(props.date);
+  const month = getMonthString([completeDate.getMonth()]);
   const date = completeDate.getDate();
   return (
     <div className={classes.dueDate}>
