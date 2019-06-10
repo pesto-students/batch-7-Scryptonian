@@ -28,7 +28,7 @@ const BoardSchema = new Schema(
         },
       },
     ],
-    lifeCycles: [
+    lifecycles: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Lifecycle',
