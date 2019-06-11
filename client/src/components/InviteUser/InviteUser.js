@@ -8,28 +8,23 @@ import {
 } from '@blueprintjs/core';
 
 class InviteUser extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      autoFocus: true,
-      canEscapeKeyClose: true,
-      canOutsideClickClose: true,
-      enforceFocus: true,
-      isOpen: false,
-      usePortal: true,
-      round: true
-    };
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
+  state = {
+    autoFocus: true,
+    canEscapeKeyClose: true,
+    canOutsideClickClose: true,
+    enforceFocus: true,
+    isOpen: false,
+    usePortal: true,
+    round: true
+  };
 
-  handleOpen() {
+  handleOpen = () => {
     this.setState({ isOpen: true });
-  }
+  };
 
-  handleClose() {
+  handleClose = () => {
     this.setState({ isOpen: false });
-  }
+  };
   render() {
     return (
       <div>
