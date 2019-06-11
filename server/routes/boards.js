@@ -1,13 +1,26 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-import { PORT } from '../configs/config';
+import mongoose from 'mongoose';
 
-const app = express();
+import { OK, INTERNAL_SERVER_ERROR, BAD_REQUEST } from '../configs/httpStatusCodes';
+import Board from '../models/board';
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.get('/', (req, res) => {
-  res.status(200).send('Server');
+const router = express.Router();
+
+router.get('/kanban', async (req, res) => {
+  const { boardid } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(boardid)) {
+    return res.status(BAD_REQUEST).send('Invalid boardID');
+  }
+
+  let board;
+  try {
+    board = await Board.findOne({ _id: boardid })
+      .select('_id name lifecycles')
+      .populate({ path: 'lifecycles', populate: { path: 'issues' } });
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send('Error fetching data from DB', e.message);
+  }
+  return res.status(OK).send(board);
 });
 
-module.exports = app;
+export default router;
