@@ -18,7 +18,7 @@ router.get('/kanban', async (req, res) => {
       .select('_id name lifecycles')
       .populate({ path: 'lifecycles', populate: { path: 'issues' } });
   } catch (e) {
-    return res.status(INTERNAL_SERVER_ERROR).send('Error fetching data from DB', e.message);
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error fetching data from DB ${e.message}`);
   }
   return res.status(OK).send(board);
 });
