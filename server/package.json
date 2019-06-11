@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
-    "test": "jest",
+    "test": "jest --runInBand",
     "pretest": "yarn",
     "build": "yarn babel . -d dist --ignore 'node_modules/**/*.js' --source-maps",
     "serve": "yarn && yarn build && node dist/index.js"
