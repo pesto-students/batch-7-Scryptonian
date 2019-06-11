@@ -19,20 +19,21 @@ app.get('/', (req, res) => {
   res.send('Hey!');
 });
 
-async function startServer() {
+export const server = app.listen(PORT, (err) => {
+  if (err) {
+    throw new Error(err);
+  }
+  console.log(`Server started at port ${PORT}.`);
+});
+
+(async function startServer() {
   console.log('Starting server.');
   try {
     await mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
-    console.log('Established connection with MongoDB.');
-  } catch (err) {
-    throw new Error(err);
+  } catch (e) {
+    console.error(e);
+    server.close(() => console.log('Server stopped.'));
   }
-  app.listen(PORT, (err) => {
-    if (err) {
-      throw new Error(err);
-    }
-    console.log(`Server started at port ${PORT}.`);
-  });
-}
+}());
 
-startServer();
+export const db = mongoose.connection;

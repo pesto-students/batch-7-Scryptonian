@@ -1,13 +1,34 @@
 import request from 'supertest';
-import server from './boards';
+import { server, db } from '../index';
 
-describe('Testing if server is running', () => {
-  it('responds with 200 status', () => {
-    request(server)
-      .get('/')
-      .expect(200)
-      .end((err, res) => {
-        if (err) throw err;
-      });
+import { BAD_REQUEST, OK } from '../configs/httpStatusCodes';
+
+server.close();
+describe('URL/boards/', () => {
+  afterAll(() => {
+    db.close();
+    server.close();
+  });
+
+  describe('URL/boards/kanban', () => {
+    test('should return 400 if no boardid is sent', (done) => {
+      request(server)
+        .get('/boards/kanban')
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should return 400 if boardid is not valid', (done) => {
+      request(server)
+        .get('/boards/kanban')
+        .send({ boardid: 'abcd' })
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should return 200 if boardid is valid', (done) => {
+      request(server)
+        .get('/boards/kanban')
+        .send({ boardid: '5cfaf71c26607358e66c1d46' })
+        .expect(OK, done);
+    });
   });
 });
