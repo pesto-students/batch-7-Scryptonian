@@ -56,4 +56,37 @@ router.post('/', async (req, res) => {
   return res.send(savedIssue);
 });
 
+router.patch('/:issueid/assignee', async (req, res) => {
+  const { issueid } = req.params;
+  const { assigneeid } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(issueid)) {
+    return res.status(BAD_REQUEST).send('Invalid issueid');
+  }
+
+  let updateObject;
+  if (assigneeid === null) {
+    updateObject = { $unset: { assignee: '' } };
+  } else {
+    if (!mongoose.Types.ObjectId.isValid(assigneeid)) {
+      return res.status(BAD_REQUEST).send('Invalid assigneeid');
+    }
+
+    updateObject = { $set: { assignee: assigneeid } };
+  }
+
+  let savedIssue;
+  try {
+    savedIssue = await Issue.findOneAndUpdate(issueid, updateObject, { new: true });
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error setting new assignee ${e.message}`);
+  }
+
+  if (savedIssue === null) {
+    return res.status(NOT_FOUND).send(`Issue with id ${issueid} is not present.`);
+  }
+
+  return res.status(OK).send(savedIssue);
+});
+
 export default router;
