@@ -6,8 +6,11 @@ import { BAD_REQUEST, OK } from '../configs/httpStatusCodes';
 import Issue from '../models/issue';
 import Lifecycle from '../models/lifecycle';
 
-server.close();
 describe('URL/issues routes', () => {
+  beforeAll(() => {
+    server.close();
+  });
+
   afterAll(() => {
     db.close();
     server.close();
