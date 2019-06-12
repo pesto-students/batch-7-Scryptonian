@@ -2,18 +2,17 @@ version: 2
 jobs:
   build:
     docker:
-    - image: circleci/node:8.11.1
-    - image: circleci/mongo:4.0.1
+      - image: circleci/node:8.11.1
+      - image: circleci/mongo:4.0.1
     environment:
-    MONGO_URL:mongodb://127.0.0.1:27017
+      - MONGO_URL:mongodb://127.0.0.1:27017
     steps:
-    - checkout
-    - run:
-        name: Code Linting
-        command: |
-          yarn && yarn lint 
-    - run:
-        name: Client and Server Testing
-        command: |
-          yarn test
-  
+      - checkout
+      - run:
+          name: Code Linting
+          command: |
+            yarn && yarn lint
+      - run:
+          name: Client and Server Testing
+          command: |
+            yarn test
