@@ -6,11 +6,13 @@ import {
   Popover,
   Menu,
   Position,
-  MenuItem
+  MenuItem,
+  InputGroup
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
-import { HEADER } from '@blueprintjs/icons/lib/esm/generated/iconNames';
+import DueDate from '../DueDate/DueDate';
+import Comment from '../Comment/Comment';
 
 class IssueDetails extends React.Component {
   state = {
@@ -42,9 +44,7 @@ class IssueDetails extends React.Component {
           <div className={Classes.DIALOG_BODY}>
             <div className="row">
               <div className="column">
-                <HEADER>
-                  <b>Add Ballistic missiles</b>
-                </HEADER>
+                <h3 className="issue-header">Add Ballistic missiles</h3>
               </div>
               <div className="column">
                 <Upvote />
@@ -58,11 +58,38 @@ class IssueDetails extends React.Component {
                     <MenuItem text="Difficult" />
                   </Menu>
                 }
-                position={Position.RIGHT_BOTTOM}
+                position={Position.BOTTOM_LEFT}
               >
-                <Button icon="share" text="Labels" />
+                <Button rightIcon="arrow-down" text="Labels" />
               </Popover>
             </div>
+            <div className="due-date">
+              <DueDate />
+            </div>
+            <div className="assignee">
+              <span>Assign to:</span>
+              <Popover
+                content={
+                  <Menu className={Classes.ELEVATION_ONE}>
+                    <MenuItem text="Amit" />
+                    <MenuItem text="Rajat" />
+                  </Menu>
+                }
+                position={Position.BOTTOM}
+              >
+                <Button rightIcon="arrow-down" text="Pratiyush" />
+              </Popover>
+            </div>
+            <div className="comments">
+              <form>
+                <label style={{ margin: '4px' }}>
+                  <span>Comment:</span>
+                  <InputGroup placeholder="Add your comment" large={true} />
+                </label>
+              </form>
+              <Button intent="success">Done</Button>
+            </div>
+            <Comment />
           </div>
           <div className={Classes.DIALOG_FOOTER}>
             <Button onClick={this.handleClose}>Close</Button>
