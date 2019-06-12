@@ -3,8 +3,11 @@ import { server, db } from '../index';
 
 import { BAD_REQUEST, OK } from '../configs/httpStatusCodes';
 
-server.close();
 describe('URL/boards/', () => {
+  beforeAll(() => {
+    server.close();
+  });
+
   afterAll(() => {
     db.close();
     server.close();
