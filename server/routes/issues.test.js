@@ -107,4 +107,57 @@ describe('URL/issues routes', () => {
         });
     });
   });
+
+  describe('PATCH /issues/:issueid/assignee', () => {
+    test('should receive 400 if issueid is not valid', (done) => {
+      request(server)
+        .patch('/issues/abcd/assignee')
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should receive 400 if invalid assigneeid is sent', (done) => {
+      request(server)
+        .patch('/issues/abcd/assignee')
+        .send({ assigneeid: '1234' })
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should receive 404 if issueid is valid but not present in db', (done) => {
+      const nonExistingIssue = '5cfb0915a8e23e5b65d10722';
+      const assigneeid = '5cfb09be8ec3955b97ec00bd';
+      const updateObject = { $set: { assignee: assigneeid } };
+      const IssueMock = sinon.mock(Issue);
+      IssueMock.expects('findOneAndUpdate')
+        .withArgs(nonExistingIssue, updateObject, { new: true })
+        .resolves(null);
+
+      request(server)
+        .patch('/issues/abcd/assignee')
+        .send({ assigneeid })
+        .expect(BAD_REQUEST)
+        .end(() => {
+          IssueMock.restore();
+          return done();
+        });
+    });
+
+    test('should receive 200 if assignee is present', (done) => {
+      const existingIssue = '5cfb0915a8e23e5b65d10022';
+      const assigneeid = '5cfb09be8ec3955b97ec00bd';
+      const updateObject = { $set: { assignee: assigneeid } };
+      const IssueMock = sinon.mock(Issue);
+      IssueMock.expects('findOneAndUpdate')
+        .withArgs(existingIssue, updateObject, { new: true })
+        .resolves({ _id: existingIssue, assignee: assigneeid });
+
+      request(server)
+        .patch('/issues/abcd/assignee')
+        .send({ assigneeid })
+        .expect(OK)
+        .end(() => {
+          IssueMock.restore();
+          return done();
+        });
+    });
+  });
 });
