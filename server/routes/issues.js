@@ -7,6 +7,7 @@ import {
 import Lifecycle from '../models/lifecycle';
 import Issue from '../models/issue';
 import User from '../models/user';
+import Comment from '../models/comment';
 
 const router = express.Router();
 
@@ -54,7 +55,10 @@ router.get('/:issueid', async (req, res) => {
   let issue;
   try {
     issue = await Issue.findById(issueid)
-      .populate('createdBy')
+      .populate({ path: 'comments' })
+      .populate({ path: 'createdBy' })
+      .populate({ path: 'assignee' })
+      .populate({ path: 'modifiedBy' })
       .exec();
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
@@ -113,5 +117,32 @@ router.patch(
   },
   setAttribute,
 );
+
+router.post('/:issueid/comment', async (req, res) => {
+  const { issueid } = req.params;
+  const { comment, commentedBy } = req.body;
+
+  if (
+    !mongoose.Types.ObjectId.isValid(commentedBy)
+    || !mongoose.Types.ObjectId.isValid(issueid)
+    || !comment
+  ) {
+    return res.status(BAD_REQUEST).send('Invalid issueid, commentedBy or comment');
+  }
+
+  let savedIssue;
+  try {
+    const savedComment = await Comment.create({ comment, commentedBy });
+    savedIssue = await Issue.findOneAndUpdate(
+      { _id: issueid },
+      { $push: { comments: savedComment._id } },
+      { new: true },
+    );
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error saving new comment. ${e.message}`);
+  }
+
+  return res.send(savedIssue);
+});
 
 export default router;
