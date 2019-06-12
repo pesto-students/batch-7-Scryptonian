@@ -10,6 +10,40 @@ import User from '../models/user';
 
 const router = express.Router();
 
+async function setAttribute(req, res) {
+  const { issueid } = req.params;
+  const { attributeName, attributeValue } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(issueid)) {
+    return res.status(BAD_REQUEST).send('Invalid issueid');
+  }
+
+  let updateObject;
+  const attributeObject = {};
+  if (attributeValue === null) {
+    attributeObject[attributeName] = '';
+    updateObject = { $unset: attributeObject };
+  } else {
+    attributeObject[attributeName] = attributeValue;
+    updateObject = { $set: attributeObject };
+  }
+
+  let savedIssue;
+  try {
+    savedIssue = await Issue.findOneAndUpdate(issueid, updateObject, { new: true });
+  } catch (e) {
+    return res
+      .status(INTERNAL_SERVER_ERROR)
+      .send(`Error setting new ${attributeName}. ${e.message}`);
+  }
+
+  if (savedIssue === null) {
+    return res.status(NOT_FOUND).send(`Issue with id ${issueid} is not present.`);
+  }
+
+  return res.status(OK).send(savedIssue);
+}
+
 router.get('/:issueid', async (req, res) => {
   const { issueid } = req.params;
 
@@ -56,37 +90,28 @@ router.post('/', async (req, res) => {
   return res.send(savedIssue);
 });
 
-router.patch('/:issueid/assignee', async (req, res) => {
-  const { issueid } = req.params;
-  const { assigneeid } = req.body;
-
-  if (!mongoose.Types.ObjectId.isValid(issueid)) {
-    return res.status(BAD_REQUEST).send('Invalid issueid');
-  }
-
-  let updateObject;
-  if (assigneeid === null) {
-    updateObject = { $unset: { assignee: '' } };
-  } else {
-    if (!mongoose.Types.ObjectId.isValid(assigneeid)) {
+router.patch(
+  '/:issueid/assignee',
+  (req, res, next) => {
+    const { assigneeid } = req.body;
+    req.body.attributeName = 'assignee';
+    req.body.attributeValue = assigneeid;
+    if (assigneeid !== null && !mongoose.Types.ObjectId.isValid(assigneeid)) {
       return res.status(BAD_REQUEST).send('Invalid assigneeid');
     }
+    return next();
+  },
+  setAttribute,
+);
 
-    updateObject = { $set: { assignee: assigneeid } };
-  }
-
-  let savedIssue;
-  try {
-    savedIssue = await Issue.findOneAndUpdate(issueid, updateObject, { new: true });
-  } catch (e) {
-    return res.status(INTERNAL_SERVER_ERROR).send(`Error setting new assignee ${e.message}`);
-  }
-
-  if (savedIssue === null) {
-    return res.status(NOT_FOUND).send(`Issue with id ${issueid} is not present.`);
-  }
-
-  return res.status(OK).send(savedIssue);
-});
+router.patch(
+  '/:issueid/duedate',
+  (req, res, next) => {
+    req.body.attributeName = 'dueDate';
+    req.body.attributeValue = new Date(req.body.duedate);
+    next();
+  },
+  setAttribute,
+);
 
 export default router;

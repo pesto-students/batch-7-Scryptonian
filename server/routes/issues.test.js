@@ -160,4 +160,50 @@ describe('URL/issues routes', () => {
         });
     });
   });
+
+  describe('PATCH /issues/:issueid/duedate', () => {
+    test('should receive 400 if issueid is not valid', (done) => {
+      request(server)
+        .patch('/issues/abcd/duedate')
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should receive 404 if issueid is valid but not present in db', (done) => {
+      const nonExistingIssue = '5cfb0915a8e23e5b65d10722';
+      const dueDate = new Date();
+      const updateObject = { $set: { dueDate } };
+      const IssueMock = sinon.mock(Issue);
+      IssueMock.expects('findOneAndUpdate')
+        .withArgs(nonExistingIssue, updateObject, { new: true })
+        .resolves(null);
+
+      request(server)
+        .patch('/issues/abcd/assignee')
+        .send({ dueDate })
+        .expect(BAD_REQUEST)
+        .end(() => {
+          IssueMock.restore();
+          return done();
+        });
+    });
+
+    test('should receive 200 if assignee is present', (done) => {
+      const existingIssue = '5cfb0915a8e23e5b65d10022';
+      const dueDate = new Date();
+      const updateObject = { $set: { dueDate } };
+      const IssueMock = sinon.mock(Issue);
+      IssueMock.expects('findOneAndUpdate')
+        .withArgs(existingIssue, updateObject, { new: true })
+        .resolves({ _id: existingIssue, dueDate });
+
+      request(server)
+        .patch('/issues/abcd/assignee')
+        .send({ dueDate })
+        .expect(OK)
+        .end(() => {
+          IssueMock.restore();
+          return done();
+        });
+    });
+  });
 });
