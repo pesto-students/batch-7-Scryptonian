@@ -1,11 +1,10 @@
 version: 2
+machine:
+  services: -mongod
 jobs:
   build:
     docker:
       - image: circleci/node:8.11.1
-      - image: circleci/mongo:4.0.1
-    environment:
-      - MONGO_URL:mongodb://127.0.0.1:27017
     steps:
       - checkout
       - run:
