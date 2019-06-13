@@ -24,27 +24,17 @@ describe('URL/issues routes', () => {
         .expect(BAD_REQUEST, done);
     });
 
-    test('should return 400 if issue or createdBy fields are not sent', (done) => {
+    test('should return 400 if issue is not sent', (done) => {
       request(server)
         .post('/issues')
         .send({ lifecycleid: '123456789abc' })
         .expect(BAD_REQUEST, done);
-
-      request(server)
-        .post('/issues')
-        .send({ lifecycleid: '123456789abc', issue: 'A new issue' })
-        .expect(BAD_REQUEST, done);
-
-      request(server)
-        .post('/issues')
-        .send({ lifecycleid: '123456789abc', createdBy: '1234567890ab' })
-        .expect(BAD_REQUEST, done);
     });
 
-    test('should receive 200 if all three parameters are sent', (done) => {
+    test('should receive 200 if all parameters are sent', (done) => {
       const IssueMock = sinon.mock(Issue);
       IssueMock.expects('create')
-        .withArgs({ issue: 'A new issue', createdBy: '1234567890ab' })
+        .withArgs({ issue: 'A new issue' })
         .resolves({ issue: 'A new issue' });
 
       const LifecycleMock = sinon.mock(Lifecycle);
@@ -54,7 +44,7 @@ describe('URL/issues routes', () => {
 
       request(server)
         .post('/issues')
-        .send({ lifecycleid: '123456789abc', issue: 'A new issue', createdBy: '1234567890ab' })
+        .send({ lifecycleid: '123456789abc', issue: 'A new issue' })
         .expect(OK)
         .end(() => {
           LifecycleMock.restore();
@@ -209,29 +199,23 @@ describe('URL/issues routes', () => {
   });
 
   describe('POST /issues/:issueid/comment', () => {
-    test('should return 400 if comment or commentedBy fields are not sent', (done) => {
+    test('should return 400 if comment is not sent', (done) => {
       request(server)
         .post('/issues/5cfb0915a8e23e5b65d10725/comment')
-        .send({ commentedBy: '123456789abc' })
-        .expect(BAD_REQUEST, done);
-
-      request(server)
-        .post('/issues/5cfb0915a8e23e5b65d10725/comment')
-        .send({ comment: 'A comment' })
         .expect(BAD_REQUEST, done);
     });
 
     test('should return 400 if issueid is not valid', (done) => {
       request(server)
         .post('/issues/abcd/comment')
-        .send({ comment: 'A comment', commentedBy: '123456789abc' })
+        .send({ comment: 'A comment' })
         .expect(BAD_REQUEST, done);
     });
 
     test('should receive 200 if all three parameters are sent', (done) => {
       const CommentMock = sinon.mock(Comment);
       CommentMock.expects('create')
-        .withArgs({ comment: 'A comment', commentedBy: '1234567890ab' })
+        .withArgs({ comment: 'A comment' })
         .resolves({ issue: 'Updated issue with a comment' });
 
       const IssueMock = sinon.mock(Lifecycle);
@@ -241,7 +225,7 @@ describe('URL/issues routes', () => {
 
       request(server)
         .post('/issues/5cfb0915a8e23e5b65d10725/comment')
-        .send({ comment: 'A comment', commentedBy: '123456789abc' })
+        .send({ comment: 'A comment' })
         .expect(OK)
         .end(() => {
           CommentMock.restore();
