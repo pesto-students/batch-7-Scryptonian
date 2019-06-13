@@ -23,6 +23,9 @@ router.get('/', async (req, res) => {
 });
 // CREATE NEW BOARD
 router.post('/', async (req, res) => {
+  res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.set('Access-Control-Allow-Credentials', 'true');
+  console.log(req.user.id);
   if (req.isAuthenticated()) {
     const { name, lifeCycles } = req.body;
     const createdBy = req.user.id;
