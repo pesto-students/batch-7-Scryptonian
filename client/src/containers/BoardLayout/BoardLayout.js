@@ -7,7 +7,6 @@ import { updateAuthDetails } from '../../actions/actionDispatchers';
 import queryString from 'query-string';
 import CreateBoardModal from '../../components/CreateBoardModal/CreateBoardModal';
 import '../BoardLayout/BoardLayout.css';
-import { Redirect } from 'react-router-dom';
 
 const mapDispatchToProps = dispatch => {
   return {

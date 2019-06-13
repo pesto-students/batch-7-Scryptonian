@@ -12,8 +12,14 @@ router.get('/', async (req, res, next) => {
   const userid = '5cf82d981ae5553b30afa856'; // Remove this hardcoded value after cors issue resolve
   let boards;
   try {
-    boards = await Board.find({ 'members.member': userid });
-    return res.status(OK).send(boards);
+    boards = await Board.find({ 'members.member': userid })
+      .populate({ path: 'createdBy' })
+      .exec();
+    const boardFilter = boards.filter((board) => {
+      const newBoard = board.members.filter(el => el.member === userid);
+      return newBoard;
+    });
+    return res.status(OK).send(boardFilter);
   } catch (e) {
     return next(e.message);
   }

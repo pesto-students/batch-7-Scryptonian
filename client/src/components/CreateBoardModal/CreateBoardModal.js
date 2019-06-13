@@ -47,7 +47,9 @@ class CreateBoardModal extends React.Component {
   };
 
   handleInputChange = (event, index) => {
-    this.state.lifecycles[index] = event.target.value;
+    const changedLifecycles = [...this.state.lifecycles];
+    changedLifecycles[index] = event.target.value;
+    this.setState({ lifecycles: changedLifecycles });
   };
 
   removeLifecycle = index => {
@@ -59,12 +61,13 @@ class CreateBoardModal extends React.Component {
   setBoardName = event => {
     const boardNameVal = event.target.value;
     const regex = new RegExp('^[a-zA-Z0-9 _]*$');
-    if (regex.test(boardNameVal) & (boardNameVal != '')) {
-      this.state.errors['boardName'] = '';
+    let boardError = [...this.state.errors];
+    if (regex.test(boardNameVal) & (boardNameVal !== '')) {
+      boardError['boardName'] = '';
     } else {
-      this.state.errors['boardName'] = 'Enter a valid Board Name';
+      boardError['boardName'] = 'Enter a valid Board Name';
     }
-    this.setState({ boardName: boardNameVal });
+    this.setState({ boardName: boardNameVal, errors: boardError });
   };
 
   render() {
@@ -105,7 +108,7 @@ class CreateBoardModal extends React.Component {
                   <InputGroup
                     placeholder="Add Lifecycle"
                     fill={true}
-                    value={input.value}
+                    value={input}
                     onChange={event => this.handleInputChange(event, index)}
                     rightElement={removeButton(index)}
                   />
