@@ -21,7 +21,7 @@ const Issue = props => {
 
   const dateAndAssignee = (
     <div className={classes.metaRight}>
-      {props.assignee ? <Assignee name={props.assignee} /> : null}
+      {props.assignee ? <Assignee name={props.assignee.name} /> : null}
       {props.dueDate ? <DueDate date={props.dueDate} /> : null}
     </div>
   );
@@ -34,10 +34,10 @@ const Issue = props => {
         <div className={classes.meta}>
           <ul>
             <li>
-              <Upvote condensed />
+              <Upvote condensed upvotes={props.upvotes}/>
             </li>
             <li>
-              <Comment condensed />
+              <Comment condensed comment={props.comments ? props.comments.length : 0}/>
             </li>
           </ul>
           {dateAndAssignee}
