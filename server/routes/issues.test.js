@@ -5,6 +5,7 @@ import { server, db } from '../index';
 import { BAD_REQUEST, OK } from '../configs/httpStatusCodes';
 import Issue from '../models/issue';
 import Lifecycle from '../models/lifecycle';
+import Comment from '../models/comment';
 
 describe('URL/issues routes', () => {
   beforeAll(() => {
@@ -201,6 +202,49 @@ describe('URL/issues routes', () => {
         .send({ dueDate })
         .expect(OK)
         .end(() => {
+          IssueMock.restore();
+          return done();
+        });
+    });
+  });
+
+  describe('POST /issues/:issueid/comment', () => {
+    test('should return 400 if comment or commentedBy fields are not sent', (done) => {
+      request(server)
+        .post('/issues/5cfb0915a8e23e5b65d10725/comment')
+        .send({ commentedBy: '123456789abc' })
+        .expect(BAD_REQUEST, done);
+
+      request(server)
+        .post('/issues/5cfb0915a8e23e5b65d10725/comment')
+        .send({ comment: 'A comment' })
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should return 400 if issueid is not valid', (done) => {
+      request(server)
+        .post('/issues/abcd/comment')
+        .send({ comment: 'A comment', commentedBy: '123456789abc' })
+        .expect(BAD_REQUEST, done);
+    });
+
+    test('should receive 200 if all three parameters are sent', (done) => {
+      const CommentMock = sinon.mock(Comment);
+      CommentMock.expects('create')
+        .withArgs({ comment: 'A comment', commentedBy: '1234567890ab' })
+        .resolves({ issue: 'Updated issue with a comment' });
+
+      const IssueMock = sinon.mock(Lifecycle);
+      IssueMock.expects('findOneAndUpdate')
+        .withArgs({ _id: '123456789abc' }, { $push: { comments: '1234567890' } })
+        .resolves();
+
+      request(server)
+        .post('/issues/5cfb0915a8e23e5b65d10725/comment')
+        .send({ comment: 'A comment', commentedBy: '123456789abc' })
+        .expect(OK)
+        .end(() => {
+          CommentMock.restore();
           IssueMock.restore();
           return done();
         });
