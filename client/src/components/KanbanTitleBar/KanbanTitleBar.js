@@ -7,7 +7,7 @@ class KanbanTitleBar extends React.Component {
       <div>
         <Navbar>
           <Navbar.Group align={Alignment.LEFT}>
-            <Navbar.Heading>Batmobile</Navbar.Heading>
+            <Navbar.Heading>{this.props.name}</Navbar.Heading>
             <NavbarDivider />
             <Button className="bp3-minimal" icon="user" text="Member list" />
           </Navbar.Group>
