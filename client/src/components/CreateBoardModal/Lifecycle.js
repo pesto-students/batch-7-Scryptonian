@@ -1,8 +1,10 @@
 import React from 'react';
-import { InputGroup, Button, Label } from '@blueprintjs/core';
+import { InputGroup, Button, Label, TagInput } from '@blueprintjs/core';
 
 export default class Lifecycle extends React.Component {
-  state = { inputs: ['input-0'] };
+  state = {
+    inputs: ['input-0']
+  };
 
   appendInput = event => {
     event.preventDefault();
@@ -16,9 +18,14 @@ export default class Lifecycle extends React.Component {
     return (
       <Label style={{ margin: '4px' }}>
         <span> Add Lifecycle:</span>
-        {this.state.inputs.map(input => (
-          <div style={{ paddingBottom: '8px' }}>
-            <InputGroup round={true} placeholder="Add Lifecycle" fill={true} />
+        {/* <TagInput values={[]} addOnBlur={true} /> */}
+        {this.state.inputs.map((input, index) => (
+          <div style={{ paddingBottom: '8px' }} key={index}>
+            <InputGroup
+              placeholder="Add Lifecycle"
+              fill={true}
+              value={input.value}
+            />
           </div>
         ))}
 

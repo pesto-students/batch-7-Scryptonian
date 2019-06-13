@@ -2,16 +2,16 @@ import React from 'react';
 import { Card, Elevation } from '@blueprintjs/core';
 import './BoardBox.css';
 
-const BoardBox = () => {
+const BoardBox = props => {
   return (
     <Card
       interactive={true}
       elevation={Elevation.TWO}
       className="board-container"
+      onClick={() => props.addNewBoard()}
     >
-      <p>Create New</p>
+      <p>{props.boardName}</p>
     </Card>
   );
 };
-
 export default BoardBox;

@@ -1,0 +1,13 @@
+.BoardList {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  
+.BoardList{
+    display: flex;
+    flex-flow: row wrap;
+    margin: 20px auto;
+    background-color: whitesmoke;
+  }

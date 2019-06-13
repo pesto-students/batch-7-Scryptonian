@@ -9,9 +9,10 @@ const router = express.Router();
 
 // GET USER BOARD LIST
 router.get('/', async (req, res, next) => {
+  const userid = '5cf82d981ae5553b30afa856'; // Remove this hardcoded value after cors issue resolve
   let boards;
   try {
-    boards = await Board.find();
+    boards = await Board.find({ 'members.member': userid });
     return res.status(OK).send(boards);
   } catch (e) {
     return next(e.message);
@@ -20,8 +21,8 @@ router.get('/', async (req, res, next) => {
 
 // CREATE NEW BOARD
 router.post('/', async (req, res, next) => {
-  const { name, lifeCycles } = req.body;
-  const createdBy = req.user.id;
+  const { name, lifecycles } = req.body;
+  const createdBy = '5cf82d981ae5553b30afa856'; // Remove this hardcoded value after cors issue resolve
   const members = [
     {
       member: createdBy,
@@ -32,7 +33,7 @@ router.post('/', async (req, res, next) => {
 
   let savedLifecycles;
   try {
-    savedLifecycles = await Lifecycle.insertMany(lifeCycles);
+    savedLifecycles = await Lifecycle.insertMany(lifecycles);
   } catch (e) {
     return next(e.message);
   }
