@@ -148,4 +148,42 @@ router.post('/:issueid/comment', async (req, res) => {
   return res.send(savedIssue);
 });
 
+router.patch('/:issueid/upvote', async (req, res) => {
+  const { issueid } = req.params;
+  const { upvotedBy } = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
+
+  const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
+  if (!isIssueIdValid) {
+    return res.status(BAD_REQUEST).send('Invalid issueid');
+  }
+
+  let issue;
+  try {
+    issue = await Issue.findById(issueid);
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error getting issue. ${e.message}`);
+  }
+
+  if (issue === null) {
+    return res.status(NOT_FOUND).send(`Issue with id ${issueid} is not present.`);
+  }
+
+  const peopleWhoUpvoted = issue.upvotedBy;
+  let updateObject;
+  if (peopleWhoUpvoted.includes(upvotedBy)) {
+    updateObject = { $pull: { upvotedBy }, $inc: { upvotes: -1 } };
+  } else {
+    updateObject = { $push: { upvotedBy }, $inc: { upvotes: 1 } };
+  }
+
+  let updatedIssue;
+  try {
+    updatedIssue = await Issue.findByIdAndUpdate(issueid, updateObject, { new: true });
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error changing upvote count. ${e.message}`);
+  }
+
+  return res.status(OK).send(updatedIssue);
+});
+
 export default router;
