@@ -5,7 +5,10 @@
   "repository": "https://github.com/pesto-students/batch-7-Scryptonian.git",
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "async": "^3.0.1",
+    "sendgrid": "^5.2.3"
+  },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",

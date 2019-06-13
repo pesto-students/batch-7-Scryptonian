@@ -10,6 +10,7 @@ import users from './routes/users';
 import boards from './routes/boards';
 import issues from './routes/issues';
 import router from './routes/auth-routes';
+import email from './routes/api/email';
 
 import { PORT, MONGO_CONNECTION_STRING, session } from './configs/config';
 
@@ -33,6 +34,7 @@ app.use('/auth', router);
 app.use('/users/', users);
 app.use('/boards/', boards);
 app.use('/issues/', issues);
+app.use('/email/', email);
 
 export const server = app.listen(PORT, (err) => {
   if (err) {
