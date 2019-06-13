@@ -21,13 +21,13 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.5.11",
-    "sinon": "^7.3.2",
-    "sinon-mongoose": "^2.3.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
     "passport-google-oauth20": "^2.0.0",
-    "querystring": "^0.2.0"
+    "querystring": "^0.2.0",
+    "sinon": "^7.3.2",
+    "sinon-mongoose": "^2.3.0"
   },
   "devDependencies": {
     "jest": "^24.8.0",
