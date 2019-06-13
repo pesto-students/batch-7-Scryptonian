@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.get('/kanban', async (req, res) => {
   const { boardid } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(boardid)) {
+
+  const isBoardIdValid = mongoose.Types.ObjectId.isValid(boardid);
+  if (!isBoardIdValid) {
     return res.status(BAD_REQUEST).send('Invalid boardID');
   }
 
