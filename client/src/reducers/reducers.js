@@ -1,15 +1,23 @@
-import { SET_AUTHENTICATED } from '../actions/actionTypes';
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   isAuthenticated: false,
+  displayName: '',
+  emailId: '',
+  profileImgUrl: ''
 };
 
 const reducer = (state = initialState, action) => {
-  if (action.type === SET_AUTHENTICATED) {
-    return {
-      ...state,
-      isAuthenticated: true,
-    };
+  switch (action.type) {
+    case actionTypes.UPDATE_AUTH: {
+      return {
+        ...state,
+        isAuthenticated: true,
+        displayName: action.payload.name,
+        emailId: action.payload.emailId,
+        profileImgUrl: action.payload.imageUrl
+      };
+    }
   }
   return state;
 };

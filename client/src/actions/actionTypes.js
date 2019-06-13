@@ -1,1 +1,1 @@
-export const SET_AUTHENTICATED = 'SET_AUTHENTICATED';
+export const UPDATE_AUTH = 'UPDATE_AUTH';
