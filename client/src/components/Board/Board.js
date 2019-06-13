@@ -21,6 +21,18 @@ export class Board extends React.Component {
     };
   }
 
+  addPost = () => {
+    axios(`${SERVER_URL}/boards`, {
+      method: 'post',
+      data: {
+        lifecycleid: '454545454545',
+        issue: 'dsadsadasds',
+        createdBy: '5cfdbd10aa715339879e4197'
+      },
+      withCredentials: true
+    });
+  };
+
   async componentDidMount() {
     let response;
     const userDetails = queryString.parse(this.props.location.search);
@@ -35,10 +47,7 @@ export class Board extends React.Component {
     }
   }
   render() {
-    return this.state.boards.map(e => {
-      console.log(e);
-      return <li>{e.name}</li>;
-    });
+    return <button onClick={() => this.addPost()}>Hello</button>;
   }
 }
 
