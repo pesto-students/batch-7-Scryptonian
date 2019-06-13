@@ -92,7 +92,7 @@ describe('URL/issues routes', () => {
       request(server)
         .get('/issues/5d0023ad707e692c9847fb37')
         .expect(OK)
-        .end((err, res) => {
+        .end(() => {
           IssueMock.restore();
           return done();
         });
