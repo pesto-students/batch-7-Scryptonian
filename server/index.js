@@ -10,7 +10,7 @@ import users from './routes/users';
 import boards from './routes/boards';
 import issues from './routes/issues';
 import router from './routes/auth-routes';
-import email from './routes/api/email';
+import email from './routes/email';
 
 import { PORT, MONGO_CONNECTION_STRING, session } from './configs/config';
 
