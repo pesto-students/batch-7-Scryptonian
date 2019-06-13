@@ -4,7 +4,7 @@ import {
   SET_SELECTED_ISSUE,
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
-  REORDER_ISSUES,
+  REORDER_ISSUES
 } from '../actions/actionTypes';
 
 export const initialState = {
@@ -17,7 +17,7 @@ export const initialState = {
   selectedIssue: null,
   currentBoardName: null,
   currentBoardId: null,
-  lifecycles: null,
+  lifecycles: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,20 +28,21 @@ const reducer = (state = initialState, action) => {
       displayName: action.payload.name,
       emailId: action.payload.emailId,
       profileImgUrl: action.payload.imageUrl,
+      currentUserId: action.payload.userId
     };
   }
 
   if (action.type === DISPLAY_ISSUE_MODAL) {
     return {
       ...state,
-      isIssueDetailModalVisible: true,
+      isIssueDetailModalVisible: true
     };
   }
 
   if (action.type === SET_SELECTED_ISSUE) {
     return {
       ...state,
-      selectedIssue: action.issue,
+      selectedIssue: action.issue
     };
   }
 
@@ -49,7 +50,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       selectedIssue: null,
-      isIssueDetailModalVisible: false,
+      isIssueDetailModalVisible: false
     };
   }
 
@@ -58,7 +59,7 @@ const reducer = (state = initialState, action) => {
       ...state,
       lifecycles: action.kanbanData.lifecycles,
       currentBoardName: action.kanbanData.boardName,
-      currentBoardId: action.kanbanData.boardid,
+      currentBoardId: action.kanbanData.boardid
     };
   }
 
@@ -71,7 +72,7 @@ const reducer = (state = initialState, action) => {
     });
     return {
       ...state,
-      lifecycles: newLifecyles,
+      lifecycles: newLifecyles
     };
   }
 
