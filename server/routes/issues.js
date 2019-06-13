@@ -14,6 +14,7 @@ const router = express.Router();
 async function setAttribute(req, res) {
   const { issueid } = req.params;
   const { attributeName, attributeValue } = req.body;
+  const modifiedBy = req.user.id || '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value when cors issue is solved
 
   const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
   if (!isIssueIdValid) {
@@ -24,10 +25,10 @@ async function setAttribute(req, res) {
   const attributeObject = {};
   if (attributeValue === null) {
     attributeObject[attributeName] = '';
-    updateObject = { $unset: attributeObject };
+    updateObject = { $unset: attributeObject, $set: { modifiedBy } };
   } else {
     attributeObject[attributeName] = attributeValue;
-    updateObject = { $set: attributeObject };
+    updateObject = { $set: { ...attributeObject, modifiedBy } };
   }
 
   let savedIssue;
@@ -74,13 +75,13 @@ router.get('/:issueid', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { lifecycleid, issue, createdBy } = req.body;
+  const { lifecycleid, issue } = req.body;
+  const createdBy = req.user.id || '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value when cors issue is solved
 
   const isLifecycleIdValid = mongoose.Types.ObjectId.isValid(lifecycleid);
-  const isCreatedByValid = mongoose.Types.ObjectId.isValid(createdBy);
 
-  if (!isLifecycleIdValid || !issue || !isCreatedByValid) {
-    return res.status(BAD_REQUEST).send('Invalid lifecycleid, issue or createdBy field');
+  if (!isLifecycleIdValid || !issue) {
+    return res.status(BAD_REQUEST).send('Invalid lifecycleid or issue');
   }
 
   const issueDocument = { issue, createdBy };
@@ -124,12 +125,12 @@ router.patch(
 
 router.post('/:issueid/comment', async (req, res) => {
   const { issueid } = req.params;
-  const { comment, commentedBy } = req.body;
+  const { comment } = req.body;
+  const commentedBy = req.user.id || '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value when cors issue is solved
 
-  const isCommentedByValid = mongoose.Types.ObjectId.isValid(commentedBy);
   const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
-  if (!isCommentedByValid || !isIssueIdValid || !comment) {
-    return res.status(BAD_REQUEST).send('Invalid issueid, commentedBy or comment');
+  if (!isIssueIdValid || !comment) {
+    return res.status(BAD_REQUEST).send('Invalid issueid or comment');
   }
 
   let savedIssue;
