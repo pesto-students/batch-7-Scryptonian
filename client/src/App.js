@@ -1,8 +1,8 @@
 import React from 'react';
 import SignUp from './containers/SignUp/SignUp';
 import Navbar from './components/Navbar/Navbar';
-import Board from '../src/containers/BoardView/BoardView';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import Board from './containers/BoardLayout/BoardLayout';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
@@ -10,9 +10,11 @@ function App() {
       <Navbar />
       <Router>
         <div>
-          <Route path="/" exact component={SignUp} />
-          <Route path="/boards/userdata" component={Board} />
-          <Route path="/login/" component={SignUp} />
+          <Switch>
+            <Route path="/login" exact component={SignUp} />
+            <Route path="/boards/userdata" component={Board} />
+            <Route component={SignUp} />
+          </Switch>
         </div>
       </Router>
     </>

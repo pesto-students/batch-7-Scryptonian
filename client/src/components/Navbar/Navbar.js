@@ -20,14 +20,14 @@ export class Navbar extends React.Component {
   render() {
     let popoverContent = (
       <Menu>
-        <ul class="bp3-menu">
-          <li class="bp3-menu-header">
-            <h6 class="bp3-heading">{this.props.emailId}</h6>
+        <ul className="bp3-menu">
+          <li className="bp3-menu-header">
+            <h6 className="bp3-heading">{this.props.emailId}</h6>
           </li>
           <li>
             <button
               type="button"
-              class="bp3-menu-item bp3-icon-log-out"
+              className="bp3-menu-item bp3-icon-log-out"
               onClick={() => (window.location.href = LogoutUrl)}
             >
               Logout
@@ -56,7 +56,7 @@ export class Navbar extends React.Component {
               />
             </span>
             <span>{this.props.displayName}</span>
-            <span class="bp3-navbar-divider" />
+            <span className="bp3-navbar-divider" />
             <Popover
               content={popoverContent}
               enforceFocus={false}
@@ -64,7 +64,7 @@ export class Navbar extends React.Component {
               interactionKind={PopoverInteractionKind.CLICK}
             >
               <Button className="bp3-minimal">
-                <span class="bp3-icon-standard bp3-icon-cog" />
+                <span className="bp3-icon-standard bp3-icon-cog" />
               </Button>
             </Popover>
           </div>

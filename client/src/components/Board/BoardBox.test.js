@@ -15,8 +15,4 @@ describe('<BoardBox />', () => {
   it('Should have a <p> element', () => {
     expect(wrapper.find('p')).toHaveLength(1);
   });
-
-  it('Should render Create New element', () => {
-    expect(wrapper.find('p').text()).toEqual('Create New');
-  });
 });
