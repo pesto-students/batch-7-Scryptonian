@@ -7,7 +7,7 @@ import Board from '../models/board';
 const router = express.Router();
 
 router.get('/kanban', async (req, res) => {
-  const { boardid } = req.body;
+  const { boardid } = req.query;
 
   const isBoardIdValid = mongoose.Types.ObjectId.isValid(boardid);
   if (!isBoardIdValid) {
@@ -18,7 +18,10 @@ router.get('/kanban', async (req, res) => {
   try {
     board = await Board.findOne({ _id: boardid })
       .select('_id name lifecycles')
-      .populate({ path: 'lifecycles', populate: { path: 'issues' } });
+      .populate({
+        path: 'lifecycles',
+        populate: { path: 'issues', populate: { path: 'assignee' } },
+      });
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(`Error fetching data from DB ${e.message}`);
   }
