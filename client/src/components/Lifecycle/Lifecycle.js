@@ -21,7 +21,7 @@ const Lifecycle = props => (
           />
         ))
       : null}
-    <NewIssue lifecycleid={props.lifecycleid} />
+    <NewIssue />
   </Card>
 );
 
