@@ -7,6 +7,7 @@ import {
 import Lifecycle from '../models/lifecycle';
 import Issue from '../models/issue';
 import User from '../models/user';
+import Comment from '../models/comment';
 
 const router = express.Router();
 
@@ -14,7 +15,8 @@ async function setAttribute(req, res) {
   const { issueid } = req.params;
   const { attributeName, attributeValue } = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(issueid)) {
+  const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
+  if (!isIssueIdValid) {
     return res.status(BAD_REQUEST).send('Invalid issueid');
   }
 
@@ -38,7 +40,7 @@ async function setAttribute(req, res) {
   }
 
   if (savedIssue === null) {
-    return res.status(NOT_FOUND).send(`Issue with id ${issueid} is not present.`);
+    return res.status(NOT_FOUND).send(`Issue with ID ${issueid} is not present.`);
   }
 
   return res.status(OK).send(savedIssue);
@@ -47,21 +49,25 @@ async function setAttribute(req, res) {
 router.get('/:issueid', async (req, res) => {
   const { issueid } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(issueid)) {
-    return res.status(BAD_REQUEST).send('Invalid issueID');
+  const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
+  if (!isIssueIdValid) {
+    return res.status(BAD_REQUEST).send('Invalid issueid');
   }
 
   let issue;
   try {
     issue = await Issue.findById(issueid)
-      .populate('createdBy')
+      .populate({ path: 'comments' })
+      .populate({ path: 'createdBy' })
+      .populate({ path: 'assignee' })
+      .populate({ path: 'modifiedBy' })
       .exec();
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
   if (issue === null) {
-    return res.status(NOT_FOUND).send(`Issue with id ${issueid} is not present.`);
+    return res.status(NOT_FOUND).send(`Issue with ID ${issueid} is not present.`);
   }
 
   return res.status(OK).send(issue);
@@ -69,12 +75,12 @@ router.get('/:issueid', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const { lifecycleid, issue, createdBy } = req.body;
-  if (
-    !mongoose.Types.ObjectId.isValid(lifecycleid)
-    || !issue
-    || !mongoose.Types.ObjectId.isValid(createdBy)
-  ) {
-    return res.status(BAD_REQUEST).send('Invalid lifecycleID');
+
+  const isLifecycleIdValid = mongoose.Types.ObjectId.isValid(lifecycleid);
+  const isCreatedByValid = mongoose.Types.ObjectId.isValid(createdBy);
+
+  if (!isLifecycleIdValid || !issue || !isCreatedByValid) {
+    return res.status(BAD_REQUEST).send('Invalid lifecycleid, issue or createdBy field');
   }
 
   const issueDocument = { issue, createdBy };
@@ -84,7 +90,7 @@ router.post('/', async (req, res) => {
     savedIssue = await Issue.create(issueDocument);
     await Lifecycle.findOneAndUpdate({ _id: lifecycleid }, { $push: { issues: savedIssue._id } });
   } catch (e) {
-    return res.status(INTERNAL_SERVER_ERROR).send(`Error saving new issue ${e.message}`);
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error saving new issue. ${e.message}`);
   }
 
   return res.send(savedIssue);
@@ -96,7 +102,9 @@ router.patch(
     const { assigneeid } = req.body;
     req.body.attributeName = 'assignee';
     req.body.attributeValue = assigneeid;
-    if (assigneeid !== null && !mongoose.Types.ObjectId.isValid(assigneeid)) {
+
+    const isAssigneeIdValid = mongoose.Types.ObjectId.isValid(assigneeid);
+    if (assigneeid !== null && !isAssigneeIdValid) {
       return res.status(BAD_REQUEST).send('Invalid assigneeid');
     }
     return next();
@@ -113,5 +121,30 @@ router.patch(
   },
   setAttribute,
 );
+
+router.post('/:issueid/comment', async (req, res) => {
+  const { issueid } = req.params;
+  const { comment, commentedBy } = req.body;
+
+  const isCommentedByValid = mongoose.Types.ObjectId.isValid(commentedBy);
+  const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
+  if (!isCommentedByValid || !isIssueIdValid || !comment) {
+    return res.status(BAD_REQUEST).send('Invalid issueid, commentedBy or comment');
+  }
+
+  let savedIssue;
+  try {
+    const savedComment = await Comment.create({ comment, commentedBy });
+    savedIssue = await Issue.findOneAndUpdate(
+      { _id: issueid },
+      { $push: { comments: savedComment._id } },
+      { new: true },
+    );
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error saving new comment. ${e.message}`);
+  }
+
+  return res.send(savedIssue);
+});
 
 export default router;

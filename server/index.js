@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
@@ -18,7 +19,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(morgan('tiny'));
 app.use(
   cookieSession({
     maxAge: session.maxAge,

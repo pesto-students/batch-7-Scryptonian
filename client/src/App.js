@@ -6,6 +6,6 @@ function App() {
       <SignUp />
     </div>
   );
-}
+};
 
 export default App;

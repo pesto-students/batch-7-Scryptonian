@@ -1,0 +1,31 @@
+body {
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.column {
+    flex: 50%;
+}
+
+.label {
+    margin: 8px;
+}
+
+.due-date {
+    margin: 4px;
+    padding: 8px;
+}
+
+.comments {
+    padding: 8px;
+}
+
+.issue-header {
+    padding: 0;
+    margin: 0;
+}
