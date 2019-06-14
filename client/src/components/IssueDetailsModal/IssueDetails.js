@@ -82,6 +82,7 @@ export class IssueDetails extends React.Component {
             <div className="assignee">
               <span>Assign to:</span>
               <Popover
+                position={Position.BOTTOM}
                 content={
                   <Menu className={Classes.ELEVATION_ONE}>
                     {members.map(member => (
@@ -89,7 +90,6 @@ export class IssueDetails extends React.Component {
                     ))}
                   </Menu>
                 }
-                position={Position.BOTTOM}
               >
                 <Button
                   rightIcon="arrow-down"
