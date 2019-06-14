@@ -29,7 +29,3 @@ export function setSelectedIssue(issue) {
 export function closeIssueDetailsModal() {
   return { type: CLOSE_ISSUE_MODAL };
 }
-
-export function updateAuthDetails(payload) {
-  return { type: UPDATE_AUTH, payload };
-}

@@ -31,12 +31,14 @@ const reducer = (state = initialState, action) => {
       isIssueDetailModalVisible: true,
     };
   }
+
   if (action.type === SET_SELECTED_ISSUE) {
     return {
       ...state,
       selectedIssue: action.issue,
     };
   }
+
   if (action.type === CLOSE_ISSUE_MODAL) {
     return {
       ...state,
