@@ -19,10 +19,10 @@ class PickDate extends React.Component {
           <span> DueDate: </span>
         </div>
         <DateInput
-          formatDate={date => date.toLocaleString()}
+          formatDate={date => date.toLocaleString().substring(0, 10)}
           onChange={this.handleDateChange}
           parseDate={str => new Date(str)}
-          placeholder={'M/D/YYYY'}
+          placeholder={'DD/MM/YYYY'}
           value={this.state.date}
         />
       </div>
