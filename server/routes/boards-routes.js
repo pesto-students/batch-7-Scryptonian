@@ -3,6 +3,7 @@ import express from 'express';
 import { OK, BAD_REQUEST } from '../configs/httpStatusCodes';
 import Board from '../models/board';
 import Lifecycle from '../models/lifecycle';
+import User from '../models/user';
 import * as util from '../util';
 
 const router = express.Router();
@@ -29,9 +30,17 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const { name, lifecycles } = req.body;
   const createdBy = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
+
+  let userDetails;
+  try {
+    userDetails = await User.findById(createdBy);
+  } catch (e) {
+    return next(e.message);
+  }
   const members = [
     {
       member: createdBy,
+      membername: userDetails.name,
       role: 'SUPERADMIN',
     },
   ];
@@ -59,6 +68,7 @@ router.post('/', async (req, res, next) => {
   return res.status(OK).send(savedBoard);
 });
 
+// Get board detailed data for Kanban Layout display
 router.get('/kanban', async (req, res, next) => {
   const { boardid } = req.query;
   if (!util.isValidObjectId(boardid)) {

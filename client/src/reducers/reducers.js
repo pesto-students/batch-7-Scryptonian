@@ -5,6 +5,7 @@ import {
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
   REORDER_ISSUES,
+  TOGGLE_MEMBER_LIST_MODAL,
 } from '../actions/actionTypes';
 import { ROLE } from '../config';
 
@@ -15,11 +16,13 @@ export const initialState = {
   emailId: '',
   profileImgUrl: '',
   isIssueDetailModalVisible: false,
+  isMemberListModalVisible: false,
   selectedIssue: null,
   currentBoardName: null,
   currentBoardId: null,
   lifecycles: null,
   roleInCurrentBoard: ROLE.USER,
+  boardMemberList: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -57,13 +60,19 @@ const reducer = (state = initialState, action) => {
   }
 
   if (action.type === SET_KANBAN_DATA) {
-    return {
+    const newState = {
       ...state,
       lifecycles: action.kanbanData.lifecycles,
       currentBoardName: action.kanbanData.boardName,
       currentBoardId: action.kanbanData.boardid,
-      roleInCurrentBoard: action.kanbanData.userRole,
+      boardMemberList: action.kanbanData.members,
     };
+
+    if (action.kanbanData.userRole) {
+      newState.roleInCurrentBoard = action.kanbanData.userRole;
+    }
+
+    return newState;
   }
 
   if (action.type === REORDER_ISSUES) {
@@ -76,6 +85,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       lifecycles: newLifecyles,
+    };
+  }
+
+  if (action.type === TOGGLE_MEMBER_LIST_MODAL) {
+    return {
+      ...state,
+      isMemberListModalVisible: !state.isMemberListModalVisible,
     };
   }
 

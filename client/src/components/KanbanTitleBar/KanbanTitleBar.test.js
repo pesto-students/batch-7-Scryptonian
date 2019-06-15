@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import KanbanTitleBar from './KanbanTitleBar';
+import { KanbanTitleBar } from './KanbanTitleBar';
 import { Navbar } from '@blueprintjs/core';
 describe(' <KanbanTitleBar />', () => {
   let wrapper;
@@ -8,6 +8,7 @@ describe(' <KanbanTitleBar />', () => {
   beforeEach(() => {
     wrapper = shallow(<KanbanTitleBar />);
   });
+  
   it(' should render <Navbar> component', () => {
     expect(wrapper.find(Navbar)).toHaveLength(1);
   });

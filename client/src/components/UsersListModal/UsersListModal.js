@@ -1,6 +1,8 @@
 import React from 'react';
 import { Dialog, Button, Classes } from '@blueprintjs/core';
 import Users from './Users';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actionDispatchers';
 
 class UsersListModal extends React.Component {
   state = {
@@ -8,26 +10,27 @@ class UsersListModal extends React.Component {
     canEscapeKeyClose: true,
     canOutsideClickClose: true,
     enforceFocus: true,
-    isOpen: false,
-    usePortal: true
+    isOpen: true,
+    usePortal: true,
   };
-  handleToggle = () => this.setState({ isOpen: !this.state.isOpen });
+
+  handleClose = () => {
+    this.setState({ isOpen: false });
+    this.props.toggleMemberListModal();
+  };
+
   render() {
+    console.log(this.props.members)
     return (
       <div>
-        <Button onClick={this.handleToggle}>Show Dialog</Button>
-        <Dialog
-          icon="user"
-          onClose={this.handleToggle}
-          title="User List"
-          {...this.state}
-        >
+        <Button onClick={this.handleClose}>Show Dialog</Button>
+        <Dialog icon="user" onClose={this.handleClose} title="User List" {...this.state}>
           <div className={Classes.DIALOG_BODY}>
-            <Users />
+            <Users members={this.props.members} />
           </div>
           <div className={Classes.DIALOG_FOOTER}>
-            <Button onClick={this.handleToggle}>Invite New User</Button>
-            <Button onClick={this.handleToggle}>Close</Button>
+            <Button onClick={this.handleClose}>Invite New User</Button>
+            <Button onClick={this.handleClose}>Close</Button>
           </div>
         </Dialog>
       </div>
@@ -35,4 +38,22 @@ class UsersListModal extends React.Component {
   }
 }
 
-export default UsersListModal;
+const mapStateToProps = state => {
+  return {
+    isIssueDetailModalVisible: state.isIssueDetailModalVisible,
+    boardName: state.currentBoardName,
+    lifecycles: state.lifecycles,
+    isMemberListModalVisible: state.isMemberListModalVisible,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleMemberListModal: () => dispatch(actionCreators.toggleMemberListModal()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UsersListModal);
