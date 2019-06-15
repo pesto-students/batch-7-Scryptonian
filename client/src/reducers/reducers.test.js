@@ -24,6 +24,7 @@ describe('todos reducer', () => {
       displayName: 'Amit Badala',
       emailId: 'amitbadala07@gmail.com',
       isIssueDetailModalVisible: false,
+      isMemberListModalVisible: false,
       profileImgUrl:
         'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg',
       selectedIssue: null,
@@ -31,6 +32,7 @@ describe('todos reducer', () => {
       currentBoardId: null,
       lifecycles: null,
       roleInCurrentBoard: 'USER',
+      boardMemberList: null,
     });
   });
 });

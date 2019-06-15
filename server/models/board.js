@@ -20,6 +20,10 @@ const BoardSchema = new Schema(
           type: Schema.Types.ObjectId,
           ref: 'User',
         },
+        membername: {
+          type: String,
+          required: true,
+        },
         role: {
           type: String,
           enum: ['SUPERADMIN', 'ADMIN', 'USER', 'INVITED'],

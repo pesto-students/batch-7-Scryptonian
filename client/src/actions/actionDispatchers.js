@@ -5,6 +5,7 @@ import {
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
   REORDER_ISSUES,
+  TOGGLE_MEMBER_LIST_MODAL,
 } from './actionTypes';
 import { BASE_URL } from '../config';
 import axios from 'axios';
@@ -44,16 +45,18 @@ export function getDataForKanbanView(boardid, userid) {
           lifecycles: res.data.lifecycles,
           boardName: res.data.name,
           boardid: res.data._id,
+          members: res.data.members,
         };
 
-        const memberList = res.data.members;
-        const currentUser = memberList.find(member => member.member === userid);
-        if (!currentUser) {
-          console.error('You are not part of this board.'); // TODO: Show this in a pop up
-          return;
+        if (userid) {
+          const memberList = res.data.members;
+          const currentUser = memberList.find(member => member.member === userid);
+          if (!currentUser) {
+            console.error('You are not part of this board.'); // TODO: Show this in a pop up
+            return;
+          }
+          kanbanData.userRole = currentUser.role;
         }
-        kanbanData.userRole = currentUser.role;
-        
         dispatch(setKanbanDataToStore(kanbanData));
       })
       .catch(e => {}); // TODO: Show a pop-up to notify the user
@@ -99,4 +102,8 @@ export function updateLifecycles(originalLifecycles, updatedLifecycles) {
     });
     dispatch(updateLifecyclesInBackend(originalLifecycles, updatedLifecycles));
   };
+}
+
+export function toggleMemberListModal() {
+  return { type: TOGGLE_MEMBER_LIST_MODAL };
 }

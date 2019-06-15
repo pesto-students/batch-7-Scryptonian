@@ -3,6 +3,7 @@ import LifecyclesContainer from '../LifecyclesContainer/LifecyclesContainer';
 import Navbar from '../../components/Navbar/Navbar';
 import KanbanTitleBar from '../../components/KanbanTitleBar/KanbanTitleBar';
 import IssueDetails from '../../components/IssueDetailsModal/IssueDetails';
+import UsersListModal from '../../components/UsersListModal/UsersListModal';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 
@@ -13,13 +14,14 @@ export class KanbanLayout extends React.Component {
   }
 
   render() {
-    const { isIssueDetailModalVisible } = this.props;
+    const { isIssueDetailModalVisible, isMemberListModalVisible, boardMemberList } = this.props;
     return (
       <>
         <Navbar />
         <KanbanTitleBar name={this.props.boardName} />
         <LifecyclesContainer lifecycles={this.props.lifecycles} />
         {isIssueDetailModalVisible ? <IssueDetails /> : null}
+        {isMemberListModalVisible ? <UsersListModal members={boardMemberList} /> : null}
       </>
     );
   }
@@ -31,6 +33,8 @@ const mapStateToProps = state => {
     boardName: state.currentBoardName,
     lifecycles: state.lifecycles,
     currentUserId: state.currentUserId,
+    isMemberListModalVisible: state.isMemberListModalVisible,
+    boardMemberList: state.boardMemberList,
   };
 };
 
