@@ -8,7 +8,7 @@ const LifecyclesContainer = props => (
       ? props.lifecycles.map((lifecycle, index) => (
           <Lifecycle
             name={lifecycle.name}
-            key={lifecycle._id}
+            key={index}
             issues={lifecycle.issues}
             lifecycleid={lifecycle._id}
           />
