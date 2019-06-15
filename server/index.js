@@ -5,14 +5,15 @@ import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
-import passportSetup from './configs/passport-setup';
+import './configs/passport-setup';
 
 import users from './routes/users';
-import boards from './routes/boards';
+import boards from './routes/boards-routes';
 import issues from './routes/issues';
 import router from './routes/auth-routes';
 
 import { PORT, MONGO_CONNECTION_STRING, session } from './configs/config';
+import { INTERNAL_SERVER_ERROR } from './configs/httpStatusCodes';
 
 const app = express();
 
@@ -57,7 +58,7 @@ export const server = app.listen(PORT, (err) => {
 
 // ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
-  res.status(500).send(`Something went wrong!!${err}`);
+  res.status(INTERNAL_SERVER_ERROR).send(`Something went wrong! ${err}`);
 });
 
 export const db = mongoose.connection;
