@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import IssueDetails from './IssueDetails';
 import { Dialog } from '@blueprintjs/core';
 import Upvote from '../Upvote/Upvote';
-import DueDate from '../DueDate/DueDate';
 import Comment from '../Comment/Comment';
+import PickDate from '../PickDate/PickDate';
 
 describe(' <IssueDetails />', () => {
   let wrapper;
@@ -22,7 +22,7 @@ describe(' <IssueDetails />', () => {
   });
 
   it(' should render a DueDate component', () => {
-    expect(wrapper.find(DueDate)).toHaveLength(1);
+    expect(wrapper.find(PickDate)).toHaveLength(1);
   });
 
   it('should render a comment component', () => {
