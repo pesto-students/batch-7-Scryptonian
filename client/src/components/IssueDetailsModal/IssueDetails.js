@@ -11,8 +11,8 @@ import {
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
-import DueDate from '../DueDate/DueDate';
 import Comment from '../Comment/Comment';
+import PickDate from '../PickDate/PickDate';
 
 class IssueDetails extends React.Component {
   state = {
@@ -64,7 +64,7 @@ class IssueDetails extends React.Component {
               </Popover>
             </div>
             <div className="due-date">
-              <DueDate />
+              <PickDate />
             </div>
             <div className="assignee">
               <span>Assign to:</span>

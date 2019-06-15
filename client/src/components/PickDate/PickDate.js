@@ -15,6 +15,9 @@ class PickDate extends React.Component {
   render() {
     return (
       <div>
+        <div className="content">
+          <span> DueDate: </span>
+        </div>
         <DateInput
           formatDate={date => date.toLocaleString()}
           onChange={this.handleDateChange}
