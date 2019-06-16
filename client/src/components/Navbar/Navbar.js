@@ -42,16 +42,17 @@ export class Navbar extends React.Component {
           <div className="bp3-navbar-heading">
             <h3>Issue Tracker</h3>
           </div>
-          <span class="bp3-navbar-divider" />
-          <button class="bp3-button bp3-minimal bp3-icon-home">Home</button>
+          <span className="bp3-navbar-divider" />
+          <button className="bp3-button bp3-minimal bp3-icon-home">Home</button>
         </div>
         {this.props.isAuthenticated ? (
-          <div class="bp3-navbar-group bp3-align-right">
-            <span class="bp3-navbar-divider" />
+          <div className="bp3-navbar-group bp3-align-right">
+            <span className="bp3-navbar-divider" />
             <span>
               <img
                 className="profileThumbnail"
                 src={this.props.profileImgUrl}
+                alt="Profile Thumbnail"
               />
             </span>
             <span>{this.props.displayName}</span>
