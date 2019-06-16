@@ -16,7 +16,14 @@ describe('<LifecyclesContainer />', () => {
   });
 
   it('should render a list of <Lifecycle /> if props has "lifecycles" key', () => {
-    wrapper.setProps({ lifecycles: ['Planning', 'Todo', 'InProgress', 'Completed'] });
+    wrapper.setProps({
+      lifecycles: [
+        { _id: 1, name: 'Planning' },
+        { _id: 2, name: 'Todo' },
+        { _id: 3, name: 'InProgress' },
+        { _id: 4, name: 'Completed' },
+      ],
+    });
     expect(wrapper.find(Lifecycle)).toHaveLength(4);
   });
 });

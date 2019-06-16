@@ -18,6 +18,7 @@ const Lifecycle = props => (
             dueDate={issue.dueDate}
             upvotes={issue.upvotes}
             comments={issue.comments}
+            id={issue._id}
           />
         ))
       : null}

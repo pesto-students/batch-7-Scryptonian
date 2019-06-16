@@ -7,22 +7,25 @@ import {
   Menu,
   Position,
   MenuItem,
-  InputGroup
+  InputGroup,
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';
 import PickDate from '../PickDate/PickDate';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actionDispatchers';
+import Issue from '../Issue/Issue';
 
-class IssueDetails extends React.Component {
+export class IssueDetails extends React.Component {
   state = {
     autoFocus: true,
     canEscapeKeyClose: true,
     canOutsideClickClose: true,
     enforceFocus: true,
-    isOpen: false,
+    isOpen: true,
     usePortal: true,
-    round: true
+    round: true,
   };
 
   handleOpen = () => {
@@ -31,23 +34,28 @@ class IssueDetails extends React.Component {
 
   handleClose = () => {
     this.setState({ isOpen: false });
+    this.props.closeModal();
   };
   render() {
+    const issue = this.props.selectedIssue
+      ? this.props.selectedIssue
+      : {
+          issue: 'Loading...',
+          upvotes: 0,
+          assignee: 'Loading...',
+        };
+    const members = [];
+
     return (
       <div>
-        <Button onClick={this.handleOpen}>Open Issue Details</Button>
-        <Dialog
-          onClose={this.handleClose}
-          title="Issue Details"
-          {...this.state}
-        >
+        <Dialog onClose={this.handleClose} title="Issue Details" {...this.state}>
           <div className={Classes.DIALOG_BODY}>
             <div className="row">
               <div className="column">
-                <h3 className="issue-header">Add Ballistic missiles</h3>
+                <h3 className="issue-header">{issue.issue}</h3>
               </div>
               <div className="column">
-                <Upvote />
+                <Upvote upvotes={issue.upvotes} />
               </div>
             </div>
             <div className="label">
@@ -66,18 +74,27 @@ class IssueDetails extends React.Component {
             <div className="due-date">
               <PickDate />
             </div>
+            {isNaN(new Date(issue.dueDate)) ? (
+              <Button intent="success">Add Due Date</Button>
+            ) : (
+              <Button intent="success">Remove Due Date</Button>
+            )}
             <div className="assignee">
               <span>Assign to:</span>
               <Popover
                 content={
                   <Menu className={Classes.ELEVATION_ONE}>
-                    <MenuItem text="Amit" />
-                    <MenuItem text="Rajat" />
+                    {members.map(member => (
+                      <MenuItem text={member.name} key={member._id} />
+                    ))}
                   </Menu>
                 }
                 position={Position.BOTTOM}
               >
-                <Button rightIcon="arrow-down" text="Pratiyush" />
+                <Button
+                  rightIcon="arrow-down"
+                  text={issue.assignee ? issue.assignee.name : 'None'}
+                />
               </Popover>
             </div>
             <div className="comments">
@@ -87,12 +104,9 @@ class IssueDetails extends React.Component {
                   <InputGroup placeholder="Add your comment" large={true} />
                 </label>
               </form>
-              <Button intent="success">Done</Button>
+              <Button intent="success">Add Comment</Button>
             </div>
             <Comment />
-          </div>
-          <div className={Classes.DIALOG_FOOTER}>
-            <Button onClick={this.handleClose}>Close</Button>
           </div>
         </Dialog>
       </div>
@@ -100,4 +114,19 @@ class IssueDetails extends React.Component {
   }
 }
 
-export default IssueDetails;
+const mapStateToProps = state => {
+  return {
+    selectedIssue: state.selectedIssue,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    closeModal: () => dispatch(actionCreators.closeIssueDetailsModal()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(IssueDetails);

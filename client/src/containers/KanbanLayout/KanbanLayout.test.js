@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import KanbanLayout from './KanbanLayout';
+import { KanbanLayout } from './KanbanLayout';
 import LifecyclesContainer from '../LifecyclesContainer/LifecyclesContainer';
 import Navbar from '../../components/Navbar/Navbar';
 import KanbanTitleBar from '../../components/KanbanTitleBar/KanbanTitleBar';
