@@ -9,8 +9,9 @@ describe('<KanbanLayout />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<KanbanLayout />);
+    wrapper = shallow(<KanbanLayout getDataForKanbanView={() => {}} />);
   });
+
   it('should render <LifecyclesContainer />', () => {
     expect(wrapper.find(LifecyclesContainer)).toHaveLength(1);
   });

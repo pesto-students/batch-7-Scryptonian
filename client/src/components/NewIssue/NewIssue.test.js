@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import NewIssue from './NewIssue';
+import { NewIssue } from './NewIssue';
 import { Card, Button, EditableText } from '@blueprintjs/core';
 
 describe('<NewIssue />', () => {

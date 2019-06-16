@@ -3,8 +3,10 @@ import { EditableText, Card, Button } from '@blueprintjs/core';
 import classes from './NewIssue.module.css';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actionDispatchers';
 
-class NewIssue extends React.Component {
+export class NewIssue extends React.Component {
   state = {
     newIssueText: '',
   };
@@ -26,8 +28,13 @@ class NewIssue extends React.Component {
       },
       withCredentials: true,
     })
-      .then(() => this.setState({ newIssueText: '' }))
-      .catch(e => {});
+      .then(() => {
+        const { boardid, getDataForKanbanView } = this.props;
+        console.log(boardid);
+        this.setState({ newIssueText: '' });
+        getDataForKanbanView(boardid);
+      })
+      .catch(e => {}); // TODO: Show error in pop-up
   };
 
   render() {
@@ -47,4 +54,19 @@ class NewIssue extends React.Component {
   }
 }
 
-export default NewIssue;
+const mapStateToProps = state => {
+  return {
+    boardid: state.currentBoardId,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NewIssue);
