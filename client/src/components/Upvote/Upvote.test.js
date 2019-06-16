@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Upvote from './Upvote';
+import { Upvote } from './Upvote';
 import UpvoteIcon from '../../assets/UpvoteIcon';
 
 describe('<Upvote />', () => {
@@ -34,11 +34,6 @@ describe('<Upvote />', () => {
       expect(wrapper.children()).toHaveLength(4);
     }
   }
-
-  it('should render 0 upvotes by default', () => {
-    expect(wrapper.find('.upvoteCount')).toHaveLength(1);
-    expect(wrapper.find('.upvoteCount').text()).toEqual('0');
-  });
 
   it('should render upvotes based on props', () => {
     wrapper.setProps({ upvotes: 105 });

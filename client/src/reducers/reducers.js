@@ -7,6 +7,7 @@ import {
 } from '../actions/actionTypes';
 
 export const initialState = {
+  currentUserId: null,
   isAuthenticated: false,
   displayName: '',
   emailId: '',

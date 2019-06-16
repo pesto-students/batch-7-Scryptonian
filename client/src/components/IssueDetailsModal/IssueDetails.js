@@ -64,7 +64,6 @@ export class IssueDetails extends React.Component {
       .then(res => {
         this.setState({ commentInputText: '' });
         showIssueDetails(res.data._id);
-        console.log(res.data._id);
       })
       .catch(e => console.log(e)); // TODO: Show error in a pop-up
   };
@@ -75,7 +74,7 @@ export class IssueDetails extends React.Component {
     if (currentDate < givenDate) {
       return 'in future!';
     }
-    const differenceInMinutes = Math.abs((currentDate - givenDate)) / (1000 * 60);
+    const differenceInMinutes = Math.abs(currentDate - givenDate) / (1000 * 60);
 
     if (differenceInMinutes < 1) {
       return 'now';
@@ -100,8 +99,11 @@ export class IssueDetails extends React.Component {
           issue: 'Loading...',
           upvotes: 0,
           assignee: 'Loading...',
+          upvotedBy: []
         };
     const members = [];
+    const userId = this.props.currentUserId;
+    const upvotedState = issue.upvotedBy.includes(userId);
     const { commentInputText } = this.state;
 
     return (
@@ -113,7 +115,7 @@ export class IssueDetails extends React.Component {
                 <h3 className="issue-header">{issue.issue}</h3>
               </div>
               <div className="column">
-                <Upvote upvotes={issue.upvotes} />
+                <Upvote upvotes={issue.upvotes} issueid={issue._id} upvoted={upvotedState} />
               </div>
             </div>
             <div className="label">
@@ -157,18 +159,15 @@ export class IssueDetails extends React.Component {
             </div>
             <div className="comments">
               {issue.comments
-                ? issue.comments.map(comment => {
-                    console.log(comment);
-                    return (
-                      <Card key={comment._id}>
-                        <p>{comment.comment}</p>
-                        <p>
-                          {comment.commentedBy ? comment.commentedBy.name : null}{' '}
-                          {this.getTimeDifference(comment.createdAt)}
-                        </p>
-                      </Card>
-                    );
-                  })
+                ? issue.comments.map(comment => (
+                    <Card key={comment._id}>
+                      <p>{comment.comment}</p>
+                      <p>
+                        {comment.commentedBy ? comment.commentedBy.name : null}{' '}
+                        {this.getTimeDifference(comment.createdAt)}
+                      </p>
+                    </Card>
+                  ))
                 : null}
 
               <form>
@@ -196,6 +195,7 @@ export class IssueDetails extends React.Component {
 const mapStateToProps = state => {
   return {
     selectedIssue: state.selectedIssue,
+    currentUserId: state.currentUserId,
   };
 };
 

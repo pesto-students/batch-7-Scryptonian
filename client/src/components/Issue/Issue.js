@@ -21,10 +21,15 @@ export class Issue extends React.Component {
       dueDate,
       issue,
       upvotes,
+      upvotedBy,
       comments,
       id,
       showIssueDetails,
     } = this.props;
+
+    const userId = this.props.currentUserId;
+    const upvotedState = upvotedBy.includes(userId);
+
     const allLabels = (
       <div className={classes.labels}>
         {labels
@@ -44,22 +49,19 @@ export class Issue extends React.Component {
 
     return (
       <>
-        <Card
-          className={classes.issue}
-          interactive={true}
-          elevation={Elevation.TWO}
-          onClick={() => showIssueDetails(id)}
-        >
-          <p className={classes.issueText}>{issue}</p>
-          {allLabels}
-          <Divider />
+        <Card className={classes.issue} interactive={true} elevation={Elevation.TWO}>
+          <div onClick={() => showIssueDetails(id)}>
+            <p className={classes.issueText}>{issue}</p>
+            {allLabels}
+            <Divider />
+          </div>
           <div className={classes.meta}>
             <ul>
               <li>
-                <Upvote condensed upvotes={upvotes} />
+                <Upvote condensed upvotes={upvotes} issueid={id} upvoted={upvotedState} />
               </li>
               <li>
-                <Comment condensed comment={comments ? comments.length : 0} />
+                <Comment condensed commentCount={comments ? comments.length : 0} />
               </li>
             </ul>
             {dateAndAssignee}
@@ -71,7 +73,9 @@ export class Issue extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    currentUserId: state.currentUserId,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
