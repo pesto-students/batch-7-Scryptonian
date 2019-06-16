@@ -58,7 +58,7 @@ router.get('/:issueid', async (req, res) => {
   let issue;
   try {
     issue = await Issue.findById(issueid)
-      .populate({ path: 'comments' })
+      .populate({ path: 'comments', populate: { path: 'commentedBy' } })
       .populate({ path: 'createdBy' })
       .populate({ path: 'assignee' })
       .populate({ path: 'modifiedBy' })
