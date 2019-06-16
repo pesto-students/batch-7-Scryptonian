@@ -3,15 +3,19 @@ import {
   DISPLAY_ISSUE_MODAL,
   SET_SELECTED_ISSUE,
   CLOSE_ISSUE_MODAL,
+  SET_KANBAN_DATA,
 } from '../actions/actionTypes';
 
-const initialState = {
+export const initialState = {
   isAuthenticated: false,
   displayName: '',
   emailId: '',
   profileImgUrl: '',
   isIssueDetailModalVisible: false,
   selectedIssue: null,
+  currentBoardName: null,
+  currentBoardId: null,
+  lifecycles: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -44,6 +48,15 @@ const reducer = (state = initialState, action) => {
       ...state,
       selectedIssue: null,
       isIssueDetailModalVisible: false,
+    };
+  }
+
+  if (action.type === SET_KANBAN_DATA) {
+    return {
+      ...state,
+      lifecycles: action.kanbanData.lifecycles,
+      currentBoardName: action.kanbanData.boardName,
+      currentBoardId: action.kanbanData.boardid,
     };
   }
 

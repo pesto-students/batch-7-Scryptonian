@@ -3,33 +3,22 @@ import LifecyclesContainer from '../LifecyclesContainer/LifecyclesContainer';
 import Navbar from '../../components/Navbar/Navbar';
 import KanbanTitleBar from '../../components/KanbanTitleBar/KanbanTitleBar';
 import IssueDetails from '../../components/IssueDetailsModal/IssueDetails';
-import axios from 'axios';
-import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actionDispatchers';
 
 export class KanbanLayout extends React.Component {
-  state = {
-    lifecycles: null,
-    boardName: null,
-  };
   componentDidMount() {
-    const { boardid } = this.props;
-    axios
-      .get(`${BASE_URL}/boards/kanban`, {
-        params: { boardid },
-      })
-      .then(res => {
-        this.setState({ lifecycles: res.data.lifecycles, boardName: res.data.name });
-      })
-      .catch(e => {});
+    const { boardid, getDataForKanbanView } = this.props;
+    getDataForKanbanView(boardid);
   }
+
   render() {
     const { isIssueDetailModalVisible } = this.props;
     return (
       <>
         <Navbar />
-        <KanbanTitleBar name={this.state.boardName} />
-        <LifecyclesContainer {...this.props} lifecycles={this.state.lifecycles} />
+        <KanbanTitleBar name={this.props.boardName} />
+        <LifecyclesContainer lifecycles={this.props.lifecycles} />
         {isIssueDetailModalVisible ? <IssueDetails /> : null}
       </>
     );
@@ -39,11 +28,15 @@ export class KanbanLayout extends React.Component {
 const mapStateToProps = state => {
   return {
     isIssueDetailModalVisible: state.isIssueDetailModalVisible,
+    boardName: state.currentBoardName,
+    lifecycles: state.lifecycles,
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+  };
 };
 
 export default connect(

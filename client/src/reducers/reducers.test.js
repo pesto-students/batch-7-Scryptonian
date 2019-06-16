@@ -1,16 +1,7 @@
-import reducer from './reducers';
+import reducer, { initialState } from './reducers';
 import * as actionTypes from '../actions/actionTypes';
 
 describe('todos reducer', () => {
-  const initialState = {
-    isAuthenticated: false,
-    displayName: '',
-    emailId: '',
-    profileImgUrl: '',
-    isIssueDetailModalVisible: false,
-    selectedIssue: null,
-  };
-
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
@@ -35,6 +26,9 @@ describe('todos reducer', () => {
       profileImgUrl:
         'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg',
       selectedIssue: null,
+      currentBoardName: null,
+      currentBoardId: null,
+      lifecycles: null,
     });
   });
 });
