@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Elevation, Divider } from '@blueprintjs/core';
+import { Draggable } from 'react-beautiful-dnd';
 
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
@@ -25,6 +26,7 @@ export class Issue extends React.Component {
       comments,
       id,
       showIssueDetails,
+      index,
     } = this.props;
 
     const userId = this.props.currentUserId;
@@ -48,26 +50,34 @@ export class Issue extends React.Component {
     );
 
     return (
-      <>
-        <Card className={classes.issue} interactive={true} elevation={Elevation.TWO}>
-          <div onClick={() => showIssueDetails(id)}>
-            <p className={classes.issueText}>{issue}</p>
-            {allLabels}
-            <Divider />
+      <Draggable draggableId={id} index={index}>
+        {provided => (
+          <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <Card className={classes.issue} interactive={true} elevation={Elevation.TWO}>
+              <div onClick={() => showIssueDetails(id)}>
+                <p className={classes.issueText}>{issue}</p>
+                {allLabels}
+                <Divider />
+              </div>
+              <div className={classes.meta}>
+                <ul>
+                  <li>
+                    <Upvote condensed upvotes={upvotes} issueid={id} upvoted={upvotedState} />
+                  </li>
+                  <li>
+                    <Comment condensed commentCount={comments ? comments.length : 0} />
+                  </li>
+                </ul>
+                {dateAndAssignee}
+              </div>
+            </Card>
           </div>
-          <div className={classes.meta}>
-            <ul>
-              <li>
-                <Upvote condensed upvotes={upvotes} issueid={id} upvoted={upvotedState} />
-              </li>
-              <li>
-                <Comment condensed commentCount={comments ? comments.length : 0} />
-              </li>
-            </ul>
-            {dateAndAssignee}
-          </div>
-        </Card>
-      </>
+        )}
+      </Draggable>
     );
   }
 }
