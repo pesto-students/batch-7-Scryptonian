@@ -19,6 +19,7 @@ describe('todos reducer', () => {
         payload: userDetails,
       }),
     ).toEqual({
+      currentUserId: null,
       isAuthenticated: true,
       displayName: 'Amit Badala',
       emailId: 'amitbadala07@gmail.com',

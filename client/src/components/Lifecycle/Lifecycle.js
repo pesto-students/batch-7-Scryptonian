@@ -18,6 +18,7 @@ const Lifecycle = props => (
             assignee={issue.assignee}
             dueDate={issue.dueDate}
             upvotes={issue.upvotes}
+            upvotedBy={issue.upvotedBy}
             comments={issue.comments}
             id={issue._id}
           />

@@ -150,7 +150,7 @@ router.post('/:issueid/comment', async (req, res) => {
 
 router.patch('/:issueid/upvote', async (req, res) => {
   const { issueid } = req.params;
-  const { upvotedBy } = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
+  const userUpvoted = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
 
   const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
   if (!isIssueIdValid) {
@@ -170,10 +170,10 @@ router.patch('/:issueid/upvote', async (req, res) => {
 
   const peopleWhoUpvoted = issue.upvotedBy;
   let updateObject;
-  if (peopleWhoUpvoted.includes(upvotedBy)) {
-    updateObject = { $pull: { upvotedBy }, $inc: { upvotes: -1 } };
+  if (peopleWhoUpvoted.includes(userUpvoted)) {
+    updateObject = { $pull: { upvotedBy: userUpvoted }, $inc: { upvotes: -1 } };
   } else {
-    updateObject = { $push: { upvotedBy }, $inc: { upvotes: 1 } };
+    updateObject = { $push: { upvotedBy: userUpvoted }, $inc: { upvotes: 1 } };
   }
 
   let updatedIssue;

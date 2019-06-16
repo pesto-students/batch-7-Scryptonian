@@ -13,7 +13,7 @@ describe('<Issue />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<Issue />);
+    wrapper = shallow(<Issue upvotedBy={[]} />);
   });
 
   it('should have a <Card /> component', () => {

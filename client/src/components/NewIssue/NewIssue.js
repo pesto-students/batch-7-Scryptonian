@@ -30,7 +30,6 @@ export class NewIssue extends React.Component {
     })
       .then(() => {
         const { boardid, getDataForKanbanView } = this.props;
-        console.log(boardid);
         this.setState({ newIssueText: '' });
         getDataForKanbanView(boardid);
       })
