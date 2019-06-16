@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import IssueDetails from './IssueDetails';
+import { IssueDetails } from './IssueDetails';
 import { Dialog } from '@blueprintjs/core';
 import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';

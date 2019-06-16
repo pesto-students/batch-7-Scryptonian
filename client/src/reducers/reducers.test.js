@@ -6,7 +6,9 @@ describe('todos reducer', () => {
     isAuthenticated: false,
     displayName: '',
     emailId: '',
-    profileImgUrl: ''
+    profileImgUrl: '',
+    isIssueDetailModalVisible: false,
+    selectedIssue: null,
   };
 
   it('should return the initial state', () => {
@@ -18,19 +20,21 @@ describe('todos reducer', () => {
       name: 'Amit Badala',
       emailId: 'amitbadala07@gmail.com',
       imageUrl:
-        'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg'
+        'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg',
     };
     expect(
       reducer(({} = initialState), {
         type: actionTypes.UPDATE_AUTH,
-        payload: userDetails
-      })
+        payload: userDetails,
+      }),
     ).toEqual({
       isAuthenticated: true,
       displayName: 'Amit Badala',
       emailId: 'amitbadala07@gmail.com',
+      isIssueDetailModalVisible: false,
       profileImgUrl:
-        'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg'
+        'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg',
+      selectedIssue: null,
     });
   });
 });

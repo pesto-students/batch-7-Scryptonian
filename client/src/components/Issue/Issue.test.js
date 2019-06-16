@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { Card } from '@blueprintjs/core';
-import Issue from './Issue';
+import { Issue } from './Issue';
 import Label from '../Label/Label';
 import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';

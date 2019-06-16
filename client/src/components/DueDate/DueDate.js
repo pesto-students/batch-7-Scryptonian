@@ -17,7 +17,7 @@ export const getMonthString = monthIndex => {
     'DEC',
   ];
   return months[monthIndex];
-}
+};
 
 const DueDate = props => {
   const completeDate = new Date(props.date);
@@ -25,8 +25,14 @@ const DueDate = props => {
   const date = completeDate.getDate();
   return (
     <div className={classes.dueDate}>
-      <div className={classes.date}>{date}</div>
-      <div className={classes.month}>{month}</div>
+      {isNaN(completeDate) ? (
+        <div>No Due Date</div>
+      ) : (
+        <>
+          <div className={classes.date}>{date}</div>
+          <div className={classes.month}>{month}</div>
+        </>
+      )}
     </div>
   );
 };
