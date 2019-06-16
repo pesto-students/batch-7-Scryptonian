@@ -53,7 +53,7 @@ router.post('/', async (req, res, next) => {
 });
 
 router.get('/kanban', async (req, res, next) => {
-  const { boardid } = req.body;
+  const { boardid } = req.query;
   if (!util.isValidObjectId(boardid)) {
     return res.status(BAD_REQUEST).send('Invalid boardId');
   }
@@ -62,7 +62,10 @@ router.get('/kanban', async (req, res, next) => {
   try {
     board = await Board.findOne({ _id: boardid })
       .select('_id name lifecycles')
-      .populate({ path: 'lifecycles', populate: { path: 'issues' } });
+      .populate({
+        path: 'lifecycles',
+        populate: { path: 'issues', populate: { path: 'assignee' } },
+      });
   } catch (e) {
     return next(e.message);
   }
