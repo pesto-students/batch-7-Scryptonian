@@ -13,7 +13,6 @@ import { LogoutUrl } from '../../config';
 
 const mapStateToProps = state => {
   const { displayName, emailId, profileImgUrl, isAuthenticated } = state;
-  console.log(state, 'navbar');
   return { displayName, emailId, profileImgUrl, isAuthenticated };
 };
 

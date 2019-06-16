@@ -69,8 +69,7 @@ describe('URL/boards/', () => {
 
     test('should return 200 if boardid is valid', (done) => {
       request(server)
-        .get('/boards/kanban')
-        .send({ boardid: '5cfaf71c26607358e66c1d46' })
+        .get('/boards/kanban?boardid=5cfaf71c26607358e66c1d46')
         .expect(OK, done);
     });
   });
