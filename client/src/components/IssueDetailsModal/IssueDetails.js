@@ -8,6 +8,7 @@ import {
   Position,
   MenuItem,
   InputGroup,
+  Card,
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
@@ -15,7 +16,8 @@ import Comment from '../Comment/Comment';
 import PickDate from '../PickDate/PickDate';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import Issue from '../Issue/Issue';
+import axios from 'axios';
+import { BASE_URL } from '../../config';
 
 export class IssueDetails extends React.Component {
   state = {
@@ -26,6 +28,7 @@ export class IssueDetails extends React.Component {
     isOpen: true,
     usePortal: true,
     round: true,
+    commentInputText: '',
   };
 
   handleOpen = () => {
@@ -36,6 +39,60 @@ export class IssueDetails extends React.Component {
     this.setState({ isOpen: false });
     this.props.closeModal();
   };
+
+  handleCommentInputChange = ({ target }) => {
+    this.setState({ commentInputText: target.value });
+  };
+
+  handleAddCommentOnClick = () => {
+    const { commentInputText } = this.state;
+    const { showIssueDetails } = this.props;
+    const issueid = this.props.selectedIssue._id;
+
+    if (commentInputText === '') {
+      return;
+    }
+
+    const ADD_COMMENT_URL = `${BASE_URL}/issues/${issueid}/comment`;
+    axios(ADD_COMMENT_URL, {
+      method: 'post',
+      data: {
+        comment: commentInputText,
+      },
+      withCredentials: true,
+    })
+      .then(res => {
+        this.setState({ commentInputText: '' });
+        showIssueDetails(res.data._id);
+        console.log(res.data._id);
+      })
+      .catch(e => console.log(e)); // TODO: Show error in a pop-up
+  };
+
+  getTimeDifference = date => {
+    const givenDate = new Date(date).getTime();
+    const currentDate = new Date().getTime();
+    if (currentDate < givenDate) {
+      return 'in future!';
+    }
+    const differenceInMinutes = Math.abs((currentDate - givenDate)) / (1000 * 60);
+
+    if (differenceInMinutes < 1) {
+      return 'now';
+    }
+    if (differenceInMinutes < 60) {
+      const minutes = Math.floor(differenceInMinutes);
+      return minutes === 1 ? `1 min ago` : `${minutes} mins ago`;
+    }
+    const differenceInHours = differenceInMinutes / 60;
+    if (differenceInHours < 24) {
+      const hours = Math.floor(differenceInHours);
+      return hours === 1 ? `1 hour ago` : `${hours} hours ago`;
+    }
+    const days = Math.floor(differenceInHours / 24);
+    return days === 1 ? `1 day ago` : `${days} days ago`;
+  };
+
   render() {
     const issue = this.props.selectedIssue
       ? this.props.selectedIssue
@@ -45,6 +102,7 @@ export class IssueDetails extends React.Component {
           assignee: 'Loading...',
         };
     const members = [];
+    const { commentInputText } = this.state;
 
     return (
       <div>
@@ -98,13 +156,34 @@ export class IssueDetails extends React.Component {
               </Popover>
             </div>
             <div className="comments">
+              {issue.comments
+                ? issue.comments.map(comment => {
+                    console.log(comment);
+                    return (
+                      <Card key={comment._id}>
+                        <p>{comment.comment}</p>
+                        <p>
+                          {comment.commentedBy ? comment.commentedBy.name : null}{' '}
+                          {this.getTimeDifference(comment.createdAt)}
+                        </p>
+                      </Card>
+                    );
+                  })
+                : null}
+
               <form>
-                <label style={{ margin: '4px' }}>
-                  <span>Comment:</span>
-                  <InputGroup placeholder="Add your comment" large={true} />
-                </label>
+                <div style={{ margin: '4px' }}>
+                  <label>Comment:</label>
+                  <InputGroup
+                    placeholder="Add your comment"
+                    value={commentInputText}
+                    onChange={event => this.handleCommentInputChange(event)}
+                  />
+                </div>
               </form>
-              <Button intent="success">Add Comment</Button>
+              <Button intent="success" onClick={() => this.handleAddCommentOnClick()}>
+                Add Comment
+              </Button>
             </div>
             <Comment />
           </div>
@@ -123,6 +202,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => dispatch(actionCreators.closeIssueDetailsModal()),
+    showIssueDetails: issueid => dispatch(actionCreators.showIssueDetails(issueid)),
   };
 };
 

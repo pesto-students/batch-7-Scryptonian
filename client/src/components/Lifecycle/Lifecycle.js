@@ -8,8 +8,9 @@ const Lifecycle = props => (
   <Card elevation={Elevation.ONE} className={classes.Lifecycle}>
     <h3>{props.name}</h3>
     <Divider />
-    {props.issues
-      ? props.issues.map(issue => (
+    {props.issues ? (
+      <>
+        {props.issues.map(issue => (
           <Issue
             issue={issue.issue}
             key={issue._id}
@@ -20,8 +21,10 @@ const Lifecycle = props => (
             comments={issue.comments}
             id={issue._id}
           />
-        ))
-      : null}
+        ))}
+        <Divider />
+      </>
+    ) : null}
     <NewIssue lifecycleid={props.lifecycleid} />
   </Card>
 );
