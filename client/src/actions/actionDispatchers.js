@@ -64,10 +64,31 @@ export function reorderIssues(updatedLifecycle) {
   return { type: REORDER_ISSUES, updatedLifecycle };
 }
 
+export function updateLifecyclesInBackend(originalLifecycles, updatedLifecycles) {
+  return dispatch => {
+    const updateLifecycleURL = `${BASE_URL}/issues/reorder`;
+    axios(updateLifecycleURL, {
+      method: 'patch',
+      data: {
+        lifecycles: updatedLifecycles,
+      },
+      withCredentials: true,
+    })
+      .then()
+      .catch(e => {
+        originalLifecycles.map(lifecycle => {
+          dispatch(reorderIssues(lifecycle));
+        });
+        console.log(`Unable to move issue. ${e}`); // TODO: Show this error in pop-up
+      });
+  };
+}
+
 export function updateLifecycles(originalLifecycles, updatedLifecycles) {
   return dispatch => {
     updatedLifecycles.map(lifecycle => {
       dispatch(reorderIssues(lifecycle));
     });
+    dispatch(updateLifecyclesInBackend(originalLifecycles, updatedLifecycles));
   };
 }

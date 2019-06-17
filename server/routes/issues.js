@@ -47,6 +47,7 @@ async function setAttribute(req, res) {
   return res.status(OK).send(savedIssue);
 }
 
+// Get details of a particular issue
 router.get('/:issueid', async (req, res) => {
   const { issueid } = req.params;
 
@@ -74,6 +75,7 @@ router.get('/:issueid', async (req, res) => {
   return res.status(OK).send(issue);
 });
 
+// Add a new issue
 router.post('/', async (req, res) => {
   const { lifecycleid, issue } = req.body;
   const createdBy = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
@@ -97,6 +99,7 @@ router.post('/', async (req, res) => {
   return res.send(savedIssue);
 });
 
+// Assign an issue to someone
 router.patch(
   '/:issueid/assignee',
   (req, res, next) => {
@@ -113,6 +116,7 @@ router.patch(
   setAttribute,
 );
 
+// Add a due date to an issue
 router.patch(
   '/:issueid/duedate',
   (req, res, next) => {
@@ -123,6 +127,7 @@ router.patch(
   setAttribute,
 );
 
+// Add a comment to an issue
 router.post('/:issueid/comment', async (req, res) => {
   const { issueid } = req.params;
   const { comment } = req.body;
@@ -148,6 +153,7 @@ router.post('/:issueid/comment', async (req, res) => {
   return res.send(savedIssue);
 });
 
+// Add/Remove an upvote from an issue
 router.patch('/:issueid/upvote', async (req, res) => {
   const { issueid } = req.params;
   const userUpvoted = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
@@ -184,6 +190,34 @@ router.patch('/:issueid/upvote', async (req, res) => {
   }
 
   return res.status(OK).send(updatedIssue);
+});
+
+// Update order of issues in lifecycles
+router.patch('/reorder', async (req, res) => {
+  const { lifecycles } = req.body;
+
+  const lifecycleDocuments = lifecycles.map((lifecycle) => {
+    const issueIds = lifecycle.issues.map(issue => issue._id);
+    return {
+      ...lifecycle,
+      issues: issueIds,
+    };
+  });
+
+  try {
+    lifecycleDocuments.forEach(async (lifecycle) => {
+      await Lifecycle.findByIdAndUpdate(lifecycle._id, { $unset: { issues: '' } }, { new: true });
+      await Lifecycle.findByIdAndUpdate(
+        lifecycle._id,
+        { $set: { issues: lifecycle.issues } },
+        { new: true },
+      );
+    });
+  } catch (e) {
+    res.status(INTERNAL_SERVER_ERROR).send(e.message);
+  }
+
+  res.status(OK).send();
 });
 
 export default router;
