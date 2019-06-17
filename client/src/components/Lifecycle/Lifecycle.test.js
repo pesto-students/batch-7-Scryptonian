@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Droppable } from 'react-beautiful-dnd';
 
 import Lifecycle from './Lifecycle';
 import Issue from '../Issue/Issue';
@@ -16,6 +17,16 @@ describe('<Lifecycle />', () => {
     expect(wrapper.find('h3')).toHaveLength(1);
   });
 
+  it('should not render any issue if no issues are present', () => {
+    expect(wrapper.find(Issue)).toHaveLength(0);
+  });
+
+  it('should render a "New Issue" card', () => {
+    expect(wrapper.find(NewIssue)).toHaveLength(1);
+  });
+});
+
+describe('<Issue /> inside <Lifecycle />', () => {
   it('should render a list of issues if some issues are present', () => {
     const issues = [
       {
@@ -29,16 +40,15 @@ describe('<Lifecycle />', () => {
         issue: 'Another issue',
       },
     ];
-
-    wrapper.setProps({ issues });
+  
+    const wrapper = shallow(<Lifecycle issues={issues} />)
+      .find(Droppable)
+      .renderProp('children')({provided: {
+        draggableProps: {},
+        dragHandleProps: {},
+        ref: {}
+      }});
     expect(wrapper.find(Issue)).toHaveLength(2);
   });
+})
 
-  it('should not render any issue if no issues are present', () => {
-    expect(wrapper.find(Issue)).toHaveLength(0);
-  });
-
-  it('should render a "New Issue" card', () => {
-    expect(wrapper.find(NewIssue)).toHaveLength(1);
-  });
-});
