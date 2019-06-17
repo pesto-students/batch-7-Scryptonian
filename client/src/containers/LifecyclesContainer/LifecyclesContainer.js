@@ -5,7 +5,7 @@ import classes from './LifecyclesContainer.module.css';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 
-class LifecyclesContainer extends React.Component {
+export class LifecyclesContainer extends React.Component {
   onDragEnd = result => {
     const { lifecycles } = this.props;
     const { destination, source, draggableId } = result;

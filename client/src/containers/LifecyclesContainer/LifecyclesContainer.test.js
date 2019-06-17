@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import LifecyclesContainer from './LifecyclesContainer';
+import { LifecyclesContainer } from './LifecyclesContainer';
 import Lifecycle from './../../components/Lifecycle/Lifecycle';
 
 describe('<LifecyclesContainer />', () => {
