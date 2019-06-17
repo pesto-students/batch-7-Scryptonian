@@ -18,34 +18,61 @@ class LifecyclesContainer extends React.Component {
       return;
     }
 
-    const pickedFromLifecycle = lifecycles.find(lifecycle => lifecycle._id === source.droppableId);
-    // const droppedIntoLifecycle = lifecycles.find(lifecycle => lifecycle._id === destination.droppableId);
-    const newIssueList = Array.from(pickedFromLifecycle.issues);
-    const movedIssue = newIssueList.splice(source.index, 1)[0];
-    newIssueList.splice(destination.index, 0, movedIssue);
+    const lifecyclePickedFrom = lifecycles.find(lifecycle => lifecycle._id === source.droppableId);
+    const lifecycleDroppedInto = lifecycles.find(
+      lifecycle => lifecycle._id === destination.droppableId,
+    );
 
-    const updatedPickedFromLifecycle = {
-      ...pickedFromLifecycle,
-      issues: newIssueList,
+    if (lifecyclePickedFrom === lifecycleDroppedInto) {
+      const newIssueList = Array.from(lifecyclePickedFrom.issues);
+      const movedIssue = newIssueList.splice(source.index, 1)[0];
+      newIssueList.splice(destination.index, 0, movedIssue);
+
+      const updatedLifecycle = {
+        ...lifecyclePickedFrom,
+        issues: newIssueList,
+      };
+
+      return this.props.updateLifecycles([lifecyclePickedFrom], [updatedLifecycle]);
     }
 
-    this.props.reorderIssues(updatedPickedFromLifecycle);
+    const reducedIssueList = Array.from(lifecyclePickedFrom.issues);
+    const movedIssue = reducedIssueList.splice(source.index, 1)[0];
+    const updatedReducedLifecycle = {
+      ...lifecyclePickedFrom,
+      issues: reducedIssueList,
+    };
+
+    const expandedIssueList = Array.from(lifecycleDroppedInto.issues);
+    expandedIssueList.splice(destination.index, 0, movedIssue);
+    const updatedExpandedLifecycle = {
+      ...lifecycleDroppedInto,
+      issues: expandedIssueList,
+    };
+
+    this.props.updateLifecycles(
+      [lifecyclePickedFrom, lifecycleDroppedInto],
+      [updatedReducedLifecycle, updatedExpandedLifecycle],
+    );
+    return;
   };
 
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <div className={classes.Lifecycles}>
-          {this.props.lifecycles
-            ? this.props.lifecycles.map((lifecycle, index) => (
-                <Lifecycle
-                  name={lifecycle.name}
-                  key={index}
-                  issues={lifecycle.issues}
-                  lifecycleid={lifecycle._id}
-                />
-              ))
-            : null}
+          {this.props.lifecycles ? (
+            this.props.lifecycles.map((lifecycle, index) => (
+              <Lifecycle
+                name={lifecycle.name}
+                key={index}
+                issues={lifecycle.issues}
+                lifecycleid={lifecycle._id}
+              />
+            ))
+          ) : (
+            <></>
+          )}
         </div>
       </DragDropContext>
     );
@@ -60,7 +87,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    reorderIssues: (updatedLifecycle) => dispatch(actionCreators.reorderIssues(updatedLifecycle)),
+    updateLifecycles: (originalLifecycles, updatedLifecycles) =>
+      dispatch(actionCreators.updateLifecycles(originalLifecycles, updatedLifecycles)),
   };
 };
 

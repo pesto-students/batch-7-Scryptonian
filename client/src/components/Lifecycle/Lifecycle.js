@@ -15,7 +15,11 @@ class Lifecycle extends React.Component {
         {issues ? (
           <Droppable droppableId={this.props.lifecycleid}>
             {provided => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={classes.IssueList}
+              >
                 {issues.map((issue, index) => (
                   <Issue
                     issue={issue.issue}
@@ -31,11 +35,10 @@ class Lifecycle extends React.Component {
                   />
                 ))}
                 {provided.placeholder}
-                <Divider />
               </div>
             )}
           </Droppable>
-        ) : null} 
+        ) : null}
         <NewIssue lifecycleid={lifecycleid} />
       </Card>
     );

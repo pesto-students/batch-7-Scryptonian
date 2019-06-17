@@ -4,7 +4,7 @@ import {
   DISPLAY_ISSUE_MODAL,
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
-  REORDER_ISSUES
+  REORDER_ISSUES,
 } from './actionTypes';
 import { BASE_URL } from '../config';
 import axios from 'axios';
@@ -61,5 +61,13 @@ export function updateAuthDetails(payload) {
 }
 
 export function reorderIssues(updatedLifecycle) {
-  return { type: REORDER_ISSUES, updatedLifecycle};
+  return { type: REORDER_ISSUES, updatedLifecycle };
+}
+
+export function updateLifecycles(originalLifecycles, updatedLifecycles) {
+  return dispatch => {
+    updatedLifecycles.map(lifecycle => {
+      dispatch(reorderIssues(lifecycle));
+    });
+  };
 }
