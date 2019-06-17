@@ -4,6 +4,7 @@ import {
   DISPLAY_ISSUE_MODAL,
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
+  REORDER_ISSUES
 } from './actionTypes';
 import { BASE_URL } from '../config';
 import axios from 'axios';
@@ -57,4 +58,8 @@ export function setKanbanDataToStore(kanbanData) {
 
 export function updateAuthDetails(payload) {
   return { type: UPDATE_AUTH, payload };
+}
+
+export function reorderIssues(updatedLifecycle) {
+  return { type: REORDER_ISSUES, updatedLifecycle};
 }
