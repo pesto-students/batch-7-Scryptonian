@@ -4,6 +4,7 @@ import {
   SET_SELECTED_ISSUE,
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
+  REORDER_ISSUES,
 } from '../actions/actionTypes';
 
 export const initialState = {
@@ -58,6 +59,19 @@ const reducer = (state = initialState, action) => {
       lifecycles: action.kanbanData.lifecycles,
       currentBoardName: action.kanbanData.boardName,
       currentBoardId: action.kanbanData.boardid,
+    };
+  }
+
+  if (action.type === REORDER_ISSUES) {
+    const newLifecyles = state.lifecycles.map(lifecycle => {
+      if (lifecycle._id === action.updatedLifecycle._id) {
+        return action.updatedLifecycle;
+      }
+      return lifecycle;
+    });
+    return {
+      ...state,
+      lifecycles: newLifecyles,
     };
   }
 
