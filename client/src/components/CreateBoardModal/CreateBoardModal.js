@@ -6,19 +6,21 @@ import { Button, Dialog, Classes, InputGroup, Label } from '@blueprintjs/core';
 class CreateBoardModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.initialState = {
       autoFocus: true,
       canEscapeKeyClose: true,
-      canOutsideClickClose: true,
+      canOutsideClickClose: false,
       enforceFocus: true,
       usePortal: true,
-      lifecycles: [],
+      lifecycles: [''],
       boardName: '',
       errors: []
     };
+    this.state = this.initialState;
   }
 
   handleClose = _ => {
+    this.setState(this.initialState);
     this.props.onClose();
   };
 
@@ -41,9 +43,11 @@ class CreateBoardModal extends React.Component {
     }
   };
 
-  appendInput = event => {
-    event.preventDefault();
-    this.setState({ lifecycles: [...this.state.lifecycles, ''] });
+  appendInput = _ => {
+    let lastElement = this.state.lifecycles.slice(-1)[0];
+    if (lastElement !== '') {
+      this.setState({ lifecycles: [...this.state.lifecycles, ''] });
+    }
   };
 
   handleInputChange = (event, index) => {
@@ -53,9 +57,10 @@ class CreateBoardModal extends React.Component {
   };
 
   removeLifecycle = index => {
-    let templifecycle = [...this.state.lifecycles];
-    templifecycle.splice(index, 1);
-    this.setState({ lifecycles: [...templifecycle] });
+    this.setState(prevState => ({
+      lifecycles: prevState.lifecycles.filter((_, i) => i !== index)
+    }));
+    console.log(this.state.lifecycles, 'lifecycles');
   };
 
   setBoardName = event => {

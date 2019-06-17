@@ -1,4 +1,5 @@
 import React from 'react';
+import './Navbar.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import { connect } from 'react-redux';
@@ -37,13 +38,22 @@ export class Navbar extends React.Component {
       </Menu>
     );
     return (
-      <nav className="bp3-navbar bp3-dark">
+      <nav className="custom-nav bp3-navbar bp3-dark">
         <div className="bp3-navbar-group bp3-align-left">
-          <div className="bp3-navbar-heading">
-            <h3>Issue Tracker</h3>
+          <div className="bp3-navbar-heading ">
+            <h3>
+              <span className="bp3-icon bp3-icon-standard  bp3-icon-search-around" />
+              Scrypt<span style={{ fontWeight: '100' }}>onian</span>
+            </h3>
           </div>
-          <span className="bp3-navbar-divider" />
-          <button className="bp3-button bp3-minimal bp3-icon-home">Home</button>
+          {this.props.isAuthenticated ? (
+            <>
+              <span className="bp3-navbar-divider" />
+              <button className="bp3-button bp3-minimal bp3-icon-home">
+                Home
+              </button>
+            </>
+          ) : null}
         </div>
         {this.props.isAuthenticated ? (
           <div className="bp3-navbar-group bp3-align-right">

@@ -4,7 +4,7 @@ import {
   DISPLAY_ISSUE_MODAL,
   CLOSE_ISSUE_MODAL,
   SET_KANBAN_DATA,
-  REORDER_ISSUES,
+  REORDER_ISSUES
 } from './actionTypes';
 import { BASE_URL } from '../config';
 import axios from 'axios';
@@ -37,15 +37,15 @@ export function getDataForKanbanView(boardid) {
     const getKanbanDataURL = `${BASE_URL}/boards/kanban`;
     axios
       .get(getKanbanDataURL, {
-        params: { boardid },
+        params: { boardid }
       })
       .then(res => {
         dispatch(
           setKanbanDataToStore({
             lifecycles: res.data.lifecycles,
             boardName: res.data.name,
-            boardid: res.data._id,
-          }),
+            boardid: res.data._id
+          })
         );
       })
       .catch(e => {}); // TODO: Show a pop-up to notify the user
@@ -64,20 +64,23 @@ export function reorderIssues(updatedLifecycle) {
   return { type: REORDER_ISSUES, updatedLifecycle };
 }
 
-export function updateLifecyclesInBackend(originalLifecycles, updatedLifecycles) {
+export function updateLifecyclesInBackend(
+  originalLifecycles,
+  updatedLifecycles
+) {
   return dispatch => {
     const updateLifecycleURL = `${BASE_URL}/issues/reorder`;
     axios(updateLifecycleURL, {
       method: 'patch',
       data: {
-        lifecycles: updatedLifecycles,
+        lifecycles: updatedLifecycles
       },
-      withCredentials: true,
+      withCredentials: true
     })
       .then()
       .catch(e => {
         originalLifecycles.map(lifecycle => {
-          dispatch(reorderIssues(lifecycle));
+          return dispatch(reorderIssues(lifecycle));
         });
         console.log(`Unable to move issue. ${e}`); // TODO: Show this error in pop-up
       });
@@ -87,7 +90,7 @@ export function updateLifecyclesInBackend(originalLifecycles, updatedLifecycles)
 export function updateLifecycles(originalLifecycles, updatedLifecycles) {
   return dispatch => {
     updatedLifecycles.map(lifecycle => {
-      dispatch(reorderIssues(lifecycle));
+      return dispatch(reorderIssues(lifecycle));
     });
     dispatch(updateLifecyclesInBackend(originalLifecycles, updatedLifecycles));
   };

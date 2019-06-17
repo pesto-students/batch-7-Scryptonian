@@ -9,7 +9,7 @@ const router = express.Router();
 
 // GET USER BOARD LIST
 router.get('/', async (req, res, next) => {
-  const userid = '5cf82d981ae5553b30afa856'; // Remove this hardcoded value after cors issue resolve
+  const userid = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
   let boards;
   try {
     boards = await Board.find({ 'members.member': userid })
@@ -28,7 +28,7 @@ router.get('/', async (req, res, next) => {
 // CREATE NEW BOARD
 router.post('/', async (req, res, next) => {
   const { name, lifecycles } = req.body;
-  const createdBy = '5cf82d981ae5553b30afa856'; // Remove this hardcoded value after cors issue resolve
+  const createdBy = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
   const members = [
     {
       member: createdBy,

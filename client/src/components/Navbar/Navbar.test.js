@@ -9,7 +9,7 @@ describe('<Navbar />', () => {
     wrapper = shallow(<Navbar />);
   });
   it('renders name of app', () => {
-    expect(wrapper.find('h3').text()).toEqual('Issue Tracker');
+    expect(wrapper.find('h3').text()).toEqual('Scryptonian');
   });
   it('should render type Nav', () => {
     expect(wrapper.type('.bp3-navbar-heading')).toEqual('nav');
@@ -37,7 +37,7 @@ describe('<Navbar after user is authenticated/>', () => {
     expect(
       wrapper
         .find('span')
-        .at(3)
+        .at(5)
         .text()
     ).toEqual(userName);
   });
