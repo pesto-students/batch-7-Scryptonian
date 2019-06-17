@@ -13,6 +13,6 @@ describe('<BoardBox />', () => {
   });
 
   it('Should have a <p> element', () => {
-    expect(wrapper.find('p')).toHaveLength(1);
+    expect(wrapper.find('p')).toHaveLength(2);
   });
 });

@@ -57,11 +57,24 @@ export class BoardLayout extends React.Component {
           isOpen={this.state.openModal}
           updateBoard={this.getAllBoards}
         />
+        <h2>Boards List</h2>
+        <hr />
         <div className="BoardList">
-          {this.state.boards.map((ele, index) => {
-            return <Box key={index} boardName={ele.name} />;
+          {this.state.boards.map((board, index) => {
+            return (
+              <Box
+                key={index}
+                boardName={board.name}
+                boardRole={board.members[0].role}
+                createdBy={board.createdBy.name || null}
+              />
+            );
           })}
-          <Box boardName={'Create New'} addNewBoard={this.openModal} />
+          <Box
+            boardName={'Create New'}
+            addNewBoard={this.openModal}
+            boardRole={'CREATE'}
+          />
         </div>
       </>
     );
