@@ -13,6 +13,7 @@ import {
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';
+import Labels from '../LabelsComponent/Labels';
 import PickDate from '../PickDate/PickDate';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
@@ -119,17 +120,7 @@ export class IssueDetails extends React.Component {
               </div>
             </div>
             <div className="label">
-              <Popover
-                content={
-                  <Menu className={Classes.ELEVATION_ONE}>
-                    <MenuItem text="Feature" />
-                    <MenuItem text="Difficult" />
-                  </Menu>
-                }
-                position={Position.BOTTOM_LEFT}
-              >
-                <Button rightIcon="arrow-down" text="Labels" />
-              </Popover>
+              <Labels />
             </div>
             <div className="due-date">
               <PickDate />
