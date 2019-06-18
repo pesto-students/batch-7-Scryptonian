@@ -1,10 +1,12 @@
 import express from 'express';
+import mongoose from 'mongoose';
 
-import { OK, BAD_REQUEST } from '../configs/httpStatusCodes';
+import { OK, BAD_REQUEST, INTERNAL_SERVER_ERROR } from '../configs/httpStatusCodes';
 import { roles } from '../configs/config';
 import Board from '../models/board';
 import Lifecycle from '../models/lifecycle';
 import User from '../models/user';
+import Label from '../models/label';
 import userRoleCheck from '../middlewares/userRoleCheck';
 import * as util from '../util';
 
@@ -100,6 +102,29 @@ router.get('/kanban', async (req, res, next) => {
     return next(e.message);
   }
   return res.status(OK).send(board);
+});
+
+// ADD LABEL TO ISSUE
+// @TODO integrate with frontend
+router.post('/label', async (req, res) => {
+  const { color, labelName, boardId } = req.body;
+
+  const isBoardIdValid = mongoose.Types.ObjectId.isValid(boardId);
+
+  if (!isBoardIdValid || !color || !labelName) {
+    return res.status(BAD_REQUEST).send('Invalid request');
+  }
+  const labelDocument = { color, labelName, boardId };
+
+  let savedLabels;
+  try {
+    savedLabels = await Label.create(labelDocument);
+    await Board.findOneAndUpdate({ _id: boardId }, { $push: { labels: savedLabels._id } });
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error saving new issue. ${e.message}`);
+  }
+
+  return res.send(savedLabels);
 });
 
 export default router;
