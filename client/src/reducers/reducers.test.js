@@ -11,13 +11,13 @@ describe('todos reducer', () => {
       name: 'Amit Badala',
       emailId: 'amitbadala07@gmail.com',
       imageUrl:
-        'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg'
+        'https://lh5.googleusercontent.com/-Mzff2L4Awnw/AAAAAAAAAAI/AAAAAAAAADY/IIDwANrAIn8/photo.jpg',
     };
     expect(
       reducer(({} = initialState), {
         type: actionTypes.UPDATE_AUTH,
-        payload: userDetails
-      })
+        payload: userDetails,
+      }),
     ).toEqual({
       currentUserId: undefined,
       isAuthenticated: true,
@@ -29,7 +29,8 @@ describe('todos reducer', () => {
       selectedIssue: null,
       currentBoardName: null,
       currentBoardId: null,
-      lifecycles: null
+      lifecycles: null,
+      roleInCurrentBoard: 'USER',
     });
   });
 });

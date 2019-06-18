@@ -29,9 +29,9 @@ export class NewIssue extends React.Component {
       withCredentials: true,
     })
       .then(() => {
-        const { boardid, getDataForKanbanView } = this.props;
+        const { boardid, getDataForKanbanView, currentUserId } = this.props;
         this.setState({ newIssueText: '' });
-        getDataForKanbanView(boardid);
+        getDataForKanbanView(boardid, currentUserId);
       })
       .catch(e => {}); // TODO: Show error in pop-up
   };
@@ -61,7 +61,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+    getDataForKanbanView: (boardid, userid) =>
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 

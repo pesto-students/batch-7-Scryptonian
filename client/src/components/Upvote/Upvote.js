@@ -19,10 +19,7 @@ export class Upvote extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.upvoted !== this.props.upvoted ||
-      nextProps.upvotes !== this.props.upvotes
-    ) {
+    if (nextProps.upvoted !== this.props.upvoted || nextProps.upvotes !== this.props.upvotes) {
       this.setState({ upvotedState: nextProps.upvoted, upvoteCount: nextProps.upvotes });
     }
   }
@@ -51,8 +48,8 @@ export class Upvote extends React.Component {
       withCredentials: true,
     })
       .then(res => {
-        const { boardid, getDataForKanbanView } = this.props;
-        getDataForKanbanView(boardid);
+        const { boardid, getDataForKanbanView, currentUserId } = this.props;
+        getDataForKanbanView(boardid, currentUserId);
       })
       .catch(e => console.log(e)); // TODO: Show this error in a pop-up
   };
@@ -83,7 +80,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+    getDataForKanbanView: (boardid, userid) =>
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 
