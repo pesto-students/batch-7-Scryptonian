@@ -19,6 +19,7 @@ export class BoardLayout extends React.Component {
     boards: [],
     openModal: false
   };
+  
   componentDidMount() {
     if (this.props.location) {
       const userDetails = queryString.parse(this.props.location.search);

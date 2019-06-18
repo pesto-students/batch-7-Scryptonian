@@ -68,7 +68,6 @@ router.get('/kanban', async (req, res, next) => {
   let board;
   try {
     board = await Board.findOne({ _id: boardid })
-      .select('_id name lifecycles')
       .populate({
         path: 'lifecycles',
         populate: { path: 'issues', populate: { path: 'assignee' } },

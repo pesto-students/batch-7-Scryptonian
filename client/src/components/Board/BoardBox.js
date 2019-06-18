@@ -20,7 +20,7 @@ const BoardBox = props => {
 
       <p>{props.boardName}</p>
       <p className={'bp3-text-small bp3-text-muted'}>
-        {props.createdBy ? `Author ${props.createdBy}` : null}
+        {props.createdBy ? `${props.createdBy}` : null}
       </p>
     </Card>
   );

@@ -8,8 +8,8 @@ import * as actionCreators from '../../actions/actionDispatchers';
 
 export class KanbanLayout extends React.Component {
   componentDidMount() {
-    const { boardid, getDataForKanbanView } = this.props;
-    getDataForKanbanView(boardid);
+    const { boardid, getDataForKanbanView, currentUserId } = this.props;
+    getDataForKanbanView(boardid, currentUserId);
   }
 
   render() {
@@ -30,12 +30,14 @@ const mapStateToProps = state => {
     isIssueDetailModalVisible: state.isIssueDetailModalVisible,
     boardName: state.currentBoardName,
     lifecycles: state.lifecycles,
+    currentUserId: state.currentUserId,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+    getDataForKanbanView: (boardid, userid) =>
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 
