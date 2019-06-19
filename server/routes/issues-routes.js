@@ -4,10 +4,12 @@ import mongoose from 'mongoose';
 import {
   BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, NOT_FOUND,
 } from '../configs/httpStatusCodes';
+import { roles } from '../configs/config';
 import Lifecycle from '../models/lifecycle';
 import Issue from '../models/issue';
 import User from '../models/user';
 import Comment from '../models/comment';
+import userRoleCheck from '../middlewares/userRoleCheck';
 
 const router = express.Router();
 
@@ -86,7 +88,7 @@ router.post('/', async (req, res) => {
     return res.status(BAD_REQUEST).send('Invalid lifecycleid or issue');
   }
 
-  const issueDocument = { issue, createdBy };
+  const issueDocument = { issue, createdBy, lifecycle: lifecycleid };
 
   let savedIssue;
   try {
@@ -97,6 +99,29 @@ router.post('/', async (req, res) => {
   }
 
   return res.send(savedIssue);
+});
+
+// Delete an issue
+router.delete('/:issueid', userRoleCheck(roles.ADMIN), async (req, res) => {
+  const { issueid } = req.params;
+
+  const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
+  if (!isIssueIdValid) {
+    return res.status(BAD_REQUEST).send('Invalid issueid');
+  }
+
+  try {
+    const deletedIssue = await Issue.findByIdAndRemove(issueid).exec();
+    await Lifecycle.findByIdAndUpdate(
+      deletedIssue.lifecycle,
+      { $pull: { issues: deletedIssue._id } },
+      { new: true },
+    );
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send('Error deleting issue');
+  }
+
+  return res.status(OK).send();
 });
 
 // Assign an issue to someone
