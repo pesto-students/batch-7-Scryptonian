@@ -32,6 +32,12 @@ const BoardSchema = new Schema(
         },
       },
     ],
+    labels: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Label',
+      },
+    ],
     lifecycles: [
       {
         type: Schema.Types.ObjectId,

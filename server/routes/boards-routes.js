@@ -104,13 +104,10 @@ router.get('/kanban', async (req, res, next) => {
   return res.status(OK).send(board);
 });
 
-// ADD LABEL TO ISSUE
-// @TODO integrate with frontend
+// Add label to issue
 router.post('/label', async (req, res) => {
   const { color, labelName, boardId } = req.body;
-
   const isBoardIdValid = mongoose.Types.ObjectId.isValid(boardId);
-
   if (!isBoardIdValid || !color || !labelName) {
     return res.status(BAD_REQUEST).send('Invalid request');
   }
@@ -125,6 +122,21 @@ router.post('/label', async (req, res) => {
   }
 
   return res.send(savedLabels);
+});
+
+// Get all labels of the board
+router.get('/:boardid/label', async (req, res, next) => {
+  const { boardid } = req.params;
+  if (!util.isValidObjectId(boardid)) {
+    return res.status(BAD_REQUEST).send('Invalid boardId');
+  }
+  let labels;
+  try {
+    labels = await Label.find();
+  } catch (e) {
+    next(e.message);
+  }
+  return res.status(OK).send(labels);
 });
 
 export default router;
