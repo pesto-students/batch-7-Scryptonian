@@ -56,6 +56,10 @@ const IssueSchema = new Schema(
         ref: 'Comment',
       },
     ],
+    lifecycle: {
+      type: Schema.Types.ObjectId,
+      ref: 'Lifecycle',
+    },
   },
   {
     timestamps: true,

@@ -69,6 +69,23 @@ export class IssueDetails extends React.Component {
       .catch(e => console.log(e)); // TODO: Show error in a pop-up
   };
 
+  handleDeleteIssue = () => {
+    const issueid = this.props.selectedIssue._id;
+    const boardid = this.props.currentBoardId;
+    const { getDataForKanbanView } = this.props;
+
+    const deleteIssueURL = `${BASE_URL}/issues/${issueid}`;
+    axios(deleteIssueURL, {
+      method: 'delete',
+      params: { boardid },
+    })
+      .then(res => {
+        this.handleClose();
+        getDataForKanbanView(boardid);
+      })
+      .catch(e => console.log(e)); // TODO: Show this in a popup
+  };
+
   getTimeDifference = date => {
     const givenDate = new Date(date).getTime();
     const currentDate = new Date().getTime();
@@ -171,6 +188,7 @@ export class IssueDetails extends React.Component {
               </Button>
             </div>
             <Comment />
+            <Button intent="danger" text="Delete Issue" onClick={() => this.handleDeleteIssue()} />
           </div>
         </Dialog>
       </div>
@@ -182,6 +200,7 @@ const mapStateToProps = state => {
   return {
     selectedIssue: state.selectedIssue,
     currentUserId: state.currentUserId,
+    currentBoardId: state.currentBoardId,
   };
 };
 
@@ -189,6 +208,7 @@ const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => dispatch(actionCreators.closeIssueDetailsModal()),
     showIssueDetails: issueid => dispatch(actionCreators.showIssueDetails(issueid)),
+    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
   };
 };
 
