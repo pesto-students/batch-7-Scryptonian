@@ -1,13 +1,15 @@
 import express from 'express';
 
 import { OK, BAD_REQUEST } from '../configs/httpStatusCodes';
+import { roles } from '../configs/config';
 import Board from '../models/board';
 import Lifecycle from '../models/lifecycle';
+import userRoleCheck from '../middlewares/userRoleCheck';
 import * as util from '../util';
 
 const router = express.Router();
 
-// GET USER BOARD LIST
+// Get list of boards for a particular user
 router.get('/', async (req, res, next) => {
   const userid = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
   let boards;
@@ -25,7 +27,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// CREATE NEW BOARD
+// Create a new board
 router.post('/', async (req, res, next) => {
   const { name, lifecycles } = req.body;
   const createdBy = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
@@ -58,6 +60,20 @@ router.post('/', async (req, res, next) => {
   }
   return res.status(OK).send(savedBoard);
 });
+
+// Delete a board
+router.delete('/', userRoleCheck(roles.SUPERADMIN), async (req, res, next) => {
+  const { boardid } = req.query;
+
+  try {
+    Board.findByIdAndRemove(boardid).exec();
+  } catch (e) {
+    return next(e.message);
+  }
+
+  return res.status(OK).send();
+});
+
 
 router.get('/kanban', async (req, res, next) => {
   const { boardid } = req.query;

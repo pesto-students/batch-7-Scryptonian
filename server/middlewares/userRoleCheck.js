@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR, FORBIDDEN } from '../configs/httpStatusCodes';
+import {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  FORBIDDEN,
+  NOT_FOUND,
+} from '../configs/httpStatusCodes';
 import { roles } from '../configs/config';
 
 import Board from '../models/board';
@@ -24,7 +29,13 @@ export default function userRoleCheck(requiredRole) {
       res.status(INTERNAL_SERVER_ERROR).send(`Error checking User Role. ${e.message}`);
     }
 
-    const userRoleInBoard = board.members.find(member => member.member.toString() === userid).role;
+    let userRoleInBoard;
+    try {
+      userRoleInBoard = board.members.find(member => member.member.toString() === userid).role;
+    } catch (e) {
+      return res.status(NOT_FOUND).send('You are not a member of this board');
+    }
+
     const roleId = roles[userRoleInBoard];
     if (roleId >= requiredRole) {
       return next();
