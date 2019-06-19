@@ -139,4 +139,65 @@ router.get('/:boardid/label', async (req, res, next) => {
   return res.status(OK).send(labels);
 });
 
+// Invite a new user to a board
+router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
+  const { boardid } = req.query;
+  const { invitedEmailId, invitedUserName } = req.body;
+
+  if (!util.isValidObjectId(boardid)) {
+    return res.status(BAD_REQUEST).send('Invalid boardId');
+  }
+
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ emailId: invitedEmailId });
+  } catch (e) {
+    return next(e.message);
+  }
+
+  let updatedBoard;
+  if (existingUser) {
+    // if user already exists
+    try {
+      updatedBoard = await Board.findByIdAndUpdate(
+        boardid,
+        {
+          $push: {
+            members: {
+              member: existingUser._id,
+              membername: existingUser.name,
+              role: 'INVITED',
+            },
+          },
+        },
+        { new: true },
+      );
+      await User.findByIdAndUpdate(existingUser, { $push: { memberOf: boardid } });
+    } catch (e) {
+      return next(e.message);
+    }
+  } else {
+    // if user is new
+    const userDocument = {
+      name: invitedUserName,
+      emailId: invitedEmailId,
+      memberOf: [boardid],
+    };
+
+    try {
+      const newUser = await User.create(userDocument);
+      updatedBoard = await Board.findByIdAndUpdate(
+        boardid,
+        {
+          $push: { members: { member: newUser._id, membername: newUser.name, role: 'INVITED' } },
+        },
+        { new: true },
+      );
+    } catch (e) {
+      return next(e.message);
+    }
+  }
+  return res.status(OK).send(updatedBoard);
+});
+
 export default router;
