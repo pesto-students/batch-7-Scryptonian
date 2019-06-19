@@ -1,4 +1,7 @@
-.NewIssue {
-  width: 100%;
+.NewIssue { 
   padding: 0;
+}
+
+.addIssueInput input{
+  background-color: #e4e4e4;
 }

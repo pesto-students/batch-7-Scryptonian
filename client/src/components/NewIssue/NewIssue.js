@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditableText, Card, Button } from '@blueprintjs/core';
+import { EditableText, Card, Button, InputGroup } from '@blueprintjs/core';
 import classes from './NewIssue.module.css';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
@@ -8,11 +8,11 @@ import * as actionCreators from '../../actions/actionDispatchers';
 
 export class NewIssue extends React.Component {
   state = {
-    newIssueText: '',
+    newIssueText: ''
   };
 
-  handleTextChange = text => {
-    this.setState({ newIssueText: text });
+  handleTextChange = event => {
+    this.setState({ newIssueText: event.target.value });
   };
 
   handleCreateNewIssue = () => {
@@ -24,9 +24,9 @@ export class NewIssue extends React.Component {
       method: 'post',
       data: {
         lifecycleid: this.props.lifecycleid,
-        issue: this.state.newIssueText,
+        issue: this.state.newIssueText
       },
-      withCredentials: true,
+      withCredentials: true
     })
       .then(() => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -37,17 +37,25 @@ export class NewIssue extends React.Component {
   };
 
   render() {
+    const addIssue = _ => {
+      return (
+        <Button
+          icon={'add'}
+          minimal={true}
+          onClick={() => this.handleCreateNewIssue()}
+        />
+      );
+    };
     return (
       <Card className={classes.NewIssue}>
-        <EditableText
-          confirmOnEnter={false}
+        <InputGroup
+          className={classes.addIssueInput}
           placeholder="New Issue..."
-          multiline={true}
-          minLines={2}
-          onChange={text => this.handleTextChange(text)}
+          fill={true}
           value={this.state.newIssueText}
+          onChange={event => this.handleTextChange(event)}
+          rightElement={addIssue()}
         />
-        <Button text="Add issue" onClick={() => this.handleCreateNewIssue()} />
       </Card>
     );
   }
@@ -55,18 +63,18 @@ export class NewIssue extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    boardid: state.currentBoardId,
+    boardid: state.currentBoardId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(NewIssue);

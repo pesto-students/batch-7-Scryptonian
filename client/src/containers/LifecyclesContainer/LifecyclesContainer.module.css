@@ -1,5 +1,9 @@
 .Lifecycles {
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  overflow: scroll; 
+  align-items: flex-start;
+  background-color: aliceblue;
+  min-height: 84vh;
 }
+ 
