@@ -48,7 +48,7 @@ export class IssueDetails extends React.Component {
 
   handleAddCommentOnClick = () => {
     const { commentInputText } = this.state;
-    const { showIssueDetails } = this.props;
+    const { showIssueDetails, getDataForKanbanView, currentBoardId } = this.props;
     const issueid = this.props.selectedIssue._id;
 
     if (commentInputText === '') {
@@ -66,6 +66,7 @@ export class IssueDetails extends React.Component {
       .then(res => {
         this.setState({ commentInputText: '' });
         showIssueDetails(res.data._id);
+        getDataForKanbanView(currentBoardId);
       })
       .catch(e => console.log(e)); // TODO: Show error in a pop-up
   };
@@ -83,6 +84,22 @@ export class IssueDetails extends React.Component {
       .then(res => {
         this.handleClose();
         getDataForKanbanView(boardid);
+      })
+      .catch(e => console.log(e)); // TODO: Show this in a popup
+  };
+
+  handleDeleteCommentOnClick = comment => {
+    const issueid = this.props.selectedIssue._id;
+    const commentid = comment._id;
+    const { showIssueDetails, getDataForKanbanView, selectedIssue, currentBoardId } = this.props;
+    const deleteCommentURL = `${BASE_URL}/issues/${issueid}/comment/${commentid}`;
+    axios(deleteCommentURL, {
+      method: 'delete',
+      withCredentials: true,
+    })
+      .then(res => {
+        showIssueDetails(res.data._id);
+        getDataForKanbanView(currentBoardId);
       })
       .catch(e => console.log(e)); // TODO: Show this in a popup
   };
@@ -175,6 +192,13 @@ export class IssueDetails extends React.Component {
                         {comment.commentedBy ? comment.commentedBy.name : null}{' '}
                         {this.getTimeDifference(comment.createdAt)}
                       </p>
+                      <Popover commentid={comment._id}>
+                        <Button intent="danger" text="Delete Comment" />
+                        <DeleteConfirmation
+                          onSuccess={() => this.handleDeleteCommentOnClick(comment)}
+                          item="comment"
+                        />
+                      </Popover>
                     </Card>
                   ))
                 : null}
@@ -195,10 +219,7 @@ export class IssueDetails extends React.Component {
             </div>
             <Comment />
             <Popover>
-              <Button
-                intent="danger"
-                text="Delete Issue"
-              />
+              <Button intent="danger" text="Delete Issue" />
               <DeleteConfirmation onSuccess={this.handleDeleteIssue} item="issue" />
             </Popover>
           </div>
