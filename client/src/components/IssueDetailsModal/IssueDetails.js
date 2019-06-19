@@ -100,7 +100,7 @@ export class IssueDetails extends React.Component {
           issue: 'Loading...',
           upvotes: 0,
           assignee: 'Loading...',
-          upvotedBy: []
+          upvotedBy: [],
         };
     const members = [];
     const userId = this.props.currentUserId;
@@ -123,13 +123,8 @@ export class IssueDetails extends React.Component {
               <Labels />
             </div>
             <div className="due-date">
-              <PickDate />
+              <PickDate dueDate={issue.dueDate} issueid={issue._id} />
             </div>
-            {isNaN(new Date(issue.dueDate)) ? (
-              <Button intent="success">Add Due Date</Button>
-            ) : (
-              <Button intent="success">Remove Due Date</Button>
-            )}
             <div className="assignee">
               <span>Assign to:</span>
               <Popover
