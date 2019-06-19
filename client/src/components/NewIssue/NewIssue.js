@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditableText, Card, Button, InputGroup } from '@blueprintjs/core';
+import { Card, Button, InputGroup } from '@blueprintjs/core';
 import classes from './NewIssue.module.css';
 import axios from 'axios';
 import { BASE_URL } from '../../config';

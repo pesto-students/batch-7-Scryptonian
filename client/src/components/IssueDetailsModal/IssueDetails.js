@@ -99,7 +99,6 @@ export class IssueDetails extends React.Component {
     const {
       showIssueDetails,
       getDataForKanbanView,
-      selectedIssue,
       currentBoardId
     } = this.props;
     const deleteCommentURL = `${BASE_URL}/issues/${issueid}/comment/${commentid}`;

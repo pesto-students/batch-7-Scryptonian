@@ -9,10 +9,6 @@ const SignUp = props => {
   return (
     <div className={classes.SignUp}>
       <Card interactive={false} elevation={Elevation.TWO}>
-        <h5>
-          <a href="#">Card heading</a>
-        </h5>
-        <p>Card content</p>
         <Button>Submit</Button>
       </Card>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Elevation, Divider } from '@blueprintjs/core';
+import { Card, Elevation } from '@blueprintjs/core';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { connect } from 'react-redux';
