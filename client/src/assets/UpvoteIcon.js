@@ -1,7 +1,7 @@
 import React from 'react';
 
 const DEFAULT_COLOR = '#999999';
-const UPVOTED_COLOR = '#e64343';
+const UPVOTED_COLOR = 'cornflowerblue';
 
 const UpvoteIcon = props => (
   <svg

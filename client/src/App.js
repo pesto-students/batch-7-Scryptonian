@@ -10,7 +10,7 @@ function App() {
     <>
       <Navbar />
       <Router>
-        <div className={'container-layout'}>
+        <div>
           <Switch>
             <Route path="/login" exact component={SignUp} />
             <Route path="/boards/userdata" component={Board} />

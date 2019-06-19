@@ -26,7 +26,7 @@ export class Issue extends React.Component {
       comments,
       id,
       showIssueDetails,
-      index,
+      index
     } = this.props;
 
     const userId = this.props.currentUserId;
@@ -36,7 +36,11 @@ export class Issue extends React.Component {
       <div className={classes.labels}>
         {labels
           ? labels.map(label => (
-              <Label label={label.name} color={label.color} key={label.name + label.color} />
+              <Label
+                label={label.name}
+                color={label.color}
+                key={label.name + label.color}
+              />
             ))
           : null}
       </div>
@@ -57,19 +61,30 @@ export class Issue extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <Card className={classes.issue} interactive={true} elevation={Elevation.TWO}>
+            <Card
+              className={[classes.issue, classes.issueCard]}
+              interactive={true}
+              elevation={Elevation.TWO}
+            >
               <div onClick={() => showIssueDetails(id)}>
                 <p className={classes.issueText}>{issue}</p>
                 {allLabels}
-                <Divider />
               </div>
               <div className={classes.meta}>
                 <ul>
                   <li>
-                    <Upvote condensed upvotes={upvotes} issueid={id} upvoted={upvotedState} />
+                    <Upvote
+                      condensed
+                      upvotes={upvotes}
+                      issueid={id}
+                      upvoted={upvotedState}
+                    />
                   </li>
                   <li>
-                    <Comment condensed commentCount={comments ? comments.length : 0} />
+                    <Comment
+                      condensed
+                      commentCount={comments ? comments.length : 0}
+                    />
                   </li>
                 </ul>
                 {dateAndAssignee}
@@ -84,17 +99,17 @@ export class Issue extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    currentUserId: state.currentUserId,
+    currentUserId: state.currentUserId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    showIssueDetails: id => dispatch(actionCreators.showIssueDetails(id)),
+    showIssueDetails: id => dispatch(actionCreators.showIssueDetails(id))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Issue);

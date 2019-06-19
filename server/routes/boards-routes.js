@@ -92,11 +92,10 @@ router.get('/kanban', async (req, res, next) => {
 
   let board;
   try {
-    board = await Board.findOne({ _id: boardid })
-      .populate({
-        path: 'lifecycles',
-        populate: { path: 'issues', populate: { path: 'assignee' } },
-      });
+    board = await Board.findOne({ _id: boardid }).populate({
+      path: 'lifecycles',
+      populate: { path: 'issues', populate: { path: 'assignee' } },
+    });
   } catch (e) {
     return next(e.message);
   }
