@@ -42,6 +42,8 @@ passport.use(
           newUser = await new User({
             name: profile.displayName,
             googleId: profile.id,
+            imageUrl: Object.is(profile.photos[0], undefined) ? null : profile.photos[0].value,
+            emailId: Object.is(profile.emails[0], undefined) ? null : profile.emails[0].value,
           }).save();
           done(null, newUser);
         }
