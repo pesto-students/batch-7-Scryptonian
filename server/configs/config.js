@@ -10,3 +10,8 @@ export const session = {
   keys: [process.env.SESSION_KEY],
 };
 export const clientUrl = process.env.CLIENT_URL;
+export const roles = {
+  USER: 0,
+  ADMIN: 1,
+  SUPERADMIN: 2,
+};

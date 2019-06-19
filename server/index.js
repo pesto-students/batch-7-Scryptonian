@@ -9,7 +9,7 @@ import './configs/passport-setup';
 
 import users from './routes/users';
 import boards from './routes/boards-routes';
-import issues from './routes/issues';
+import issues from './routes/issues-routes';
 import router from './routes/auth-routes';
 
 import { PORT, MONGO_CONNECTION_STRING, session } from './configs/config';
