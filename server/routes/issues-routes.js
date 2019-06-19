@@ -1,5 +1,5 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 
 import {
   BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, NOT_FOUND,
@@ -176,6 +176,31 @@ router.post('/:issueid/comment', async (req, res) => {
   }
 
   return res.send(savedIssue);
+});
+
+// Delete a comment from an issue
+router.delete('/:issueid/comment/:commentid', async (req, res) => {
+  const { issueid, commentid } = req.params;
+
+  const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
+  const isCommentIdValid = mongoose.Types.ObjectId.isValid(commentid);
+  if (!isIssueIdValid || !isCommentIdValid) {
+    return res.status(BAD_REQUEST).send('Invalid issueid or commentid');
+  }
+
+  let updatedIssue;
+  try {
+    const deletedComment = await Comment.findByIdAndRemove(commentid).exec();
+    updatedIssue = await Issue.findByIdAndUpdate(
+      issueid,
+      { $pull: { comments: deletedComment._id } },
+      { new: true },
+    );
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send('Error deleting comment');
+  }
+
+  return res.status(OK).send(updatedIssue);
 });
 
 // Add/Remove an upvote from an issue
