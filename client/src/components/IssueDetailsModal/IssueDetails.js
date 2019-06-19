@@ -15,6 +15,7 @@ import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';
 import Labels from '../LabelsComponent/Labels';
 import PickDate from '../PickDate/PickDate';
+import DeleteConfirmation from '../DeleteConfirmation/DeleteConfirmation';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import axios from 'axios';
@@ -188,7 +189,13 @@ export class IssueDetails extends React.Component {
               </Button>
             </div>
             <Comment />
-            <Button intent="danger" text="Delete Issue" onClick={() => this.handleDeleteIssue()} />
+            <Popover>
+              <Button
+                intent="danger"
+                text="Delete Issue"
+              />
+              <DeleteConfirmation onSuccess={this.handleDeleteIssue} item="issue" />
+            </Popover>
           </div>
         </Dialog>
       </div>
