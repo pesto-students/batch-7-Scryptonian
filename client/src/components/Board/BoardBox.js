@@ -8,7 +8,7 @@ const BoardBox = props => {
       interactive={true}
       elevation={Elevation.TWO}
       className="board-container"
-      onClick={() => props.addNewBoard()}
+      onClick={() => props.openKanban()}
     >
       {props.boardRole === 'SUPERADMIN' ? (
         <span className={'bp3-icon-standard bp3-icon-crown custom-icon'} />

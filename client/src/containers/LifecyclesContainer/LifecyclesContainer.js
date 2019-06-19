@@ -8,7 +8,7 @@ import * as actionCreators from '../../actions/actionDispatchers';
 export class LifecyclesContainer extends React.Component {
   onDragEnd = result => {
     const { lifecycles } = this.props;
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
 
     if (!destination) {
       return;

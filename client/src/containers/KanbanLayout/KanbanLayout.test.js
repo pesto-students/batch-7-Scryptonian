@@ -9,15 +9,16 @@ describe('<KanbanLayout />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<KanbanLayout getDataForKanbanView={() => {}} />);
+    wrapper = shallow(
+      <KanbanLayout
+        match={{ params: { boardId: '5cfaf71d26607358e66c1d49' } }}
+        getDataForKanbanView={() => {}}
+      />
+    );
   });
 
   it('should render <LifecyclesContainer />', () => {
     expect(wrapper.find(LifecyclesContainer)).toHaveLength(1);
-  });
-
-  it('should render <Navbar />', () => {
-    expect(wrapper.find(Navbar)).toHaveLength(1);
   });
 
   it('should render <KanbanTitleBar />', () => {

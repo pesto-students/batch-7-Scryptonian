@@ -19,7 +19,7 @@ export class BoardLayout extends React.Component {
     boards: [],
     openModal: false
   };
-  
+
   componentDidMount() {
     if (this.props.location) {
       const userDetails = queryString.parse(this.props.location.search);
@@ -40,6 +40,12 @@ export class BoardLayout extends React.Component {
     } catch (e) {
       console.log('Something went wrong');
     }
+  };
+
+  routeChange = boardId => {
+    console.log(boardId, 'boardID');
+    let path = `/board/${boardId}`;
+    this.props.history.push(path);
   };
 
   openModal = () => {
@@ -68,6 +74,7 @@ export class BoardLayout extends React.Component {
                 boardName={board.name}
                 boardRole={board.members[0].role}
                 createdBy={board.createdBy.name || null}
+                openKanban={() => this.routeChange(board._id)}
               />
             );
           })}
