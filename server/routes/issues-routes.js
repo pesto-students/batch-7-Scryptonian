@@ -33,7 +33,7 @@ async function setAttribute(req, res) {
 
   let savedIssue;
   try {
-    savedIssue = await Issue.findOneAndUpdate(issueid, updateObject, { new: true });
+    savedIssue = await Issue.findByIdAndUpdate(issueid, updateObject, { new: true });
   } catch (e) {
     return res
       .status(INTERNAL_SERVER_ERROR)
@@ -121,7 +121,7 @@ router.patch(
   '/:issueid/duedate',
   (req, res, next) => {
     req.body.attributeName = 'dueDate';
-    req.body.attributeValue = new Date(req.body.duedate);
+    req.body.attributeValue = req.body.duedate;
     next();
   },
   setAttribute,
