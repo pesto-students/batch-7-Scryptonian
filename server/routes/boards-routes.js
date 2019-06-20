@@ -15,6 +15,7 @@ const router = express.Router();
 // Get list of boards for a particular user
 router.get('/', async (req, res, next) => {
   console.log('Request authenticated?', req.isAuthenticated());
+  console.log('req.user', req.user);
   const userid = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
   let boards;
   try {

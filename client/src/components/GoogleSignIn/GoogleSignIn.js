@@ -2,7 +2,9 @@ import React from 'react';
 import GoogleSignInButton from './../../assets/google-button/btn_google_signin.png';
 import { GoogleLoginUrl } from '../../config';
 
-const GoogleSignIn = () => (
+const GoogleSignIn = () => {
+  console.log('CORS issue: ', GoogleLoginUrl);
+  return (
   <img
     role="button"
     src={GoogleSignInButton}
@@ -10,5 +12,5 @@ const GoogleSignIn = () => (
     height="50px"
     onClick={() => (window.location.href = GoogleLoginUrl)}
   />
-);
+)};
 export default GoogleSignIn;
