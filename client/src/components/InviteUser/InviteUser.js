@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
-import { errorToast, successToast } from '../Toast/Toast';
+import { errorToast, successToast, warningToast } from '../Toast/Toast';
 
 export class InviteUser extends React.Component {
   state = {
@@ -49,6 +49,9 @@ export class InviteUser extends React.Component {
         withCredentials: true,
       })
         .then(res => {
+          if (res.status === 201) {
+            warningToast(res.data);
+          }
           successToast(res.data);
           this.handleClose();
         })
