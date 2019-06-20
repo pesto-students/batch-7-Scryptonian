@@ -5,20 +5,39 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  padding:0px 8px 10px;
+  padding: 0px 8px 10px;
   background-color: whitesmoke;
   max-height: 80vh;
-    overflow: auto;
-
+  overflow: auto;
 }
 
 .Lifecycle h3 {
-  margin:10px 0px;
-  color:dimgrey;
+  margin: 10px 0px;
+  color: dimgrey;
 }
 
-.Lifecycle h3 span{
+.Lifecycle h3 span {
   margin-right: 10px;
 }
 
+/* width */
+.Lifecycle::-webkit-scrollbar {
+  width: 4px;
+}
 
+/* Track */
+.Lifecycle::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.Lifecycle::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.Lifecycle::-webkit-scrollbar-thumb:hover {
+  background: slategrey;
+}
