@@ -5,10 +5,16 @@ import UsersListModal from '../../components/UsersListModal/UsersListModal';
 import InviteUser from '../../components/InviteUser/InviteUser';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
+import Cookies from 'js-cookie';
 
 export class KanbanLayout extends React.Component {
   componentDidMount() {
     const boardId = this.props.match.params.boardId;
+    const userDetails = Cookies.getJSON('user-info');
+    if (userDetails) {
+      const { updateAuthDetails } = this.props;
+      updateAuthDetails(userDetails);
+    }
     if (boardId) {
       const { getDataForKanbanView, currentUserId } = this.props;
       getDataForKanbanView(boardId, currentUserId);
@@ -20,13 +26,15 @@ export class KanbanLayout extends React.Component {
       isIssueDetailModalVisible,
       isMemberListModalVisible,
       boardMemberList,
-      isInviteUserModalVisible,
+      isInviteUserModalVisible
     } = this.props;
     return (
       <>
         <LifecyclesContainer lifecycles={this.props.lifecycles} />
         {isIssueDetailModalVisible ? <IssueDetails /> : null}
-        {isMemberListModalVisible ? <UsersListModal members={boardMemberList} /> : null}
+        {isMemberListModalVisible ? (
+          <UsersListModal members={boardMemberList} />
+        ) : null}
         {isInviteUserModalVisible ? <InviteUser /> : null}
       </>
     );
@@ -41,7 +49,7 @@ const mapStateToProps = state => {
     currentUserId: state.currentUserId,
     isMemberListModalVisible: state.isMemberListModalVisible,
     isInviteUserModalVisible: state.isInviteUserModalVisible,
-    boardMemberList: state.boardMemberList,
+    boardMemberList: state.boardMemberList
   };
 };
 
@@ -49,10 +57,12 @@ const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
       dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
+    updateAuthDetails: userData =>
+      dispatch(actionCreators.updateAuthDetails(userData))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(KanbanLayout);
