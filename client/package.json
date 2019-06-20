@@ -31,7 +31,6 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "https://issuetracker-scryptonian.herokuapp.com/",
   "browserslist": {
     "production": [
       ">0.2%",
