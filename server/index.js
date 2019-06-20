@@ -27,7 +27,15 @@ app.use(
   }),
 );
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'https://issuetracker-scryptonians.netlify.com',
+    methods: 'GET, POST',
+    headers: 'Content-Type, *',
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
