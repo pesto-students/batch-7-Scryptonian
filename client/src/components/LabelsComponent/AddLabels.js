@@ -5,6 +5,7 @@ import { BlockPicker } from 'react-color';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
+import { errorToast, successToast } from '../Toast/Toast';
 
 class AddLabels extends React.Component {
   state = { color: '', name: '' };
@@ -23,12 +24,12 @@ class AddLabels extends React.Component {
       data: {
         color: this.state.color,
         labelName: this.state.name,
-        boardId: this.props.currentBoardId
-      }
+        boardId: this.props.currentBoardId,
+      },
     })
-      .then()
+      .then(() => successToast('New label created'))
       .catch(e => {
-        console.log(e); //@TODO to show this in popup
+        errorToast(e.message);
       });
   };
 
@@ -41,20 +42,13 @@ class AddLabels extends React.Component {
               <div className="add-name">
                 <label>
                   Name:
-                  <input
-                    type="text"
-                    value={this.state.name}
-                    onChange={this.handleNameChange}
-                  />
+                  <input type="text" value={this.state.name} onChange={this.handleNameChange} />
                 </label>
               </div>
               <div className="add-color">
                 <label>
                   Color:
-                  <BlockPicker
-                    color={this.state.color}
-                    onChangeComplete={this.handleColorChange}
-                  />
+                  <BlockPicker color={this.state.color} onChangeComplete={this.handleColorChange} />
                 </label>
               </div>
               <div className={Classes.POPOVER_DISMISS}>
@@ -73,7 +67,7 @@ class AddLabels extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    currentBoardId: state.currentBoardId
+    currentBoardId: state.currentBoardId,
   };
 };
 

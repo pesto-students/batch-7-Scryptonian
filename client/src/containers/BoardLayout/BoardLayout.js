@@ -7,17 +7,18 @@ import { updateAuthDetails } from '../../actions/actionDispatchers';
 import queryString from 'query-string';
 import CreateBoardModal from '../../components/CreateBoardModal/CreateBoardModal';
 import '../BoardLayout/BoardLayout.css';
+import { errorToast } from '../../components/Toast/Toast';
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateAuthDetails: userData => dispatch(updateAuthDetails(userData))
+    updateAuthDetails: userData => dispatch(updateAuthDetails(userData)),
   };
 };
 
 export class BoardLayout extends React.Component {
   state = {
     boards: [],
-    openModal: false
+    openModal: false,
   };
 
   componentDidMount() {
@@ -38,12 +39,11 @@ export class BoardLayout extends React.Component {
         this.setState({ boards: boards.data });
       }
     } catch (e) {
-      console.log('Something went wrong');
+      errorToast(e.message);
     }
   };
 
   routeChange = boardId => {
-    console.log(boardId, 'boardID');
     let path = `/board/${boardId}`;
     this.props.history.push(path);
   };
@@ -78,11 +78,7 @@ export class BoardLayout extends React.Component {
               />
             );
           })}
-          <Box
-            boardName={'Create New'}
-            addNewBoard={this.openModal}
-            boardRole={'CREATE'}
-          />
+          <Box boardName={'Create New'} addNewBoard={this.openModal} boardRole={'CREATE'} />
         </div>
       </>
     );
@@ -91,5 +87,5 @@ export class BoardLayout extends React.Component {
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(BoardLayout);

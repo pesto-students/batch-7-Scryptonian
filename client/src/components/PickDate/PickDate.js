@@ -6,6 +6,7 @@ import './PickDate.scss';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
+import { errorToast, successToast } from '../Toast/Toast';
 
 class PickDate extends React.Component {
   state = {
@@ -32,9 +33,10 @@ class PickDate extends React.Component {
       })
         .then(() => {
           const { boardid, getDataForKanbanView } = this.props;
+          successToast(`New due date is set`);
           getDataForKanbanView(boardid);
         })
-        .catch(e => console.log(e)); // TODO: Show this in a popup
+        .catch(e => errorToast(e.message));
     }
   };
 
@@ -51,9 +53,10 @@ class PickDate extends React.Component {
     })
       .then(() => {
         const { boardid, getDataForKanbanView } = this.props;
+        successToast(`Due date removed`);
         getDataForKanbanView(boardid);
       })
-      .catch(e => console.log(e)); // TODO: Show this in a popup
+      .catch(e => errorToast(e.message));
   };
 
   componentWillReceiveProps(nextProps) {

@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import sg from '@sendgrid/mail';
 
 import { OK, BAD_REQUEST, INTERNAL_SERVER_ERROR } from '../configs/httpStatusCodes';
 import { roles } from '../configs/config';
@@ -11,6 +12,7 @@ import userRoleCheck from '../middlewares/userRoleCheck';
 import * as util from '../util';
 
 const router = express.Router();
+sg.setApiKey(process.env.SendGridAPIKey);
 
 // Get list of boards for a particular user
 router.get('/', async (req, res, next) => {
@@ -143,13 +145,16 @@ router.get('/:boardid/label', async (req, res, next) => {
 // Invite a new user to a board
 router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
   const { boardid } = req.query;
-  const { invitedEmailId, invitedUserName } = req.body;
+  const invitedEmailId = req.body.recipientEmailid;
+  const invitedUserName = req.body.recipientUserName;
+  const { senderUserName } = req.body;
 
   if (!util.isValidObjectId(boardid)) {
     return res.status(BAD_REQUEST).send('Invalid boardId');
   }
 
   let existingUser;
+  let newUser;
   try {
     existingUser = await User.findOne({ emailId: invitedEmailId });
   } catch (e) {
@@ -160,6 +165,18 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
   if (existingUser) {
     // if user already exists
     try {
+      const board = await Board.findById(boardid)
+        .select('members name')
+        .lean()
+        .exec();
+
+      const memberFound = board.members.filter(
+        member => member.member.toString() === existingUser._id.toString(),
+      );
+      if (memberFound.length > 0) {
+        return res.status(OK).send(`This user is already invited to ${board.name}`);
+      }
+
       updatedBoard = await Board.findByIdAndUpdate(
         boardid,
         {
@@ -186,7 +203,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
     };
 
     try {
-      const newUser = await User.create(userDocument);
+      newUser = await User.create(userDocument);
       updatedBoard = await Board.findByIdAndUpdate(
         boardid,
         {
@@ -198,7 +215,30 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
       return next(e.message);
     }
   }
-  return res.status(OK).send(updatedBoard);
+
+  let userid;
+  if (existingUser) {
+    userid = existingUser._id;
+  } else {
+    userid = newUser._id;
+  }
+
+  const msg = {
+    to: invitedEmailId,
+    from: 'pkpratiyush@gmail.com',
+    subject: 'New Invitation | Issue Tracker',
+    html: `<h2><center>Welcome To Issue Tracker</center></h2><p>Hi <b>${invitedUserName}</b>!<br/><br />Consider yourself lucky! You're about to use the best Issue Tracker available! Your friend ${senderUserName} has invited you to join the <b>${
+      updatedBoard.name
+    }</b> board.</p><p>To get started, <a href='https://issuetracker-scryptonians.netlify.com/${boardid}/${userid}'>click here.</a></p><p>Excited to have you on-board</p>`,
+  };
+  try {
+    const msgsent = await sg.send(msg);
+  } catch (e) {
+    console.log(e);
+    return next(e.message);
+  }
+
+  return res.status(OK).send(`An invitation mail is successfully sent to ${invitedUserName}`);
 });
 
 export default router;

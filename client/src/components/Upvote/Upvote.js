@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
+import { errorToast } from '../Toast/Toast';
 
 export class Upvote extends React.Component {
   constructor(props) {
@@ -51,7 +52,7 @@ export class Upvote extends React.Component {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
         getDataForKanbanView(boardid, currentUserId);
       })
-      .catch(e => console.log(e)); // TODO: Show this error in a pop-up
+      .catch(e => errorToast(e.message));
   };
 
   render() {
