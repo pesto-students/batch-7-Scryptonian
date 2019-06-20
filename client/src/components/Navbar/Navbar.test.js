@@ -37,7 +37,7 @@ describe('<Navbar after user is authenticated/>', () => {
     expect(
       wrapper
         .find('span')
-        .at(5)
+        .at(4)
         .text()
     ).toEqual(userName);
   });

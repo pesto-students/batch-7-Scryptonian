@@ -1,6 +1,5 @@
 import React from 'react';
 import LifecyclesContainer from '../LifecyclesContainer/LifecyclesContainer';
-import KanbanTitleBar from '../../components/KanbanTitleBar/KanbanTitleBar';
 import IssueDetails from '../../components/IssueDetailsModal/IssueDetails';
 import UsersListModal from '../../components/UsersListModal/UsersListModal';
 import { connect } from 'react-redux';
@@ -23,7 +22,6 @@ export class KanbanLayout extends React.Component {
     } = this.props;
     return (
       <>
-        <KanbanTitleBar name={this.props.boardName} />
         <LifecyclesContainer lifecycles={this.props.lifecycles} />
         {isIssueDetailModalVisible ? <IssueDetails /> : null}
         {isMemberListModalVisible ? (

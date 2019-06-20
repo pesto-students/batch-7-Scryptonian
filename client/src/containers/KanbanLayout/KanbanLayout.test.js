@@ -20,8 +20,4 @@ describe('<KanbanLayout />', () => {
   it('should render <LifecyclesContainer />', () => {
     expect(wrapper.find(LifecyclesContainer)).toHaveLength(1);
   });
-
-  it('should render <KanbanTitleBar />', () => {
-    expect(wrapper.find(KanbanTitleBar)).toHaveLength(1);
-  });
 });

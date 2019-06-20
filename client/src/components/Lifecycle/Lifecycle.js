@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Elevation, Divider, Icon, Intent } from '@blueprintjs/core';
+import { Card, Elevation, Icon, Intent } from '@blueprintjs/core';
 import { Droppable } from 'react-beautiful-dnd';
 import NewIssue from '../NewIssue/NewIssue';
 import Issue from '../Issue/Issue';
@@ -18,7 +18,6 @@ class Lifecycle extends React.Component {
           />
           {name}
         </h3>
-        <Divider />
         {issues ? (
           <Droppable droppableId={this.props.lifecycleid}>
             {provided => (

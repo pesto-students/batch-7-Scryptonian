@@ -8,13 +8,34 @@ import {
   Popover,
   PopoverInteractionKind,
   Position,
-  Button
+  Button,
+  Intent
 } from '@blueprintjs/core';
 import { LogoutUrl } from '../../config';
+import * as actionCreators from '../../actions/actionDispatchers';
 
 const mapStateToProps = state => {
-  const { displayName, emailId, profileImgUrl, isAuthenticated } = state;
-  return { displayName, emailId, profileImgUrl, isAuthenticated };
+  const {
+    displayName,
+    emailId,
+    profileImgUrl,
+    isAuthenticated,
+    currentBoardName
+  } = state;
+  return {
+    displayName,
+    emailId,
+    profileImgUrl,
+    isAuthenticated,
+    currentBoardName
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleMemberListModal: () =>
+      dispatch(actionCreators.toggleMemberListModal())
+  };
 };
 
 export class Navbar extends React.Component {
@@ -46,12 +67,24 @@ export class Navbar extends React.Component {
               Scrypt<span style={{ fontWeight: '100' }}>onian</span>
             </h3>
           </div>
-          {this.props.isAuthenticated ? (
+          {this.props.currentBoardName ? (
             <>
               <span className="bp3-navbar-divider" />
-              <button className="bp3-button bp3-minimal bp3-icon-home">
-                Home
-              </button>
+              <h4 style={{ fontWeight: '100' }}>
+                <span
+                  className="bp3-icon bp3-icon-standard  bp3-icon-layout-hierarchy"
+                  style={{ marginRight: '10px' }}
+                />
+                {this.props.currentBoardName}
+              </h4>
+              <span className="bp3-navbar-divider" />
+              <Button
+                small={true}
+                intent={Intent.SUCCESS}
+                icon="user"
+                text="Member list"
+                onClick={this.props.toggleMemberListModal}
+              />
             </>
           ) : null}
         </div>
@@ -86,5 +119,5 @@ export class Navbar extends React.Component {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Navbar);

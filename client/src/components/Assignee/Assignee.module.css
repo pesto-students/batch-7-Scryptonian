@@ -1,6 +1,4 @@
-.assignee {
-  border: 1px solid #eeeeee;
-  background-color: #eeeeee;
+.assignee { 
   overflow: hidden;
   padding: 2px 5px;
   color: gray;
