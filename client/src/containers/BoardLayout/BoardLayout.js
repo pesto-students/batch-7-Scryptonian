@@ -8,23 +8,25 @@ import queryString from 'query-string';
 import CreateBoardModal from '../../components/CreateBoardModal/CreateBoardModal';
 import '../BoardLayout/BoardLayout.css';
 import { errorToast } from '../../components/Toast/Toast';
+import Cookies from 'js-cookie';
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateAuthDetails: userData => dispatch(updateAuthDetails(userData)),
+    updateAuthDetails: userData => dispatch(updateAuthDetails(userData))
   };
 };
 
 export class BoardLayout extends React.Component {
   state = {
     boards: [],
-    openModal: false,
+    openModal: false
   };
 
   componentDidMount() {
     if (this.props.location) {
       const userDetails = queryString.parse(this.props.location.search);
       if (userDetails) {
+        Cookies.set('user-info', userDetails);
         this.props.updateAuthDetails(userDetails);
       }
     }
@@ -78,7 +80,11 @@ export class BoardLayout extends React.Component {
               />
             );
           })}
-          <Box boardName={'Create New'} addNewBoard={this.openModal} boardRole={'CREATE'} />
+          <Box
+            boardName={'Create New'}
+            addNewBoard={this.openModal}
+            boardRole={'CREATE'}
+          />
         </div>
       </>
     );
@@ -87,5 +93,5 @@ export class BoardLayout extends React.Component {
 
 export default connect(
   null,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(BoardLayout);
