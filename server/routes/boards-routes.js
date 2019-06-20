@@ -2,7 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import sg from '@sendgrid/mail';
 
-import { OK, BAD_REQUEST, INTERNAL_SERVER_ERROR } from '../configs/httpStatusCodes';
+import {
+  OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, CREATED,
+} from '../configs/httpStatusCodes';
 import { roles } from '../configs/config';
 import Board from '../models/board';
 import Lifecycle from '../models/lifecycle';
@@ -174,7 +176,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
         member => member.member.toString() === existingUser._id.toString(),
       );
       if (memberFound.length > 0) {
-        return res.status(OK).send(`This user is already invited to ${board.name}`);
+        return res.status(CREATED).send(`This user is already invited to ${board.name}`);
       }
 
       updatedBoard = await Board.findByIdAndUpdate(
