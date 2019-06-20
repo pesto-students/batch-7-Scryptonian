@@ -33,6 +33,7 @@ describe('todos reducer', () => {
       lifecycles: null,
       roleInCurrentBoard: 'USER',
       boardMemberList: null,
+      isInviteUserModalVisible: false
     });
   });
 });

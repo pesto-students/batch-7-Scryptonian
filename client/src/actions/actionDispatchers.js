@@ -6,9 +6,11 @@ import {
   SET_KANBAN_DATA,
   REORDER_ISSUES,
   TOGGLE_MEMBER_LIST_MODAL,
+  TOGGLE_INVITE_USER_MODAL,
 } from './actionTypes';
 import { BASE_URL } from '../config';
 import axios from 'axios';
+import { errorToast } from '../components/Toast/Toast';
 
 export function showIssueDetails(issueid) {
   return dispatch => {
@@ -17,7 +19,7 @@ export function showIssueDetails(issueid) {
     axios
       .get(getIssueURL)
       .then(res => dispatch(setSelectedIssue(res.data)))
-      .catch(e => console.log(e)); // TODO: Show a pop-up to notify the user
+      .catch(e => errorToast(e.message));
   };
 }
 
@@ -52,14 +54,14 @@ export function getDataForKanbanView(boardid, userid) {
           const memberList = res.data.members;
           const currentUser = memberList.find(member => member.member === userid);
           if (!currentUser) {
-            console.error('You are not part of this board.'); // TODO: Show this in a pop up
+            errorToast('You are not part of this board.');
             return;
           }
           kanbanData.userRole = currentUser.role;
         }
         dispatch(setKanbanDataToStore(kanbanData));
       })
-      .catch(e => {}); // TODO: Show a pop-up to notify the user
+      .catch(e => errorToast(e.message));
   };
 }
 
@@ -90,7 +92,7 @@ export function updateLifecyclesInBackend(originalLifecycles, updatedLifecycles)
         originalLifecycles.map(lifecycle => {
           return dispatch(reorderIssues(lifecycle));
         });
-        console.log(`Unable to move issue. ${e}`); // TODO: Show this error in pop-up
+        errorToast(`Unable to move issue. ${e.message}`);
       });
   };
 }
@@ -106,4 +108,8 @@ export function updateLifecycles(originalLifecycles, updatedLifecycles) {
 
 export function toggleMemberListModal() {
   return { type: TOGGLE_MEMBER_LIST_MODAL };
+}
+
+export function toggleInviteUserModal() {
+  return { type: TOGGLE_INVITE_USER_MODAL };
 }

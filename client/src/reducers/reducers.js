@@ -6,6 +6,7 @@ import {
   SET_KANBAN_DATA,
   REORDER_ISSUES,
   TOGGLE_MEMBER_LIST_MODAL,
+  TOGGLE_INVITE_USER_MODAL,
 } from '../actions/actionTypes';
 import { ROLE } from '../config';
 
@@ -17,6 +18,7 @@ export const initialState = {
   profileImgUrl: '',
   isIssueDetailModalVisible: false,
   isMemberListModalVisible: false,
+  isInviteUserModalVisible: false,
   selectedIssue: null,
   currentBoardName: null,
   currentBoardId: null,
@@ -92,6 +94,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       isMemberListModalVisible: !state.isMemberListModalVisible,
+    };
+  }
+
+  if (action.type === TOGGLE_INVITE_USER_MODAL) {
+    return {
+      ...state,
+      isInviteUserModalVisible: !state.isInviteUserModalVisible,
     };
   }
 

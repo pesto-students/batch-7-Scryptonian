@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import InviteUser from './InviteUser';
+import { InviteUser } from './InviteUser';
 import { Dialog, Button } from '@blueprintjs/core';
 
 describe(' <Inviteuser />', () => {
@@ -13,7 +13,7 @@ describe(' <Inviteuser />', () => {
     expect(wrapper.find(Dialog)).toHaveLength(1);
   });
 
-  it('should have 2 Button components', () => {
-    expect(wrapper.find(Button)).toHaveLength(2);
+  it('should have 1 Button components', () => {
+    expect(wrapper.find(Button)).toHaveLength(1);
   });
 });

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
+import { errorToast, successToast } from '../Toast/Toast';
 
 export class NewIssue extends React.Component {
   state = {
@@ -31,9 +32,10 @@ export class NewIssue extends React.Component {
       .then(() => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
         this.setState({ newIssueText: '' });
+        successToast('New issue added');
         getDataForKanbanView(boardid, currentUserId);
       })
-      .catch(e => {}); // TODO: Show error in pop-up
+      .catch(e => errorToast(e.message));
   };
 
   render() {

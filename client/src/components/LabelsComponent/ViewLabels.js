@@ -4,6 +4,8 @@ import { Popover, Menu, Classes, Button, MenuItem } from '@blueprintjs/core';
 import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
+import { errorToast } from '../Toast/Toast';
+
 class ViewLabels extends React.Component {
   state = {
     names: [],
@@ -18,7 +20,7 @@ class ViewLabels extends React.Component {
     try {
       result = await axios.get(`${BASE_URL}/boards/${boardId}/label/`);
     } catch (e) {
-      console.log(e);
+      errorToast(e.message);
     }
 
     result.data.map((res, index) => {

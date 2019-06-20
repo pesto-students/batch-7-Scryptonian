@@ -20,7 +20,6 @@ class UsersListModal extends React.Component {
   };
 
   render() {
-    console.log(this.props.members)
     return (
       <div>
         <Button onClick={this.handleClose}>Show Dialog</Button>
@@ -29,7 +28,14 @@ class UsersListModal extends React.Component {
             <Users members={this.props.members} />
           </div>
           <div className={Classes.DIALOG_FOOTER}>
-            <Button onClick={this.handleClose}>Invite New User</Button>
+            <Button
+              onClick={() => {
+                this.handleClose();
+                this.props.toggleInviteUserModal();
+              }}
+            >
+              Invite New User
+            </Button>
             <Button onClick={this.handleClose}>Close</Button>
           </div>
         </Dialog>
@@ -49,6 +55,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    toggleInviteUserModal: () => dispatch(actionCreators.toggleInviteUserModal()),
     toggleMemberListModal: () => dispatch(actionCreators.toggleMemberListModal()),
   };
 };

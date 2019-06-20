@@ -3,6 +3,7 @@ import LifecyclesContainer from '../LifecyclesContainer/LifecyclesContainer';
 import KanbanTitleBar from '../../components/KanbanTitleBar/KanbanTitleBar';
 import IssueDetails from '../../components/IssueDetailsModal/IssueDetails';
 import UsersListModal from '../../components/UsersListModal/UsersListModal';
+import InviteUser from '../../components/InviteUser/InviteUser';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 
@@ -19,16 +20,16 @@ export class KanbanLayout extends React.Component {
     const {
       isIssueDetailModalVisible,
       isMemberListModalVisible,
-      boardMemberList
+      boardMemberList,
+      isInviteUserModalVisible,
     } = this.props;
     return (
       <>
         <KanbanTitleBar name={this.props.boardName} />
         <LifecyclesContainer lifecycles={this.props.lifecycles} />
         {isIssueDetailModalVisible ? <IssueDetails /> : null}
-        {isMemberListModalVisible ? (
-          <UsersListModal members={boardMemberList} />
-        ) : null}
+        {isMemberListModalVisible ? <UsersListModal members={boardMemberList} /> : null}
+        {isInviteUserModalVisible ? <InviteUser /> : null}
       </>
     );
   }
@@ -41,18 +42,19 @@ const mapStateToProps = state => {
     lifecycles: state.lifecycles,
     currentUserId: state.currentUserId,
     isMemberListModalVisible: state.isMemberListModalVisible,
-    boardMemberList: state.boardMemberList
+    isInviteUserModalVisible: state.isInviteUserModalVisible,
+    boardMemberList: state.boardMemberList,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(KanbanLayout);
