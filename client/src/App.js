@@ -3,7 +3,6 @@ import SignUp from './containers/SignUp/SignUp';
 import Navbar from './components/Navbar/Navbar';
 import Board from './containers/BoardLayout/BoardLayout';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Footer from './components/Footer/Footer';
 import KanbanLayout from './containers/KanbanLayout/KanbanLayout';
 
 function App() {
@@ -11,7 +10,7 @@ function App() {
     <>
       <Navbar />
       <Router>
-        <div className={'container-layout'}>
+        <div>
           <Switch>
             <Route path="/login" exact component={SignUp} />
             <Route path="/boards/userdata" component={Board} />

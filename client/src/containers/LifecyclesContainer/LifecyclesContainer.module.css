@@ -4,6 +4,7 @@
   overflow: scroll; 
   align-items: flex-start;
   background-color: aliceblue;
-  min-height: 84vh;
+  min-height: 91vh;
+  padding:15px 30px;
 }
  
