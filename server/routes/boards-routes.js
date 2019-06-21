@@ -59,7 +59,10 @@ router.post('/', async (req, res, next) => {
     '5d0c8ed408e7272aca42c2cd',
   ];
   const board = {
-    name, members, createdBy, labels,
+    name,
+    members,
+    createdBy,
+    labels,
   };
 
   let savedLifecycles;
@@ -205,6 +208,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
       );
       await User.findByIdAndUpdate(existingUser, { $push: { memberOf: boardid } });
     } catch (e) {
+      console.log('/invite', e);
       return next(e.message);
     }
   } else {
@@ -225,6 +229,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
         { new: true },
       );
     } catch (e) {
+      console.log('/invite', e);
       return next(e.message);
     }
   }
@@ -247,6 +252,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
   try {
     const msgsent = await sg.send(msg);
   } catch (e) {
+    console.log('/invite', e);
     return next(e.message);
   }
 
