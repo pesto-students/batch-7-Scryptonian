@@ -283,12 +283,13 @@ export class IssueDetails extends React.Component {
                 />
               </div>
             </form>
-            <Button intent="success" onClick={() => this.handleAddCommentOnClick()}>
+            <Button intent="success" small={true} style={{marginLeft: '5px'}} onClick={() => this.handleAddCommentOnClick()}>
               Add Comment
             </Button>
             {/* <Comment /> */}
+            <br/>
             <Popover>
-              <Button text="Delete Issue" />
+              <Button text="Delete Issue" intent="danger" style={{marginTop: '20px'}}/>
               <DeleteConfirmation onSuccess={this.handleDeleteIssue} item="issue" />
             </Popover>
           </div>

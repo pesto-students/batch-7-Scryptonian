@@ -12,7 +12,7 @@ class PickDate extends React.Component {
   state = {
     closeOnSelection: true,
     date: null,
-    disabled: false
+    disabled: false,
   };
 
   handleDateChange = date => {
@@ -27,8 +27,8 @@ class PickDate extends React.Component {
       axios(setDueDateURL, {
         method: 'patch',
         data: {
-          duedate: date
-        }
+          duedate: date,
+        },
       })
         .then(() => {
           const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -46,8 +46,8 @@ class PickDate extends React.Component {
     axios(setDueDateURL, {
       method: 'patch',
       data: {
-        duedate: null
-      }
+        duedate: null,
+      },
     })
       .then(() => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -58,10 +58,7 @@ class PickDate extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (
-      this.props.dueDate !== nextProps.dueDate &&
-      nextProps.dueDate !== null
-    ) {
+    if (this.props.dueDate !== nextProps.dueDate && nextProps.dueDate !== null) {
       this.setState({ date: new Date(nextProps.dueDate) });
     }
   }
@@ -78,18 +75,18 @@ class PickDate extends React.Component {
           value={this.state.date}
         />
         {!this.state.date ? (
-          <Button intent="success" onClick={() => this.setDueDate()}>
-            Set Due Date
+          <Button small={true} intent="success" onClick={() => this.setDueDate()}>
+            Set Date
           </Button>
         ) : (
-          <>
-            <Button intent="success" onClick={() => this.setDueDate()}>
-              Set Due Date
+          <div style={{ display: 'inline-flex', marginTop: '5px' }}>
+            <Button small={true} intent="success" onClick={() => this.setDueDate()} style={{marginRight: '5px'}}>
+              Set Date
             </Button>
-            <Button intent="danger" onClick={() => this.removeDueDate()}>
-              Remove Due Date
+            <Button small={true} intent="danger" onClick={() => this.removeDueDate()}>
+              Remove Date
             </Button>
-          </>
+          </div>
         )}
       </div>
     );
@@ -98,18 +95,18 @@ class PickDate extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    boardid: state.currentBoardId
+    boardid: state.currentBoardId,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(PickDate);
