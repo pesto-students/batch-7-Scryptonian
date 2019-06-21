@@ -111,7 +111,7 @@ export class IssueDetails extends React.Component {
     const givenDate = new Date(date).getTime();
     const currentDate = new Date().getTime();
     if (currentDate < givenDate) {
-      return 'in future!';
+      return 'now!';
     }
     const differenceInMinutes = Math.abs(currentDate - givenDate) / (1000 * 60);
 

@@ -120,7 +120,7 @@ router.post('/label', async (req, res) => {
   let savedLabels;
   try {
     savedLabels = await Label.create(labelDocument);
-    await Board.findOneAndUpdate({ _id: boardId }, { $push: { labels: savedLabels._id } });
+    await Board.findByIdAndUpdate(boardId, { $push: { labels: savedLabels._id } });
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(`Error saving new issue. ${e.message}`);
   }
@@ -136,7 +136,11 @@ router.get('/:boardid/label', async (req, res, next) => {
   }
   let labels;
   try {
-    labels = await Label.find();
+    const board = await Board.findById(boardid)
+      .populate('labels')
+      .select('labels');
+    // eslint-disable-next-line prefer-destructuring
+    labels = board.labels;
   } catch (e) {
     next(e.message);
   }

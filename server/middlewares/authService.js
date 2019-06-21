@@ -8,10 +8,9 @@ export const checkToken = (req, res, next) => {
   const bearerHeader = req.headers.authorization;
   if (typeof bearerHeader !== 'undefined') {
     req.token = bearerHeader;
-    next();
-  } else {
-    res.status(403).send('Kindly login to the app.');
+    return next();
   }
+  return res.status(403).send('Kindly login to the app.');
 };
 
 export const createToken = (req, res) => {

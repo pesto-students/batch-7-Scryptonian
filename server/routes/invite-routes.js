@@ -6,10 +6,15 @@ const router = express.Router();
 router.get('/:boardid/:userid', async (req, res) => {
   const { boardid, userid } = req.params;
 
-  await Board.update(
-    { _id: boardid, 'members.member': userid },
-    { $set: { 'members.$.role': 'USER' } },
-  );
+  console.log('invite accepted');
+  try {
+    await Board.updateOne(
+      { _id: boardid, 'members.member': userid },
+      { $set: { 'members.$.role': 'USER' } },
+    );
+  } catch (e) {
+    console.log('invite', e);
+  }
 
   res.redirect('https://issuetracker-scryptonians.netlify.com/');
 });

@@ -18,7 +18,6 @@ import { checkToken, verifyToken } from './middlewares/authService';
 
 const app = express();
 
-app.use('/invite/', invite);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
@@ -27,6 +26,7 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/invite/', invite);
 app.use('/auth', router);
 app.use('/users/', users);
 app.use(checkToken);
