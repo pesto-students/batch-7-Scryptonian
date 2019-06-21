@@ -63,7 +63,6 @@ export class IssueDetails extends React.Component {
       data: {
         comment: commentInputText,
       },
-      withCredentials: true,
     })
       .then(res => {
         this.setState({ commentInputText: '' });
@@ -99,7 +98,6 @@ export class IssueDetails extends React.Component {
     const deleteCommentURL = `${BASE_URL}/issues/${issueid}/comment/${commentid}`;
     axios(deleteCommentURL, {
       method: 'delete',
-      withCredentials: true,
     })
       .then(res => {
         successToast('Comment deleted');
