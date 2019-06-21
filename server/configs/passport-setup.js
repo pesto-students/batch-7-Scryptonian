@@ -1,7 +1,21 @@
 import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
 import User from '../models/user';
+import Board from '../models/board';
 import { google } from './config';
+
+async function changeInvitedUserRole(userid) {
+  console.log(`${userid} accepted`);
+  try {
+    const res = await Board.updateMany(
+      { 'members.member': userid },
+      { $set: { 'members.$.role': 'USER' } },
+    );
+    console.log(res.nModified);
+  } catch (e) {
+    console.log('board update failed');
+  }
+}
 
 passport.use(
   new GoogleStrategy(
@@ -29,6 +43,7 @@ passport.use(
             },
             { new: true },
           );
+          changeInvitedUserRole(newUser._id);
           done(null, newUser);
         } else {
           newUser = await new User({
@@ -37,6 +52,7 @@ passport.use(
             imageUrl: Object.is(profile.photos[0], undefined) ? null : profile.photos[0].value,
             emailId: Object.is(profile.emails[0], undefined) ? null : profile.emails[0].value,
           }).save();
+          changeInvitedUserRole(newUser._id);
           done(null, newUser);
         }
       } catch (e) {
