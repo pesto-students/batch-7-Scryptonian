@@ -53,6 +53,7 @@ class AddLabels extends React.Component {
                   type="text"
                   value={this.state.name}
                   onChange={this.handleNameChange}
+                  style={{marginTop: '10px'}}
                 />
               </label>
             </div>
@@ -69,10 +70,11 @@ class AddLabels extends React.Component {
             </div>
             <div className={Classes.POPOVER_DISMISS}>
               <Button
-                small={true}
+                small={false}
                 intent={Intent.SUCCESS}
-                text="Add"
+                text="Add New Label"
                 onClick={this.handleSubmit}
+                style={{margin: '15px'}}
               />
             </div>
           </Menu>

@@ -179,7 +179,7 @@ export class IssueDetails extends React.Component {
     const { commentInputText } = this.state;
 
     const allLabels = (
-      <div className="labels">
+      <div className="all-labels">
         {issue.labels
           ? issue.labels.map(label => (
               <Label

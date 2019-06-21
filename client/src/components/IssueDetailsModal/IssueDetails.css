@@ -16,6 +16,10 @@ body {
     margin: 8px;
 }
 
+.all-labels {
+    margin: 20px;
+}
+
 .due-date {
     margin: 4px;
     padding: 8px;

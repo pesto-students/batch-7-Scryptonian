@@ -6,7 +6,9 @@
 }
 
 .labels {
-  margin: 10px 0;
+  margin-top: 10px;
+  margin-bottom: 2px;
+  padding-bottom: 0px;
 }
 
 .meta {
