@@ -6,7 +6,6 @@ import cors from 'cors';
 import passport from 'passport';
 import './configs/passport-setup';
 
-import invite from './routes/invite-routes';
 import users from './routes/users';
 import boards from './routes/boards-routes';
 import issues from './routes/issues-routes';
@@ -26,7 +25,6 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/invite/', invite);
 app.use('/auth', router);
 app.use('/users/', users);
 app.use(checkToken);
