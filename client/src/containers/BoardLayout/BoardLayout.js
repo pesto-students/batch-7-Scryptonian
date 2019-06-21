@@ -68,7 +68,7 @@ export class BoardLayout extends React.Component {
           isOpen={this.state.openModal}
           updateBoard={this.getAllBoards}
         />
-        <h2>Boards List</h2>
+        <h2 style={{padding: "0 30px"}}>Boards List</h2>
         <hr />
         <div className="BoardList">
           {this.state.boards.map((board, index) => {

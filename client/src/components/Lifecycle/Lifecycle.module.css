@@ -41,3 +41,7 @@
 .Lifecycle::-webkit-scrollbar-thumb:hover {
   background: slategrey;
 }
+
+.IssueList {
+  min-height: 20px;
+}

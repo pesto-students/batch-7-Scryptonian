@@ -3,38 +3,24 @@ import './Navbar.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import { connect } from 'react-redux';
-import {
-  Menu,
-  Popover,
-  PopoverInteractionKind,
-  Position,
-  Button,
-  Intent
-} from '@blueprintjs/core';
+import { Menu, Popover, PopoverInteractionKind, Position, Button, Intent } from '@blueprintjs/core';
 import { LogoutUrl } from '../../config';
 import * as actionCreators from '../../actions/actionDispatchers';
 
 const mapStateToProps = state => {
-  const {
-    displayName,
-    emailId,
-    profileImgUrl,
-    isAuthenticated,
-    currentBoardName
-  } = state;
+  const { displayName, emailId, profileImgUrl, isAuthenticated, currentBoardName } = state;
   return {
     displayName,
     emailId,
     profileImgUrl,
     isAuthenticated,
-    currentBoardName
+    currentBoardName,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleMemberListModal: () =>
-      dispatch(actionCreators.toggleMemberListModal())
+    toggleMemberListModal: () => dispatch(actionCreators.toggleMemberListModal()),
   };
 };
 
@@ -63,16 +49,20 @@ export class Navbar extends React.Component {
         <div className="bp3-navbar-group bp3-align-left">
           <div className="bp3-navbar-heading ">
             <h3>
-              <span className="bp3-icon bp3-icon-standard  bp3-icon-search-around" />
-              Scrypt<span style={{ fontWeight: '100' }}>onian</span>
+              <div className="logoFull">
+                <span className="bp3-icon bp3-icon-standard  bp3-icon-search-around" />
+                <div className="skip-in-mobile">
+                  Scrypt<span style={{ fontWeight: '100' }}>onian</span>
+                </div>
+              </div>
             </h3>
           </div>
           {this.props.currentBoardName ? (
             <>
-              <span className="bp3-navbar-divider" />
+              <span className="bp3-navbar-divider skip-in-mobile" />
               <h4 style={{ fontWeight: '100' }}>
                 <span
-                  className="bp3-icon bp3-icon-standard  bp3-icon-layout-hierarchy"
+                  className="bp3-icon bp3-icon-standard bp3-icon-layout-hierarchy"
                   style={{ marginRight: '10px' }}
                 />
                 {this.props.currentBoardName}
@@ -90,16 +80,16 @@ export class Navbar extends React.Component {
         </div>
         {this.props.isAuthenticated ? (
           <div className="bp3-navbar-group bp3-align-right">
-            <span className="bp3-navbar-divider" />
-            <span>
+            <span className="bp3-navbar-divider skip-in-mobile" />
+            <span className="skip-in-mobile">
               <img
                 className="profileThumbnail"
                 src={this.props.profileImgUrl}
                 alt="Profile Thumbnail"
               />
             </span>
-            <span>{this.props.displayName}</span>
-            <span className="bp3-navbar-divider" />
+            <span className="skip-in-mobile">{this.props.displayName}</span>
+            <span className="bp3-navbar-divider " />
             <Popover
               content={popoverContent}
               enforceFocus={false}
@@ -119,5 +109,5 @@ export class Navbar extends React.Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Navbar);
