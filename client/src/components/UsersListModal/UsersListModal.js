@@ -11,7 +11,7 @@ class UsersListModal extends React.Component {
     canOutsideClickClose: true,
     enforceFocus: true,
     isOpen: true,
-    usePortal: true,
+    usePortal: true
   };
 
   handleClose = () => {
@@ -22,8 +22,12 @@ class UsersListModal extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.handleClose}>Show Dialog</Button>
-        <Dialog icon="user" onClose={this.handleClose} title="User List" {...this.state}>
+        <Dialog
+          icon="user"
+          onClose={this.handleClose}
+          title="User List"
+          {...this.state}
+        >
           <div className={Classes.DIALOG_BODY}>
             <Users members={this.props.members} />
           </div>
@@ -33,10 +37,13 @@ class UsersListModal extends React.Component {
                 this.handleClose();
                 this.props.toggleInviteUserModal();
               }}
+              intent="success"
             >
               Invite New User
             </Button>
-            <Button onClick={this.handleClose}>Close</Button>
+            <Button onClick={this.handleClose} style={{ float: 'right' }}>
+              Close
+            </Button>
           </div>
         </Dialog>
       </div>
@@ -49,18 +56,20 @@ const mapStateToProps = state => {
     isIssueDetailModalVisible: state.isIssueDetailModalVisible,
     boardName: state.currentBoardName,
     lifecycles: state.lifecycles,
-    isMemberListModalVisible: state.isMemberListModalVisible,
+    isMemberListModalVisible: state.isMemberListModalVisible
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleInviteUserModal: () => dispatch(actionCreators.toggleInviteUserModal()),
-    toggleMemberListModal: () => dispatch(actionCreators.toggleMemberListModal()),
+    toggleInviteUserModal: () =>
+      dispatch(actionCreators.toggleInviteUserModal()),
+    toggleMemberListModal: () =>
+      dispatch(actionCreators.toggleMemberListModal())
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(UsersListModal);
