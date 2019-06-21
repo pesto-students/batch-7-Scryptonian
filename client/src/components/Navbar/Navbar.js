@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { Menu, Popover, PopoverInteractionKind, Position, Button, Intent } from '@blueprintjs/core';
 import { LogoutUrl } from '../../config';
 import * as actionCreators from '../../actions/actionDispatchers';
+import AddLabels from '../LabelsComponent/AddLabels';
+import ViewLabels from '../LabelsComponent/ViewLabels';
 
 const mapStateToProps = state => {
   const { displayName, emailId, profileImgUrl, isAuthenticated, currentBoardName } = state;
@@ -75,6 +77,8 @@ export class Navbar extends React.Component {
                 text="Member list"
                 onClick={this.props.toggleMemberListModal}
               />
+              <ViewLabels />
+              <AddLabels />
             </>
           ) : null}
         </div>

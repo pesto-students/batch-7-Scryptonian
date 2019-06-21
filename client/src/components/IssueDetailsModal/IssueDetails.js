@@ -8,7 +8,9 @@ import {
   Position,
   MenuItem,
   InputGroup,
-  Card
+  Card,
+  Intent,
+  Divider
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
@@ -267,7 +269,24 @@ export class IssueDetails extends React.Component {
                 Add Comment
               </Button>
             </div>
-            <Comment />
+
+            <form>
+              <div style={{ margin: '4px' }}>
+                <label>Comment:</label>
+                <InputGroup
+                  placeholder="Add your comment"
+                  value={commentInputText}
+                  onChange={event => this.handleCommentInputChange(event)}
+                />
+              </div>
+            </form>
+            <Button
+              intent="success"
+              onClick={() => this.handleAddCommentOnClick()}
+            >
+              Add Comment
+            </Button>
+            {/* <Comment /> */}
             <Popover>
               <Button intent="danger" text="Delete Issue" />
               <DeleteConfirmation

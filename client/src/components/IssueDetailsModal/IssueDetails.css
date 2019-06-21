@@ -23,6 +23,12 @@ body {
 
 .comments {
     padding: 8px;
+    max-height: 300px;
+    overflow: scroll;
+}
+
+.comments p {
+    margin-bottom: 2px;
 }
 
 .issue-header {

@@ -29,3 +29,25 @@ code {
 .container-layout {
   padding: 30px;
 }
+
+.theme-color{
+  color:cornflowerblue;
+}
+
+.plain-card{
+  padding: 5px;  
+  box-shadow: none;
+}
+
+.white-thick-divider{
+  margin: 5px;
+    border-right: 2px solid rgb(255, 255, 255);
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+.date-stamp {
+  color:grey;
+  font-size:12px;
+}
+
+ 
