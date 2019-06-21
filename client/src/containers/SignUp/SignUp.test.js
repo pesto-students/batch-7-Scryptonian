@@ -11,10 +11,6 @@ describe('<SignUp />', () => {
     wrapper = shallow(<SignUp />);
   });
 
-  it('should render the title of the app', () => {
-    expect(wrapper.find('h1').text()).toEqual('Issue Tracker');
-  });
-  
   it('should render a "Sign in using Google" button if not authenticated', () => {
     expect(wrapper.find(GoogleSignInButton)).toHaveLength(1);
   });

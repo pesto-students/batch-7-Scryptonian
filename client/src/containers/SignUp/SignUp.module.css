@@ -1,3 +1,32 @@
 .SignUp {
     text-align: center;
 }
+.signupCard{
+  margin:30px;
+}
+.flexContainer {
+  display: flex;
+  justify-content: center;  
+  padding:95px 0px;
+  background-image: url(https://i0.wp.com/lilar.com/wp-content/uploads/2016/10/Savin-NY-Website-Background-Web.jpg);
+    background-size: cover; 
+}
+
+.flexContainer > div {
+  background-color:white;
+  width: 300px;
+  margin: 10px;
+  text-align: left; 
+  padding:30px;
+  box-shadow: 0 0 0 1px rgba(16,22,26,.1), 0 0 0 rgba(16,22,26,0), 0 1px 1px rgba(16,22,26,.2);
+}
+
+.bp3-icon-search-around {
+  margin-right: 10px;
+  color: cornflowerblue;
+}
+
+.GoogleButton
+{
+  margin-top:30px;
+}
