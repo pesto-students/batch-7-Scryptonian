@@ -9,15 +9,50 @@ import {
 } from '@blueprintjs/core';
 import './Users.css';
 import { connect } from 'react-redux';
+import axios from '../../axios';
+import { BASE_URL } from '../../config';
+import { successToast, errorToast } from '../Toast/Toast';
 
 export class Users extends React.Component {
-  handleRole = () => {
+  handleRole = user => {
     console.log('Inside handleRole');
+    axios(`${BASE_URL}/boards/changerole`, {
+      method: 'patch',
+      data: {
+        userid: user.member,
+        username: user.membername,
+        newrole: user.role
+      },
+      params: { boardid: this.props.boardid }
+    })
+      .then(() => successToast("Successfully changed User's role"))
+      .catch(e => errorToast(e.message));
+  };
+
+  get = userRole => {
+    if (userRole === 'USER') {
+      return ['SUPERADMIN', 'ADMIN'];
+    }
+    if (userRole === 'ADMIN') {
+      return ['SUPERADMIN', 'USER'];
+    }
+    if (userRole === 'SUPERADMIN') {
+      return ['ADMIN', 'USER'];
+    }
   };
 
   removeUser = () => {
     console.log('Inside remove user');
   };
+  getLowercase(role) {
+    const firstLetter = role.split('')[0];
+    const rest = role
+      .split('')
+      .splice(1)
+      .join('')
+      .toLowerCase();
+    return firstLetter + rest;
+  }
   render() {
     console.log(this.props.roleInCurrentBoard);
     return (
@@ -38,26 +73,19 @@ export class Users extends React.Component {
                 <Popover
                   content={
                     <Menu style={{ display: 'block' }}>
-                      <MenuItem
-                        text=" Make SuperAdmin"
-                        icon="edit"
-                        intent="primary"
-                        onClick={this.handleRole}
-                      />
-                      <MenuDivider />
-                      <MenuItem
-                        text="Make Admin"
-                        icon="edit"
-                        intent="primary"
-                        onClick={this.handleRole}
-                      />
-                      <MenuDivider />
-                      <MenuItem
-                        text="Make User"
-                        icon="edit"
-                        intent="primary"
-                        onClick={this.handleRole}
-                      />
+                      <MenuDivider title="Change to" />
+                      {this.get(user.role).map((role, index) => {
+                        return (
+                          <MenuItem
+                            text={this.getLowercase(role)}
+                            key={index}
+                            icon="user"
+                            intent="primary"
+                            onClick={() => this.handleRole(user)}
+                          />
+                        );
+                      })}
+
                       <MenuDivider />
                       <MenuItem
                         text="Kick Off User"
@@ -86,7 +114,8 @@ export class Users extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    roleInCurrentBoard: state.roleInCurrentBoard
+    roleInCurrentBoard: state.roleInCurrentBoard,
+    boardid: state.currentBoardId
   };
 };
 

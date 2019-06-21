@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { Button, Dialog, Classes, InputGroup, Label } from '@blueprintjs/core';
 import { errorToast } from '../Toast/Toast';
@@ -15,7 +15,7 @@ class CreateBoardModal extends React.Component {
       usePortal: true,
       lifecycles: [''],
       boardName: '',
-      errors: [],
+      errors: []
     };
     this.state = this.initialState;
   }
@@ -30,7 +30,7 @@ class CreateBoardModal extends React.Component {
       name: this.state.boardName,
       lifecycles: this.state.lifecycles.map((ele, index) => {
         return { sequenceNumber: index, name: ele };
-      }),
+      })
     };
     let newAddedBoard;
     try {
@@ -59,7 +59,7 @@ class CreateBoardModal extends React.Component {
 
   removeLifecycle = index => {
     this.setState(prevState => ({
-      lifecycles: prevState.lifecycles.filter((_, i) => i !== index),
+      lifecycles: prevState.lifecycles.filter((_, i) => i !== index)
     }));
   };
 
@@ -77,7 +77,13 @@ class CreateBoardModal extends React.Component {
 
   render() {
     const removeButton = index => {
-      return <Button icon={'cross'} minimal={true} onClick={() => this.removeLifecycle(index)} />;
+      return (
+        <Button
+          icon={'cross'}
+          minimal={true}
+          onClick={() => this.removeLifecycle(index)}
+        />
+      );
     };
 
     return (
@@ -96,7 +102,9 @@ class CreateBoardModal extends React.Component {
                 value={this.state.boardName}
                 onChange={this.setBoardName}
               />
-              <span style={{ color: 'red' }}>{this.state.errors['boardName']}</span>
+              <span style={{ color: 'red' }}>
+                {this.state.errors['boardName']}
+              </span>
             </Label>
             <Label style={{ margin: '4px' }}>
               <span> Add Lifecycle:</span>

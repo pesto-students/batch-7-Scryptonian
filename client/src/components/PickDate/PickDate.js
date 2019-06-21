@@ -3,7 +3,7 @@ import { DateInput } from '@blueprintjs/datetime';
 import { Button } from '@blueprintjs/core';
 import { BASE_URL } from '../../config';
 import './PickDate.scss';
-import axios from 'axios';
+import axios from '../../axios';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import { errorToast, successToast } from '../Toast/Toast';

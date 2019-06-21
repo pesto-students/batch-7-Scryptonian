@@ -2,7 +2,7 @@ import React from 'react';
 import UpvoteIcon from '../../assets/UpvoteIcon';
 import classes from './Upvote.module.css';
 import { Divider } from '@blueprintjs/core';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
