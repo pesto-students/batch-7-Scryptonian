@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, InputGroup } from '@blueprintjs/core';
 import classes from './NewIssue.module.css';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
@@ -9,7 +9,7 @@ import { errorToast, successToast } from '../Toast/Toast';
 
 export class NewIssue extends React.Component {
   state = {
-    newIssueText: '',
+    newIssueText: ''
   };
 
   handleTextChange = event => {
@@ -25,8 +25,8 @@ export class NewIssue extends React.Component {
       method: 'post',
       data: {
         lifecycleid: this.props.lifecycleid,
-        issue: this.state.newIssueText,
-      },
+        issue: this.state.newIssueText
+      }
     })
       .then(() => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -45,7 +45,13 @@ export class NewIssue extends React.Component {
 
   render() {
     const addIssue = _ => {
-      return <Button icon={'add'} minimal={true} onClick={() => this.handleCreateNewIssue()} />;
+      return (
+        <Button
+          icon={'add'}
+          minimal={true}
+          onClick={() => this.handleCreateNewIssue()}
+        />
+      );
     };
     return (
       <Card className={classes.NewIssue}>
@@ -65,18 +71,18 @@ export class NewIssue extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    boardid: state.currentBoardId,
+    boardid: state.currentBoardId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(NewIssue);

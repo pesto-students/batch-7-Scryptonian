@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Dialog, Classes, InputGroup } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { errorToast, successToast, warningToast } from '../Toast/Toast';
 
@@ -16,7 +16,7 @@ export class InviteUser extends React.Component {
     usePortal: true,
     round: true,
     mail: '',
-    username: '',
+    username: ''
   };
 
   handleNameOnChange = e => {
@@ -44,8 +44,8 @@ export class InviteUser extends React.Component {
         data: {
           recipientUserName,
           recipientEmailid,
-          senderUserName,
-        },
+          senderUserName
+        }
       })
         .then(res => {
           if (res.status === 201) {
@@ -61,7 +61,12 @@ export class InviteUser extends React.Component {
   render() {
     return (
       <div>
-        <Dialog icon="add" onClose={this.handleClose} title="Invite New User" {...this.state}>
+        <Dialog
+          icon="add"
+          onClose={this.handleClose}
+          title="Invite New User"
+          {...this.state}
+        >
           <div className={Classes.DIALOG_BODY}>
             <form>
               <span>Name</span>
@@ -99,17 +104,18 @@ const mapStateToProps = state => {
   return {
     boardid: state.currentBoardId,
     senderUserName: state.displayName,
-    userid: state.currentUserId,
+    userid: state.currentUserId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleInviteUserModal: () => dispatch(actionCreators.toggleInviteUserModal()),
+    toggleInviteUserModal: () =>
+      dispatch(actionCreators.toggleInviteUserModal())
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(InviteUser);

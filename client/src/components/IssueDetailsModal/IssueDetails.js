@@ -19,7 +19,7 @@ import PickDate from '../PickDate/PickDate';
 import DeleteConfirmation from '../DeleteConfirmation/DeleteConfirmation';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { errorToast, successToast } from '../Toast/Toast';
 
@@ -46,7 +46,7 @@ export class IssueDetails extends React.Component {
     this.props.closeModal();
   };
 
-  handleCommentInputChange = (e) => {
+  handleCommentInputChange = e => {
     this.setState({ commentInputText: e.target.value });
   };
 

@@ -9,7 +9,7 @@ import {
   InputGroup
 } from '@blueprintjs/core';
 import { TwitterPicker } from 'react-color';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import { errorToast, successToast } from '../Toast/Toast';

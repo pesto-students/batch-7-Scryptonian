@@ -1,7 +1,7 @@
 import React from 'react';
 import './ViewLabels.css';
 import { Popover, Menu, Classes, Button, MenuItem } from '@blueprintjs/core';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import { errorToast } from '../Toast/Toast';
