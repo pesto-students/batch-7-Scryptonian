@@ -1,13 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Users from './Users';
+import { Users } from './Users';
 
 describe(' <Users />', () => {
   let wrapper;
   beforeEach(() => {
     const memberList = [
       { member: '123', membername: 'RJ', _id: '1' },
-      { member: '789', membername: 'DJ', _id: '2' },
+      { member: '789', membername: 'DJ', _id: '2' }
     ];
     wrapper = shallow(<Users members={memberList} />);
   });
