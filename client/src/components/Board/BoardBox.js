@@ -43,7 +43,7 @@ class BoardBox extends React.Component {
           ) : props.boardRole === 'ADMIN' ? (
             <span className={'bp3-icon-standard bp3-icon-tag custom-icon'} />
           ) : (
-            <span className={'bp3-icon-standard bp3-icon-user custom-icon'} />
+            <span />
           )}
           <div
             onClick={

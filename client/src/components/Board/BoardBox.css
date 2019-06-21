@@ -13,13 +13,13 @@
 
 .custom-icon{
     position: absolute;
-    right: 5px;
+    left: 5px;
     top: 5px;
-    color: blue;
+    color: rgb(12, 108, 192);
 }
 
 .edit-icon {
     position: absolute;
-    right: 27px;
+    right: 2px;
     top: 0;
 }
