@@ -46,7 +46,6 @@ export class InviteUser extends React.Component {
           recipientEmailid,
           senderUserName,
         },
-        withCredentials: true,
       })
         .then(res => {
           if (res.status === 201) {

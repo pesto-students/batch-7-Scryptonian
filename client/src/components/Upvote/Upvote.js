@@ -46,7 +46,6 @@ export class Upvote extends React.Component {
     const upvoteURL = `${BASE_URL}/issues/${issueid}/upvote`;
     axios(upvoteURL, {
       method: 'patch',
-      withCredentials: true,
     })
       .then(res => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;

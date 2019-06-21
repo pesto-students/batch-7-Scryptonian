@@ -29,7 +29,6 @@ class PickDate extends React.Component {
         data: {
           duedate: date,
         },
-        withCredentials: true,
       })
         .then(() => {
           const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -49,7 +48,6 @@ class PickDate extends React.Component {
       data: {
         duedate: null,
       },
-      withCredentials: true,
     })
       .then(() => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;

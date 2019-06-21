@@ -85,7 +85,6 @@ export function updateLifecyclesInBackend(originalLifecycles, updatedLifecycles)
       data: {
         lifecycles: updatedLifecycles,
       },
-      withCredentials: true,
     })
       .then()
       .catch(e => {
