@@ -6,7 +6,8 @@ import {
   Classes,
   Button,
   Menu,
-  InputGroup
+  InputGroup,
+  Intent
 } from '@blueprintjs/core';
 import { TwitterPicker } from 'react-color';
 import axios from '../../axios';
@@ -42,39 +43,49 @@ class AddLabels extends React.Component {
 
   render() {
     return (
-      <>
-        <Popover
-          content={
-            <Menu className={Classes.ELEVATION_ONE}>
-              <div className="add-name">
-                <label>
-                  Name:
-                  <input
-                    type="text"
-                    value={this.state.name}
-                    onChange={this.handleNameChange}
-                  />
-                </label>
-              </div>
-              <div className="add-color">
-                <label>
-                  Color:
-                  <BlockPicker
+      <Popover
+        content={
+          <Menu className={Classes.ELEVATION_ONE} style={{ display: 'block' }}>
+            <div className="add-name">
+              <label>
+                Name:
+                <InputGroup
+                  type="text"
+                  value={this.state.name}
+                  onChange={this.handleNameChange}
+                />
+              </label>
+            </div>
+            <div className="add-color">
+              <label>
+                Color:
+                <div style={{ margin: '14px' }}>
+                  <TwitterPicker
                     color={this.state.color}
                     onChangeComplete={this.handleColorChange}
                   />
-                </label>
-              </div>
-              <div className={Classes.POPOVER_DISMISS}>
-                <button onClick={this.handleSubmit}>Add new Label</button>
-              </div>
-            </Menu>
-          }
-          position={Position.BOTTOM_LEFT}
-        >
-          <Button rightIcon="arrow-down" text="Add Labels" />
-        </Popover>
-      </>
+                </div>
+              </label>
+            </div>
+            <div className={Classes.POPOVER_DISMISS}>
+              <Button
+                small={true}
+                intent={Intent.SUCCESS}
+                text="Add"
+                onClick={this.handleSubmit}
+              />
+            </div>
+          </Menu>
+        }
+        position={Position.BOTTOM_LEFT}
+      >
+        <Button
+          icon="add-to-artifact"
+          small={true}
+          intent={Intent.NONE}
+          text="Add Labels"
+        />
+      </Popover>
     );
   }
 }

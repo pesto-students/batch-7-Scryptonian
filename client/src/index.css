@@ -50,4 +50,6 @@ code {
   font-size:12px;
 }
 
- 
+.bp3-dark .bp3-menu {
+  background: #24292e;
+}

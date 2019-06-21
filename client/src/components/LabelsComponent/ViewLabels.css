@@ -5,3 +5,7 @@
 .column {
     flex: 50%;
 }
+
+.customViewLabel{
+    overflow: auto!important;
+}
