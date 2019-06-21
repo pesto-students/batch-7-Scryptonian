@@ -4,12 +4,6 @@ import axios from 'axios';
 import { errorToast } from '../Toast/Toast';
 import { BASE_URL } from '../../config';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-];
-
 class Multiselect extends React.Component {
   constructor(props) {
     super(props);
@@ -25,14 +19,12 @@ class Multiselect extends React.Component {
 
   getLabelList = async () => {
     let result;
-    let color = [],
-      name = [];
     const boardId = this.props.currentBoardId;
     try {
       result = await axios.get(`${BASE_URL}/boards/${boardId}/label/`);
       if (result.data) {
         let labelList = result.data.map(el => {
-          return { value: el._id, name: el.labelName };
+          return { value: el._id, label: el.labelName };
         });
         this.setState({ labelList: labelList });
         console.log(this.state.labelList);
@@ -50,13 +42,18 @@ class Multiselect extends React.Component {
     const { selectedOption } = this.state;
 
     return (
-      <Select
-        value={selectedOption}
-        onChange={this.handleChange}
-        options={this.state.labelList}
-        isMulti={true}
-        className="bp3-input"
-      />
+      <>
+        <div className="content">
+          <span> Assign Tags : </span>
+        </div>
+        <Select
+          value={selectedOption}
+          onChange={this.handleChange}
+          options={this.state.labelList}
+          isMulti={true}
+          className={'bp3-input-group'}
+        />
+      </>
     );
   }
 }

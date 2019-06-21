@@ -25,6 +25,7 @@ import * as actionCreators from '../../actions/actionDispatchers';
 import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import { errorToast, successToast } from '../Toast/Toast';
+import Multiselect from '../LabelsComponent/MultiselectLabel';
 
 export class IssueDetails extends React.Component {
   state = {
@@ -194,16 +195,9 @@ export class IssueDetails extends React.Component {
 
     return (
       <div>
-        <Dialog
-          onClose={this.handleClose}
-          title="Issue Details"
-          {...this.state}
-        >
+        <Dialog onClose={this.handleClose} title={issue.issue} {...this.state}>
           <div className={Classes.DIALOG_BODY}>
             <div className="row">
-              <div className="column">
-                <h3 className="issue-header">{issue.issue}</h3>
-              </div>
               {/* <div className="column">
                 <Upvote
                   upvotes={issue.upvotes}
@@ -212,13 +206,13 @@ export class IssueDetails extends React.Component {
                 />
               </div> */}
             </div>
-            <div className="label">
-              <ViewLabels />
-              <AddLabels />
-            </div>
-            {allLabels}
-            <div className="due-date">
-              <PickDate dueDate={issue.dueDate} issueid={issue._id} />
+            <div className="row">
+              <div className="column">
+                <Multiselect currentBoardId={this.props.currentBoardId} />
+              </div>
+              <div className="column">
+                <PickDate dueDate={issue.dueDate} issueid={issue._id} />
+              </div>
             </div>
             <div className="assignee">
               <span>Assign to:</span>
