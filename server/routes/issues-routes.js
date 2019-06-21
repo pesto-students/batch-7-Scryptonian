@@ -65,6 +65,7 @@ router.get('/:issueid', async (req, res) => {
       .populate({ path: 'createdBy' })
       .populate({ path: 'assignee' })
       .populate({ path: 'modifiedBy' })
+      .populate({ path: 'labels' })
       .exec();
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
@@ -267,7 +268,26 @@ router.patch('/reorder', async (req, res) => {
     res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
-  res.status(OK).send();
+  return res.status(OK).send();
+});
+
+// Set a label to an issue
+router.patch('/:issueid/label', async (req, res) => {
+  const { issueid } = req.params;
+  const { labelid } = req.body;
+
+  let updatedIssue;
+  try {
+    updatedIssue = await Issue.findByIdAndUpdate(
+      issueid,
+      { $push: { labels: labelid } },
+      { new: true },
+    );
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(`Error setting label. ${e.message}`);
+  }
+
+  return res.status(OK).send(updatedIssue);
 });
 
 export default router;
