@@ -42,39 +42,39 @@ class AddLabels extends React.Component {
 
   render() {
     return (
-      <Popover
-        content={
-          <Menu className={Classes.ELEVATION_ONE} style={{ display: 'block' }}>
-            <div className="add-name">
-              <label>
-                Name:
-                <InputGroup
-                  type="text"
-                  value={this.state.name}
-                  onChange={this.handleNameChange}
-                />
-              </label>
-            </div>
-            <div className="add-color">
-              <label>
-                Color:
-                <div style={{ margin: '14px' }}>
-                  <TwitterPicker
+      <>
+        <Popover
+          content={
+            <Menu className={Classes.ELEVATION_ONE}>
+              <div className="add-name">
+                <label>
+                  Name:
+                  <input
+                    type="text"
+                    value={this.state.name}
+                    onChange={this.handleNameChange}
+                  />
+                </label>
+              </div>
+              <div className="add-color">
+                <label>
+                  Color:
+                  <BlockPicker
                     color={this.state.color}
                     onChangeComplete={this.handleColorChange}
                   />
-                </div>
-              </label>
-            </div>
-            <div className={Classes.POPOVER_DISMISS}>
-              <button onClick={this.handleSubmit}>Add new Label</button>
-            </div>
-          </Menu>
-        }
-        position={Position.BOTTOM_LEFT}
-      >
-        <Button rightIcon="arrow-down" text="Add Labels" />
-      </Popover>
+                </label>
+              </div>
+              <div className={Classes.POPOVER_DISMISS}>
+                <button onClick={this.handleSubmit}>Add new Label</button>
+              </div>
+            </Menu>
+          }
+          position={Position.BOTTOM_LEFT}
+        >
+          <Button rightIcon="arrow-down" text="Add Labels" />
+        </Popover>
+      </>
     );
   }
 }
