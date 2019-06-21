@@ -14,6 +14,7 @@ import router from './routes/auth-routes';
 
 import { PORT, MONGO_CONNECTION_STRING } from './configs/config';
 import { INTERNAL_SERVER_ERROR } from './configs/httpStatusCodes';
+import { checkToken, verifyToken } from './middlewares/authService';
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.use(passport.session());
 
 app.use('/auth', router);
 app.use('/users/', users);
+app.use(checkToken);
+app.use(verifyToken);
 app.use('/boards/', boards);
 app.use('/issues/', issues);
 
@@ -52,8 +55,6 @@ export const server = app.listen(PORT, (err) => {
 }());
 
 // ERROR HANDLING MIDDLEWARE
-app.use((err, req, res, next) => {
-  res.status(INTERNAL_SERVER_ERROR).send(`Something went wrong! ${err}`);
-});
+app.use((err, req, res, next) => res.status(INTERNAL_SERVER_ERROR).send(`Something went wrong! ${err}`));
 
 export const db = mongoose.connection;
