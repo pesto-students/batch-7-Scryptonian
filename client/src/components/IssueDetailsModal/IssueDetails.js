@@ -50,7 +50,7 @@ export class IssueDetails extends React.Component {
 
   handleAddCommentOnClick = () => {
     const { commentInputText } = this.state;
-    const { showIssueDetails, getDataForKanbanView, currentBoardId } = this.props;
+    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
     const issueid = this.props.selectedIssue._id;
 
     if (commentInputText === '') {
@@ -69,7 +69,7 @@ export class IssueDetails extends React.Component {
         this.setState({ commentInputText: '' });
         successToast('Comment added');
         showIssueDetails(res.data._id);
-        getDataForKanbanView(currentBoardId);
+        getDataForKanbanView(currentBoardId, currentUserId);
       })
       .catch(e => errorToast(e.message));
   };
@@ -77,7 +77,7 @@ export class IssueDetails extends React.Component {
   handleDeleteIssue = () => {
     const issueid = this.props.selectedIssue._id;
     const boardid = this.props.currentBoardId;
-    const { getDataForKanbanView } = this.props;
+    const { getDataForKanbanView, currentUserId } = this.props;
 
     const deleteIssueURL = `${BASE_URL}/issues/${issueid}`;
     axios(deleteIssueURL, {
@@ -87,7 +87,7 @@ export class IssueDetails extends React.Component {
       .then(res => {
         this.handleClose();
         successToast('Issue deleted');
-        getDataForKanbanView(boardid);
+        getDataForKanbanView(boardid, currentUserId);
       })
       .catch(e => errorToast(e.message));
   };
@@ -95,7 +95,7 @@ export class IssueDetails extends React.Component {
   handleDeleteCommentOnClick = comment => {
     const issueid = this.props.selectedIssue._id;
     const commentid = comment._id;
-    const { showIssueDetails, getDataForKanbanView, currentBoardId } = this.props;
+    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
     const deleteCommentURL = `${BASE_URL}/issues/${issueid}/comment/${commentid}`;
     axios(deleteCommentURL, {
       method: 'delete',
@@ -104,7 +104,7 @@ export class IssueDetails extends React.Component {
       .then(res => {
         successToast('Comment deleted');
         showIssueDetails(res.data._id);
-        getDataForKanbanView(currentBoardId);
+        getDataForKanbanView(currentBoardId, currentUserId);
       })
       .catch(e => errorToast(e.message));
   };
@@ -242,7 +242,8 @@ const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => dispatch(actionCreators.closeIssueDetailsModal()),
     showIssueDetails: issueid => dispatch(actionCreators.showIssueDetails(issueid)),
-    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+    getDataForKanbanView: (boardid, userid) =>
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 

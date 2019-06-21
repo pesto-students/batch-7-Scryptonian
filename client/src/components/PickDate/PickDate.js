@@ -32,9 +32,9 @@ class PickDate extends React.Component {
         withCredentials: true,
       })
         .then(() => {
-          const { boardid, getDataForKanbanView } = this.props;
+          const { boardid, getDataForKanbanView, currentUserId } = this.props;
           successToast(`New due date is set`);
-          getDataForKanbanView(boardid);
+          getDataForKanbanView(boardid, currentUserId);
         })
         .catch(e => errorToast(e.message));
     }
@@ -52,9 +52,9 @@ class PickDate extends React.Component {
       withCredentials: true,
     })
       .then(() => {
-        const { boardid, getDataForKanbanView } = this.props;
+        const { boardid, getDataForKanbanView, currentUserId } = this.props;
         successToast(`Due date removed`);
-        getDataForKanbanView(boardid);
+        getDataForKanbanView(boardid, currentUserId);
       })
       .catch(e => errorToast(e.message));
   };
@@ -105,7 +105,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getDataForKanbanView: boardid => dispatch(actionCreators.getDataForKanbanView(boardid)),
+    getDataForKanbanView: (boardid, userid) =>
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 
