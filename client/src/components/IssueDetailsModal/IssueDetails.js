@@ -32,7 +32,9 @@ export class IssueDetails extends React.Component {
     isOpen: true,
     usePortal: true,
     round: true,
-    commentInputText: ''
+    commentInputText: '',
+    memberName: 'None',
+    memberId: ''
   };
 
   handleOpen = () => {
@@ -141,6 +143,17 @@ export class IssueDetails extends React.Component {
     return days === 1 ? `1 day ago` : `${days} days ago`;
   };
 
+  changeAssignee = (member, id) => {
+    const issueid = this.props.selectedIssue._id;
+    this.setState({ memberName: member, memberId: id });
+    axios(`${BASE_URL}/issues/${issueid}/assignee`, {
+      method: 'patch',
+      data: {
+        assigneeid: this.state.memberId
+      }
+    });
+  };
+
   render() {
     console.log(this.props.members);
     const issue = this.props.selectedIssue
@@ -151,7 +164,6 @@ export class IssueDetails extends React.Component {
           assignee: 'Loading...',
           upvotedBy: []
         };
-    //const members = [];
     const userId = this.props.currentUserId;
     const upvotedState = issue.upvotedBy.includes(userId);
     const { commentInputText } = this.state;
@@ -188,14 +200,23 @@ export class IssueDetails extends React.Component {
               <Popover
                 position={Position.BOTTOM}
                 content={
-                  <Menu className={Classes.ELEVATION_ONE}>
+                  <Menu
+                    className={Classes.ELEVATION_ONE}
+                    style={{ display: 'block' }}
+                  >
                     {this.props.members.map(member => (
-                      <MenuItem text={member} />
+                      <MenuItem
+                        text={member.membername}
+                        intent="primary"
+                        onClick={() =>
+                          this.changeAssignee(member.membername, member.member)
+                        }
+                      />
                     ))}
                   </Menu>
                 }
               >
-                <Button rightIcon="arrow-down" text="None" />
+                <Button rightIcon="arrow-down" text={this.state.memberName} />
               </Popover>
             </div>
             <div className="comments">
