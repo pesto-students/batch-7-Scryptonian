@@ -5,7 +5,7 @@ import './BoardBox.css';
 
 class BoardBox extends React.Component {
   state = {
-    disableClick: false
+    disableClick: false,
   };
 
   handleClick = e => {
@@ -18,7 +18,7 @@ class BoardBox extends React.Component {
   toggleClickHandle = e => {
     e.preventDefault();
     this.setState({
-      disableClick: !this.state.disableClick
+      disableClick: !this.state.disableClick,
     });
   };
 
@@ -26,24 +26,18 @@ class BoardBox extends React.Component {
     const { props } = this;
     return (
       <>
-        <Card
-          interactive={true}
-          elevation={Elevation.TWO}
-          className="board-container"
-        >
+        <Card interactive={true} elevation={Elevation.TWO} className="board-container">
           {props.boardRole === 'SUPERADMIN' ? (
             <>
               <EditButtonPopover className="edit-icon" />
-              <span
-                className={'bp3-icon-standard bp3-icon-crown custom-icon'}
-              />
+              <span className={'bp3-icon-standard bp3-icon-crown custom-icon'} />
             </>
           ) : props.boardRole === 'CREATE' ? (
             <span className={'bp3-icon-standard bp3-icon-plus'} />
           ) : (
             <span className={'bp3-icon-standard bp3-icon-user custom-icon'} />
           )}
-          <div onClick={this.handleClick}>
+          <div onClick={props.addNewBoard ? () => props.addNewBoard() : () => props.openKanban()}>
             <p>{props.boardName}</p>
             <p className={'bp3-text-small bp3-text-muted'}>
               {props.createdBy ? `${props.createdBy}` : null}
