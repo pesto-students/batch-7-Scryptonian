@@ -198,7 +198,11 @@ export class IssueDetails extends React.Component {
                 />
               </div> */}
             </div>
-            <Multiselect currentBoardId={this.props.currentBoardId} issue={issue._id} />
+            <Multiselect
+              currentBoardId={this.props.currentBoardId}
+              issue={issue._id}
+              presentLabels={issue.labels}
+            />
             {allLabels}
             <div className="row">
               <div className="column">

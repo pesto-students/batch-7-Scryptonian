@@ -40,7 +40,6 @@ class Multiselect extends React.Component {
     const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
     this.setState({ selectedOption });
     const allLabels = selectedOption.map(option => option.value);
-    console.log(allLabels);
     const setLabelURL = `${BASE_URL}/issues/${issueid}/label`;
     axios(setLabelURL, {
       method: 'patch',
@@ -49,12 +48,24 @@ class Multiselect extends React.Component {
       },
     })
       .then(res => {
-        successToast('Assigned succesfully.');
+        successToast('Label set succesfully.');
         showIssueDetails(res.data._id);
         getDataForKanbanView(currentBoardId, currentUserId);
       })
       .catch(e => errorToast(e.message));
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.presentLabels !== nextProps.presentLabels) {
+      const labels = nextProps.presentLabels.map(label => {
+        return {
+          value: label._id,
+          label: label.labelName,
+        };
+      });
+      this.setState({ selectedOption: labels });
+    }
+  }
 
   render() {
     const { selectedOption } = this.state;
