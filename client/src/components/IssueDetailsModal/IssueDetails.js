@@ -8,7 +8,7 @@ import {
   Position,
   MenuItem,
   InputGroup,
-  Card,
+  Card
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
@@ -32,7 +32,7 @@ export class IssueDetails extends React.Component {
     isOpen: true,
     usePortal: true,
     round: true,
-    commentInputText: '',
+    commentInputText: ''
   };
 
   handleOpen = () => {
@@ -50,7 +50,12 @@ export class IssueDetails extends React.Component {
 
   handleAddCommentOnClick = () => {
     const { commentInputText } = this.state;
-    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
+    const {
+      showIssueDetails,
+      getDataForKanbanView,
+      currentBoardId,
+      currentUserId
+    } = this.props;
     const issueid = this.props.selectedIssue._id;
 
     if (commentInputText === '') {
@@ -61,8 +66,8 @@ export class IssueDetails extends React.Component {
     axios(ADD_COMMENT_URL, {
       method: 'post',
       data: {
-        comment: commentInputText,
-      },
+        comment: commentInputText
+      }
     })
       .then(res => {
         this.setState({ commentInputText: '' });
@@ -81,7 +86,7 @@ export class IssueDetails extends React.Component {
     const deleteIssueURL = `${BASE_URL}/issues/${issueid}`;
     axios(deleteIssueURL, {
       method: 'delete',
-      params: { boardid },
+      params: { boardid }
     })
       .then(res => {
         this.handleClose();
@@ -94,10 +99,15 @@ export class IssueDetails extends React.Component {
   handleDeleteCommentOnClick = comment => {
     const issueid = this.props.selectedIssue._id;
     const commentid = comment._id;
-    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
+    const {
+      showIssueDetails,
+      getDataForKanbanView,
+      currentBoardId,
+      currentUserId
+    } = this.props;
     const deleteCommentURL = `${BASE_URL}/issues/${issueid}/comment/${commentid}`;
     axios(deleteCommentURL, {
-      method: 'delete',
+      method: 'delete'
     })
       .then(res => {
         successToast('Comment deleted');
@@ -132,29 +142,38 @@ export class IssueDetails extends React.Component {
   };
 
   render() {
+    console.log(this.props.members);
     const issue = this.props.selectedIssue
       ? this.props.selectedIssue
       : {
           issue: 'Loading...',
           upvotes: 0,
           assignee: 'Loading...',
-          upvotedBy: [],
+          upvotedBy: []
         };
-    const members = [];
+    //const members = [];
     const userId = this.props.currentUserId;
     const upvotedState = issue.upvotedBy.includes(userId);
     const { commentInputText } = this.state;
 
     return (
       <div>
-        <Dialog onClose={this.handleClose} title="Issue Details" {...this.state}>
+        <Dialog
+          onClose={this.handleClose}
+          title="Issue Details"
+          {...this.state}
+        >
           <div className={Classes.DIALOG_BODY}>
             <div className="row">
               <div className="column">
                 <h3 className="issue-header">{issue.issue}</h3>
               </div>
               <div className="column">
-                <Upvote upvotes={issue.upvotes} issueid={issue._id} upvoted={upvotedState} />
+                <Upvote
+                  upvotes={issue.upvotes}
+                  issueid={issue._id}
+                  upvoted={upvotedState}
+                />
               </div>
             </div>
             <div className="label">
@@ -170,16 +189,13 @@ export class IssueDetails extends React.Component {
                 position={Position.BOTTOM}
                 content={
                   <Menu className={Classes.ELEVATION_ONE}>
-                    {members.map(member => (
-                      <MenuItem text={member.name} key={member._id} />
+                    {this.props.members.map(member => (
+                      <MenuItem text={member} />
                     ))}
                   </Menu>
                 }
               >
-                <Button
-                  rightIcon="arrow-down"
-                  text={issue.assignee ? issue.assignee.name : 'None'}
-                />
+                <Button rightIcon="arrow-down" text="None" />
               </Popover>
             </div>
             <div className="comments">
@@ -194,7 +210,9 @@ export class IssueDetails extends React.Component {
                       <Popover commentid={comment._id}>
                         <Button intent="danger" text="Delete Comment" />
                         <DeleteConfirmation
-                          onSuccess={() => this.handleDeleteCommentOnClick(comment)}
+                          onSuccess={() =>
+                            this.handleDeleteCommentOnClick(comment)
+                          }
                           item="comment"
                         />
                       </Popover>
@@ -212,14 +230,20 @@ export class IssueDetails extends React.Component {
                   />
                 </div>
               </form>
-              <Button intent="success" onClick={() => this.handleAddCommentOnClick()}>
+              <Button
+                intent="success"
+                onClick={() => this.handleAddCommentOnClick()}
+              >
                 Add Comment
               </Button>
             </div>
             <Comment />
             <Popover>
               <Button intent="danger" text="Delete Issue" />
-              <DeleteConfirmation onSuccess={this.handleDeleteIssue} item="issue" />
+              <DeleteConfirmation
+                onSuccess={this.handleDeleteIssue}
+                item="issue"
+              />
             </Popover>
           </div>
         </Dialog>
@@ -233,19 +257,21 @@ const mapStateToProps = state => {
     selectedIssue: state.selectedIssue,
     currentUserId: state.currentUserId,
     currentBoardId: state.currentBoardId,
+    members: state.boardMemberList
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => dispatch(actionCreators.closeIssueDetailsModal()),
-    showIssueDetails: issueid => dispatch(actionCreators.showIssueDetails(issueid)),
+    showIssueDetails: issueid =>
+      dispatch(actionCreators.showIssueDetails(issueid)),
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(IssueDetails);
