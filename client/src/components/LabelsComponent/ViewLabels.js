@@ -1,7 +1,14 @@
 import React from 'react';
 import './ViewLabels.css';
-import { Popover, Menu, Classes, Button, MenuItem } from '@blueprintjs/core';
-import axios from '../../axios';
+import {
+  Popover,
+  Menu,
+  Classes,
+  Button,
+  MenuItem,
+  Intent
+} from '@blueprintjs/core';
+import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { connect } from 'react-redux';
 import { errorToast } from '../Toast/Toast';
@@ -35,7 +42,7 @@ class ViewLabels extends React.Component {
       <Popover
         content={
           <Menu
-            className={Classes.ELEVATION_1}
+            className={[Classes.ELEVATION_1, 'customViewLabel']}
             style={{ display: 'block', overflow: 'scroll' }}
           >
             {this.state.names.map((name, index) => (
@@ -52,9 +59,11 @@ class ViewLabels extends React.Component {
         }
       >
         <Button
-          rightIcon="arrow-down"
+          icon="tag"
           onClick={this.getAllContent}
           text="View Labels"
+          small={true}
+          intent={Intent.NONE}
         />
       </Popover>
     );

@@ -3,7 +3,10 @@ import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import Box from '../../components/Board/BoardBox';
 import { connect } from 'react-redux';
-import { updateAuthDetails, unsetBoardName } from '../../actions/actionDispatchers';
+import {
+  updateAuthDetails,
+  unsetBoardName
+} from '../../actions/actionDispatchers';
 import queryString from 'query-string';
 import CreateBoardModal from '../../components/CreateBoardModal/CreateBoardModal';
 import '../BoardLayout/BoardLayout.css';
@@ -12,14 +15,14 @@ import Cookies from 'js-cookie';
 const mapDispatchToProps = dispatch => {
   return {
     updateAuthDetails: userData => dispatch(updateAuthDetails(userData)),
-    unsetBoardName: () => dispatch(unsetBoardName()),
+    unsetBoardName: () => dispatch(unsetBoardName())
   };
 };
 
 export class BoardLayout extends React.Component {
   state = {
     boards: [],
-    openModal: false,
+    openModal: false
   };
 
   componentDidMount() {
@@ -39,9 +42,12 @@ export class BoardLayout extends React.Component {
   getAllBoards = async () => {
     let boards;
     try {
-      axios.defaults.headers.common['Authorization'] = localStorage.getItem('Auth-Token');
+      axios.defaults.headers.common['Authorization'] = localStorage.getItem(
+        'Auth-Token'
+      );
       boards = await axios.get(`${BASE_URL}/boards`);
       if (boards) {
+        console.log(boards);
         this.setState({ boards: boards.data });
       }
     } catch (e) {
@@ -84,7 +90,11 @@ export class BoardLayout extends React.Component {
               />
             );
           })}
-          <Box boardName={'Create New'} addNewBoard={this.openModal} boardRole={'CREATE'} />
+          <Box
+            boardName={'Create New'}
+            addNewBoard={this.openModal}
+            boardRole={'CREATE'}
+          />
         </div>
       </>
     );
@@ -93,5 +103,5 @@ export class BoardLayout extends React.Component {
 
 export default connect(
   null,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(BoardLayout);

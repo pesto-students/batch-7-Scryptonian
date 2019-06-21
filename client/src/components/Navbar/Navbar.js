@@ -3,26 +3,40 @@ import './Navbar.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import { connect } from 'react-redux';
-import { Menu, Popover, PopoverInteractionKind, Position, Button, Intent } from '@blueprintjs/core';
+import {
+  Menu,
+  Popover,
+  PopoverInteractionKind,
+  Position,
+  Button,
+  Intent
+} from '@blueprintjs/core';
 import { LogoutUrl } from '../../config';
 import * as actionCreators from '../../actions/actionDispatchers';
 import AddLabels from '../LabelsComponent/AddLabels';
 import ViewLabels from '../LabelsComponent/ViewLabels';
 
 const mapStateToProps = state => {
-  const { displayName, emailId, profileImgUrl, isAuthenticated, currentBoardName } = state;
+  const {
+    displayName,
+    emailId,
+    profileImgUrl,
+    isAuthenticated,
+    currentBoardName
+  } = state;
   return {
     displayName,
     emailId,
     profileImgUrl,
     isAuthenticated,
-    currentBoardName,
+    currentBoardName
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleMemberListModal: () => dispatch(actionCreators.toggleMemberListModal()),
+    toggleMemberListModal: () =>
+      dispatch(actionCreators.toggleMemberListModal())
   };
 };
 
@@ -77,14 +91,22 @@ export class Navbar extends React.Component {
                 text="Member list"
                 onClick={this.props.toggleMemberListModal}
               />
-              <ViewLabels />
-              <AddLabels />
             </>
           ) : null}
         </div>
         {this.props.isAuthenticated ? (
           <div className="bp3-navbar-group bp3-align-right">
             <span className="bp3-navbar-divider skip-in-mobile" />
+            <span className="skip-in-mobile">
+              {this.props.currentBoardName ? (
+                <>
+                  <ViewLabels />
+                  <span className="bp3-navbar-divider" />
+                  <AddLabels />
+                  <span className="bp3-navbar-divider" />
+                </>
+              ) : null}
+            </span>
             <span className="skip-in-mobile">
               <img
                 className="profileThumbnail"
@@ -113,5 +135,5 @@ export class Navbar extends React.Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Navbar);

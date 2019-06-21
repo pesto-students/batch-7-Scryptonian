@@ -190,13 +190,13 @@ export class IssueDetails extends React.Component {
               <div className="column">
                 <h3 className="issue-header">{issue.issue}</h3>
               </div>
-              <div className="column">
+              {/* <div className="column">
                 <Upvote
                   upvotes={issue.upvotes}
                   issueid={issue._id}
                   upvoted={upvotedState}
                 />
-              </div>
+              </div> */}
             </div>
             <div className="label">
               <ViewLabels />
@@ -232,42 +232,51 @@ export class IssueDetails extends React.Component {
             <div className="comments">
               {issue.comments
                 ? issue.comments.map(comment => (
-                    <Card key={comment._id}>
-                      <p>{comment.comment}</p>
-                      <p>
-                        {comment.commentedBy ? comment.commentedBy.name : null}{' '}
-                        {this.getTimeDifference(comment.createdAt)}
-                      </p>
-                      <Popover commentid={comment._id}>
-                        <Button intent="danger" text="Delete Comment" />
-                        <DeleteConfirmation
-                          onSuccess={() =>
-                            this.handleDeleteCommentOnClick(comment)
-                          }
-                          item="comment"
-                        />
-                      </Popover>
-                    </Card>
+                    <>
+                      <Card key={comment._id} className="plain-card">
+                        <p>
+                          <span
+                            className="theme-color"
+                            style={{ fontWeight: '600' }}
+                          >
+                            {comment.commentedBy
+                              ? comment.commentedBy.name
+                              : null}
+                          </span>
+                          {' : '}
+                          {comment.comment}
+                          {/* {this.getTimeDifference(comment.createdAt)} */}
+                        </p>
+                        <div
+                          className="row"
+                          style={{ justifyContent: 'space-between' }}
+                        >
+                          <div style={{ padding: '5px' }}>
+                            <Popover commentid={comment._id}>
+                              <Button
+                                intent={Intent.NONE}
+                                minimal="true"
+                                icon="trash"
+                              />
+                              <DeleteConfirmation
+                                onSuccess={() =>
+                                  this.handleDeleteCommentOnClick(comment)
+                                }
+                                item="comment"
+                              />
+                            </Popover>
+                          </div>
+                          <div>
+                            <p className="date-stamp">
+                              {this.getTimeDifference(comment.createdAt)}
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+                      <Divider className="white-thick-divider" />
+                    </>
                   ))
                 : null}
-
-              <form>
-                <div style={{ margin: '4px' }}>
-                  <label>Comment:</label>
-                  <InputGroup
-                    placeholder="Add your comment"
-                    value={commentInputText}
-                    onChange={event => this.handleCommentInputChange(event)}
-                    onKeyPress={event => this.handleCommentKeyPress(event)}
-                  />
-                </div>
-              </form>
-              <Button
-                intent="success"
-                onClick={() => this.handleAddCommentOnClick()}
-              >
-                Add Comment
-              </Button>
             </div>
 
             <form>
@@ -288,7 +297,7 @@ export class IssueDetails extends React.Component {
             </Button>
             {/* <Comment /> */}
             <Popover>
-              <Button intent="danger" text="Delete Issue" />
+              <Button text="Delete Issue" />
               <DeleteConfirmation
                 onSuccess={this.handleDeleteIssue}
                 item="issue"
