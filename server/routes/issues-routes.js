@@ -16,7 +16,7 @@ const router = express.Router();
 async function setAttribute(req, res) {
   const { issueid } = req.params;
   const { attributeName, attributeValue } = req.body;
-  const modifiedBy = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
+  const modifiedBy = req.userid;
 
   const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
   if (!isIssueIdValid) {
@@ -80,7 +80,7 @@ router.get('/:issueid', async (req, res) => {
 // Add a new issue
 router.post('/', async (req, res) => {
   const { lifecycleid, issue } = req.body;
-  const createdBy = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
+  const createdBy = req.userid;
 
   const isLifecycleIdValid = mongoose.Types.ObjectId.isValid(lifecycleid);
 
@@ -156,7 +156,7 @@ router.patch(
 router.post('/:issueid/comment', async (req, res) => {
   const { issueid } = req.params;
   const { comment } = req.body;
-  const commentedBy = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
+  const commentedBy = req.userid;
 
   const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
   if (!isIssueIdValid || !comment) {
@@ -206,7 +206,7 @@ router.delete('/:issueid/comment/:commentid', async (req, res) => {
 // Add/Remove an upvote from an issue
 router.patch('/:issueid/upvote', async (req, res) => {
   const { issueid } = req.params;
-  const userUpvoted = '5d017f092d047389ea99ac9f'; // TODO: Remove hard coded value  to req.user.id when cors issue is solved
+  const userUpvoted = req.userid;
 
   const isIssueIdValid = mongoose.Types.ObjectId.isValid(issueid);
   if (!isIssueIdValid) {

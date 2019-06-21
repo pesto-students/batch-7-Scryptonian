@@ -12,7 +12,7 @@ import Board from '../models/board';
 export default function userRoleCheck(requiredRole) {
   return async (req, res, next) => {
     const { boardid } = req.query;
-    const userid = '5cfe8d55b9d4e349154c4517'; // TODO: Remove this when CORS issue is resolved
+    const { userid } = req;
 
     const isBoardIdValid = mongoose.Types.ObjectId.isValid(boardid);
     if (!isBoardIdValid) {

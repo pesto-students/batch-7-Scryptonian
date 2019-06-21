@@ -12,14 +12,13 @@ import User from '../models/user';
 import Label from '../models/label';
 import userRoleCheck from '../middlewares/userRoleCheck';
 import * as util from '../util';
-import { checkTokenMW, verifyToken } from '../middlewares/authService';
 
 const router = express.Router();
 sg.setApiKey(process.env.SendGridAPIKey);
 
 // Get list of boards for a particular user
-router.get('/', checkTokenMW, verifyToken, async (req, res, next) => {
-  const userid = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
+router.get('/', async (req, res, next) => {
+  const { userid } = req;
   let boards;
   try {
     boards = await Board.find({ 'members.member': userid })
@@ -38,7 +37,7 @@ router.get('/', checkTokenMW, verifyToken, async (req, res, next) => {
 // Create a new board
 router.post('/', async (req, res, next) => {
   const { name, lifecycles } = req.body;
-  const createdBy = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
+  const createdBy = req.userid;
 
   let userDetails;
   try {
