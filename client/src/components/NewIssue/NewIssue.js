@@ -37,6 +37,12 @@ export class NewIssue extends React.Component {
       .catch(e => errorToast(e.message));
   };
 
+  handleKeyPress = e => {
+    if (e.charCode === 13) {
+      this.handleCreateNewIssue();
+    }
+  };
+
   render() {
     const addIssue = _ => {
       return <Button icon={'add'} minimal={true} onClick={() => this.handleCreateNewIssue()} />;
@@ -50,6 +56,7 @@ export class NewIssue extends React.Component {
           value={this.state.newIssueText}
           onChange={event => this.handleTextChange(event)}
           rightElement={addIssue()}
+          onKeyPress={e => this.handleKeyPress(e)}
         />
       </Card>
     );

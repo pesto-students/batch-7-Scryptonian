@@ -44,8 +44,15 @@ export class IssueDetails extends React.Component {
     this.props.closeModal();
   };
 
-  handleCommentInputChange = ({ target }) => {
-    this.setState({ commentInputText: target.value });
+  handleCommentInputChange = (e) => {
+    this.setState({ commentInputText: e.target.value });
+  };
+
+  handleCommentKeyPress = e => {
+    if (e.charCode === 13) {
+      e.preventDefault();
+      this.handleAddCommentOnClick();
+    }
   };
 
   handleAddCommentOnClick = () => {
@@ -209,6 +216,7 @@ export class IssueDetails extends React.Component {
                     placeholder="Add your comment"
                     value={commentInputText}
                     onChange={event => this.handleCommentInputChange(event)}
+                    onKeyPress={event => this.handleCommentKeyPress(event)}
                   />
                 </div>
               </form>
