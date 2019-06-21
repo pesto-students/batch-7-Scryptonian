@@ -10,7 +10,7 @@ describe(' <IssueDetails />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<IssueDetails />);
+    wrapper = shallow(<IssueDetails members={[]} />);
   });
 
   it('should render a Dialog component', () => {
