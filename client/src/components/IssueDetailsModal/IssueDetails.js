@@ -165,7 +165,6 @@ export class IssueDetails extends React.Component {
   };
 
   render() {
-    console.log(this.props.members);
     const issue = this.props.selectedIssue
       ? this.props.selectedIssue
       : {

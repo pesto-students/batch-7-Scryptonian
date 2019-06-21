@@ -15,12 +15,21 @@ class EditButtonPopover extends React.Component {
     edit: false,
     delete: false
   };
+
   handleEdit = () => {
-    console.log('handleEdit');
     this.setState({ edit: true });
   };
+
   handleDelete = () => {
     this.setState({ delete: true });
+  };
+
+  handleEditClose = () => {
+    this.setState({ edit: false });
+  };
+
+  handleDeleteClose = () => {
+    this.setState({ delete: false });
   };
 
   render() {
@@ -51,8 +60,20 @@ class EditButtonPopover extends React.Component {
             minimal={true}
           />
         </Popover>
-        {this.state.edit ? <EditBoard /> : null}
-        {this.state.delete ? <DeleteBoard /> : null}
+        {this.state.edit ? (
+          <EditBoard
+            boardid={this.props.boardid}
+            getAllBoards={this.props.getAllBoards}
+            onClose={this.handleEditClose}
+          />
+        ) : null}
+        {this.state.delete ? (
+          <DeleteBoard
+            boardid={this.props.boardid}
+            getAllBoards={this.props.getAllBoards}
+            onClose={this.handleDeleteClose}
+          />
+        ) : null}
       </div>
     );
   }
