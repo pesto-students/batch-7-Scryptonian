@@ -22,12 +22,12 @@ app.use('/invite/', invite);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
-app.use(
-  cookieSession({
-    maxAge: session.maxAge,
-    keys: session.keys,
-  }),
-);
+// app.use(
+//   cookieSession({
+//     maxAge: session.maxAge,
+//     keys: session.keys,
+//   }),
+// );
 
 app.use(cors());
 app.use(passport.initialize());
