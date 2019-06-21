@@ -197,7 +197,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
             members: {
               member: existingUser._id,
               membername: existingUser.name,
-              role: 'INVITED',
+              role: 'USER',
             },
           },
         },
@@ -220,7 +220,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
       updatedBoard = await Board.findByIdAndUpdate(
         boardid,
         {
-          $push: { members: { member: newUser._id, membername: newUser.name, role: 'INVITED' } },
+          $push: { members: { member: newUser._id, membername: newUser.name, role: 'USER' } },
         },
         { new: true },
       );
