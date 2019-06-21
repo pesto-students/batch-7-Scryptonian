@@ -16,8 +16,9 @@ export class KanbanLayout extends React.Component {
       updateAuthDetails(userDetails);
     }
     if (boardId) {
-      const { getDataForKanbanView, currentUserId } = this.props;
-      getDataForKanbanView(boardId, currentUserId);
+      const { getDataForKanbanView } = this.props;
+      const userid = userDetails.userId;
+      getDataForKanbanView(boardId, userid);
     }
   }
 

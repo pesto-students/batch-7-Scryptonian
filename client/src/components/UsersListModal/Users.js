@@ -11,6 +11,13 @@ import './Users.css';
 import { connect } from 'react-redux';
 
 export class Users extends React.Component {
+  handleRole = () => {
+    console.log('Inside handleRole');
+  };
+
+  removeUser = () => {
+    console.log('Inside remove user');
+  };
   render() {
     console.log(this.props.roleInCurrentBoard);
     return (
@@ -35,15 +42,29 @@ export class Users extends React.Component {
                         text=" Make SuperAdmin"
                         icon="edit"
                         intent="primary"
+                        onClick={this.handleRole}
                       />
                       <MenuDivider />
                       <MenuItem
                         text="Make Admin"
                         icon="edit"
                         intent="primary"
+                        onClick={this.handleRole}
                       />
                       <MenuDivider />
-                      <MenuItem text="Make User" icon="edit" intent="primary" />
+                      <MenuItem
+                        text="Make User"
+                        icon="edit"
+                        intent="primary"
+                        onClick={this.handleRole}
+                      />
+                      <MenuDivider />
+                      <MenuItem
+                        text="Kick Off User"
+                        icon="trash"
+                        intent="danger"
+                        onClick={this.removeUser}
+                      />
                     </Menu>
                   }
                   position={Position.BOTTOM_RIGHT}
