@@ -7,6 +7,7 @@ import {
   REORDER_ISSUES,
   TOGGLE_MEMBER_LIST_MODAL,
   TOGGLE_INVITE_USER_MODAL,
+  UNSET_BOARD_NAME,
 } from './actionTypes';
 import { BASE_URL } from '../config';
 import axios from '../axios';
@@ -21,6 +22,10 @@ export function showIssueDetails(issueid) {
       .then(res => dispatch(setSelectedIssue(res.data)))
       .catch(e => errorToast(e.message));
   };
+}
+
+export function unsetBoardName() {
+  return { type: UNSET_BOARD_NAME };
 }
 
 export function displayIssueModal() {

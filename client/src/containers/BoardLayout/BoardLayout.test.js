@@ -8,7 +8,7 @@ describe('<BoardLayout />', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<BoardLayout />);
+    wrapper = shallow(<BoardLayout unsetBoardName={() => {}} />);
   });
 
   it('should render <CreateBoardModal />', () => {

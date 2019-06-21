@@ -3,7 +3,7 @@ import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import Box from '../../components/Board/BoardBox';
 import { connect } from 'react-redux';
-import { updateAuthDetails } from '../../actions/actionDispatchers';
+import { updateAuthDetails, unsetBoardName } from '../../actions/actionDispatchers';
 import queryString from 'query-string';
 import CreateBoardModal from '../../components/CreateBoardModal/CreateBoardModal';
 import '../BoardLayout/BoardLayout.css';
@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 const mapDispatchToProps = dispatch => {
   return {
     updateAuthDetails: userData => dispatch(updateAuthDetails(userData)),
+    unsetBoardName: () => dispatch(unsetBoardName()),
   };
 };
 
@@ -22,6 +23,7 @@ export class BoardLayout extends React.Component {
   };
 
   componentDidMount() {
+    this.props.unsetBoardName();
     if (this.props.location) {
       const userDetails = queryString.parse(this.props.location.search);
       if (userDetails) {
@@ -68,7 +70,7 @@ export class BoardLayout extends React.Component {
           isOpen={this.state.openModal}
           updateBoard={this.getAllBoards}
         />
-        <h2 style={{padding: "0 30px"}}>Boards List</h2>
+        <h2 style={{ padding: '0 30px' }}>Boards List</h2>
         <hr />
         <div className="BoardList">
           {this.state.boards.map((board, index) => {

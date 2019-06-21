@@ -7,6 +7,7 @@ import {
   REORDER_ISSUES,
   TOGGLE_MEMBER_LIST_MODAL,
   TOGGLE_INVITE_USER_MODAL,
+  UNSET_BOARD_NAME,
 } from '../actions/actionTypes';
 import { ROLE } from '../config';
 
@@ -58,6 +59,13 @@ const reducer = (state = initialState, action) => {
       ...state,
       selectedIssue: null,
       isIssueDetailModalVisible: false,
+    };
+  }
+
+  if (action.type === UNSET_BOARD_NAME) {
+    return {
+      ...state,
+      currentBoardName: null,
     };
   }
 
