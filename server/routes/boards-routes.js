@@ -52,7 +52,15 @@ router.post('/', async (req, res, next) => {
       role: 'SUPERADMIN',
     },
   ];
-  const board = { name, members, createdBy };
+
+  const labels = [
+    '5d0c8e7908e7272aca42c2cb',
+    '5d0c8ea208e7272aca42c2cc',
+    '5d0c8ed408e7272aca42c2cd',
+  ];
+  const board = {
+    name, members, createdBy, labels,
+  };
 
   let savedLifecycles;
   try {
