@@ -1,9 +1,23 @@
-.custom-nav{
-    background-color: #24292e !important;
-    padding:0px 30px;
+.custom-nav {
+  background-color: #24292e !important;
+  padding: 0px 30px;
 }
 
-.custom-nav .bp3-icon-search-around{
-    margin-right: 10px;
-    color:cornflowerblue;
+.custom-nav .bp3-icon-search-around {
+  margin-right: 10px;
+  color: cornflowerblue;
+}
+
+.logoFull {
+  display: flex;
+}
+
+@media screen and (max-width: 750px) {
+  .skip-in-mobile {
+    display: none;
+  }
+
+  .custom-nav {
+    padding: 0 10px;
+  }
 }
