@@ -16,12 +16,18 @@ export class Upvote extends React.Component {
 
   state = {
     upvotedState: this.props.upvoted,
-    upvoteCount: this.props.upvotes,
+    upvoteCount: this.props.upvotes
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.upvoted !== this.props.upvoted || nextProps.upvotes !== this.props.upvotes) {
-      this.setState({ upvotedState: nextProps.upvoted, upvoteCount: nextProps.upvotes });
+    if (
+      nextProps.upvoted !== this.props.upvoted ||
+      nextProps.upvotes !== this.props.upvotes
+    ) {
+      this.setState({
+        upvotedState: nextProps.upvoted,
+        upvoteCount: nextProps.upvotes
+      });
     }
   }
 
@@ -36,16 +42,17 @@ export class Upvote extends React.Component {
     }
     this.setState({
       upvotedState: !currentUpvoteState,
-      upvoteCount: currentUpvoteCount + changeby,
+      upvoteCount: currentUpvoteCount + changeby
     });
   };
 
-  handleUpvoteOnClick = () => {
+  handleUpvoteOnClick = e => {
+    e.stopPropagation();
     this.changeUpvoteState();
     const { issueid } = this.props;
     const upvoteURL = `${BASE_URL}/issues/${issueid}/upvote`;
     axios(upvoteURL, {
-      method: 'patch',
+      method: 'patch'
     })
       .then(res => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -55,8 +62,14 @@ export class Upvote extends React.Component {
   };
 
   render() {
-    const upvoteComponentClass = this.state.upvotedState ? classes.upvoted : classes.didNotUpvote;
-    const upvoteIcon = this.state.upvotedState ? <UpvoteIcon upvoted={true} /> : <UpvoteIcon />;
+    const upvoteComponentClass = this.state.upvotedState
+      ? classes.upvoted
+      : classes.didNotUpvote;
+    const upvoteIcon = this.state.upvotedState ? (
+      <UpvoteIcon upvoted={true} />
+    ) : (
+      <UpvoteIcon />
+    );
     return (
       <div className={upvoteComponentClass} onClick={this.handleUpvoteOnClick}>
         {upvoteIcon}
@@ -74,18 +87,18 @@ export class Upvote extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    boardid: state.currentBoardId,
+    boardid: state.currentBoardId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Upvote);
