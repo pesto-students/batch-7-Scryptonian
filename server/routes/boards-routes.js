@@ -234,7 +234,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
     subject: 'New Invitation | Issue Tracker',
     html: `<h2><center>Welcome To Issue Tracker</center></h2><p>Hi <b>${invitedUserName}</b>!<br/><br />Consider yourself lucky! You're about to use the best Issue Tracker available! Your friend ${senderUserName} has invited you to join the <b>${
       updatedBoard.name
-    }</b> board.</p><p>To get started, <a href='https://issuetracker-scryptonians.netlify.com/invite/${boardid}/${userid}'>click here.</a></p><p>Excited to have you on-board</p>`,
+    }</b> board.</p><p>To get started, <a href='https://issuetracker-scryptonians.netlify.com/'>click here.</a></p><p>Excited to have you on-board</p>`,
   };
   try {
     const msgsent = await sg.send(msg);
