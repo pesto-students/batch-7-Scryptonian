@@ -26,11 +26,12 @@ class Lifecycle extends React.Component {
                 {...provided.droppableProps}
                 className={classes.IssueList}
               >
-                {issues.map((issue, index) => (
+                {issues.map((issue, index) => {
+                  return (
                   <Issue
                     issue={issue.issue}
                     key={issue._id}
-                    labels={issue.tags}
+                    labels={issue.labels}
                     assignee={issue.assignee}
                     dueDate={issue.dueDate}
                     upvotes={issue.upvotes}
@@ -39,7 +40,7 @@ class Lifecycle extends React.Component {
                     id={issue._id}
                     index={index}
                   />
-                ))}
+                )})}
                 {provided.placeholder}
               </div>
             )}

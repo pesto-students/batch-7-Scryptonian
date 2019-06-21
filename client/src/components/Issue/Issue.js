@@ -37,9 +37,9 @@ export class Issue extends React.Component {
         {labels
           ? labels.map(label => (
               <Label
-                label={label.name}
+                label={label.labelName}
                 color={label.color}
-                key={label.name + label.color}
+                key={label._id}
               />
             ))
           : null}

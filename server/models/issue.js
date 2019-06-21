@@ -21,16 +21,10 @@ const IssueSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    tags: [
+    labels: [
       {
-        name: {
-          type: String,
-          required: true,
-        },
-        color: {
-          type: String,
-          required: true,
-        },
+        type: Schema.Types.ObjectId,
+        ref: 'Label',
       },
     ],
     dueDate: {

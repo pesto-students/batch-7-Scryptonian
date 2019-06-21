@@ -15,6 +15,7 @@ import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';
 import AddLabels from '../LabelsComponent/AddLabels';
 import ViewLabels from '../LabelsComponent/ViewLabels';
+import Labels from '../Label/Label';
 import PickDate from '../PickDate/PickDate';
 import DeleteConfirmation from '../DeleteConfirmation/DeleteConfirmation';
 import { connect } from 'react-redux';
