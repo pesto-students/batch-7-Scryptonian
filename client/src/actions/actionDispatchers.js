@@ -9,7 +9,7 @@ import {
   TOGGLE_INVITE_USER_MODAL,
 } from './actionTypes';
 import { BASE_URL } from '../config';
-import axios from 'axios';
+import axios from '../axios';
 import { errorToast } from '../components/Toast/Toast';
 
 export function showIssueDetails(issueid) {
