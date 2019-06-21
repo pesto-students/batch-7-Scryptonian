@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { session } from '../configs/config';
 
 export const checkTokenMW = (req, res, next) => {
+  console.log('checktoken');
   const bearerHeader = req.headers.authorization;
   if (typeof bearerHeader !== 'undefined') {
     req.token = bearerHeader;
