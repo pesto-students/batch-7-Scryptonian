@@ -158,6 +158,75 @@ router.get('/:boardid/label', async (req, res, next) => {
   return res.status(OK).send(labels);
 });
 
+// Change a role of user in a board
+router.patch('/changerole', userRoleCheck(roles.SUPERADMIN), async (req, res, next) => {
+  const { boardid } = req.query;
+  const { userid, username, newrole } = req.body;
+
+  let updatedBoard;
+  try {
+    updatedBoard = await Board.findByIdAndUpdate(
+      boardid,
+      {
+        $pull: { members: { member: userid } },
+      },
+      { new: true },
+    );
+    const changedUser = { member: userid, membername: username, role: newrole };
+    updatedBoard = await Board.findByIdAndUpdate(
+      boardid,
+      {
+        $push: { members: changedUser },
+      },
+      { new: true },
+    );
+  } catch (e) {
+    next(e.message);
+  }
+
+  return res.status(OK).send(updatedBoard);
+});
+
+// Remove a user from board
+router.patch('/removeuser', userRoleCheck(roles.SUPERADMIN), async (req, res, next) => {
+  const { boardid } = req.query;
+  const { userid } = req.body;
+
+  let updatedBoard;
+  try {
+    updatedBoard = await Board.findByIdAndUpdate(
+      boardid,
+      {
+        $pull: { members: { member: userid } },
+      },
+      { new: true },
+    );
+  } catch (e) {
+    next(e.message);
+  }
+  return res.status(OK).send(updatedBoard);
+});
+
+// Edit name of board
+router.patch('/editname', userRoleCheck(roles.SUPERADMIN), async (req, res, next) => {
+  const { boardid } = req.query;
+  const { boardname } = req.body;
+
+  let updatedBoard;
+  try {
+    updatedBoard = await Board.findByIdAndUpdate(
+      boardid,
+      {
+        $set: { name: boardname },
+      },
+      { new: true },
+    );
+  } catch (e) {
+    next(e.message);
+  }
+  return res.status(OK).send(updatedBoard);
+});
+
 // Invite a new user to a board
 router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
   const { boardid } = req.query;
