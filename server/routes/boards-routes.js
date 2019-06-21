@@ -12,12 +12,13 @@ import User from '../models/user';
 import Label from '../models/label';
 import userRoleCheck from '../middlewares/userRoleCheck';
 import * as util from '../util';
+import { checkTokenMW, verifyToken } from '../middlewares/authService';
 
 const router = express.Router();
 sg.setApiKey(process.env.SendGridAPIKey);
 
 // Get list of boards for a particular user
-router.get('/', async (req, res, next) => {
+router.get('/', checkTokenMW, verifyToken, async (req, res, next) => {
   const userid = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
   let boards;
   try {
@@ -235,7 +236,6 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
   try {
     const msgsent = await sg.send(msg);
   } catch (e) {
-    console.log(e);
     return next(e.message);
   }
 

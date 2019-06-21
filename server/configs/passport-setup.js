@@ -3,27 +3,6 @@ import GoogleStrategy from 'passport-google-oauth20';
 import User from '../models/user';
 import { google } from './config';
 
-// After passport callback user will be passed here were it will serialize user.id
-// and pass it to cookie-session for encryption
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  let existingUser;
-  try {
-    if (id) {
-      existingUser = await User.findById(id);
-      if (existingUser.ok) {
-        done(null, existingUser);
-      }
-    }
-    done(null, null);
-  } catch (e) {
-    throw new Error(e.message);
-  }
-});
-
 passport.use(
   new GoogleStrategy(
     {
