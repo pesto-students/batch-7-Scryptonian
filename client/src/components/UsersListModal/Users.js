@@ -5,27 +5,39 @@ import {
   Menu,
   MenuItem,
   MenuDivider,
-  Position
+  Position,
+  Alert
 } from '@blueprintjs/core';
 import './Users.css';
 import { connect } from 'react-redux';
 import axios from '../../axios';
 import { BASE_URL } from '../../config';
+import * as actionCreators from '../../actions/actionDispatchers';
 import { successToast, errorToast } from '../Toast/Toast';
 
 export class Users extends React.Component {
-  handleRole = user => {
-    console.log('Inside handleRole');
+  state = {
+    deleteUser: false,
+    isOpen: true
+  };
+  handleRole = (user, newRole) => {
+    console.log('Inside handleRole', user, this.props.boardid);
     axios(`${BASE_URL}/boards/changerole`, {
       method: 'patch',
       data: {
         userid: user.member,
         username: user.membername,
-        newrole: user.role
+        newrole: newRole
       },
       params: { boardid: this.props.boardid }
     })
-      .then(() => successToast("Successfully changed User's role"))
+      .then(() => {
+        successToast("Successfully changed User's role");
+        this.props.getDataForKanbanView(
+          this.props.boardid,
+          this.props.currentUserId
+        );
+      })
       .catch(e => errorToast(e.message));
   };
 
@@ -41,8 +53,30 @@ export class Users extends React.Component {
     }
   };
 
-  removeUser = () => {
-    console.log('Inside remove user');
+  handleMoveConfirm = () => {
+    this.setState({ isOpen: false });
+    const user = this.state.user;
+    axios(`${BASE_URL}/boards/removeuser`, {
+      method: 'patch',
+      data: {
+        userid: user.member
+      },
+      params: { boardid: this.props.boardid }
+    })
+      .then(() => {
+        successToast('Successfully Deleted User');
+        this.props.getDataForKanbanView(
+          this.props.boardid,
+          this.props.currentUserId
+        );
+      })
+      .catch(e => errorToast(e.message));
+  };
+  handleMoveCancel = () => this.setState({ isOpen: false });
+
+  removeUser = user => {
+    this.setState({ deleteUser: true, user: user });
+    console.log('Inside handleRole', user, this.props.boardid);
   };
   getLowercase(role) {
     const firstLetter = role.split('')[0];
@@ -67,6 +101,19 @@ export class Users extends React.Component {
         </div>
         <div className="column">
           <h3>Role</h3>
+          {this.state.deleteUser ? (
+            <Alert
+              cancelButtonText="Cancel"
+              confirmButtonText="Delete"
+              icon="trash"
+              intent="danger"
+              isOpen={this.state.isOpen}
+              onCancel={this.handleMoveCancel}
+              onConfirm={this.handleMoveConfirm}
+            >
+              <p>Are you sure you want to Delete this User ?</p>
+            </Alert>
+          ) : null}
           {this.props.members.map(user => (
             <div key={user._id} className="content">
               {this.props.roleInCurrentBoard === 'SUPERADMIN' ? (
@@ -81,7 +128,7 @@ export class Users extends React.Component {
                             key={index}
                             icon="user"
                             intent="primary"
-                            onClick={() => this.handleRole(user)}
+                            onClick={() => this.handleRole(user, role)}
                           />
                         );
                       })}
@@ -91,7 +138,7 @@ export class Users extends React.Component {
                         text="Kick Off User"
                         icon="trash"
                         intent="danger"
-                        onClick={this.removeUser}
+                        onClick={() => this.removeUser(user)}
                       />
                     </Menu>
                   }
@@ -119,4 +166,14 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Users);
+const mapDispatchToProps = dispatch => {
+  return {
+    getDataForKanbanView: (boardid, userid) =>
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users);
