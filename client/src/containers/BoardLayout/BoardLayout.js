@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '../../axios';
 import { BASE_URL } from '../../config';
 import Box from '../../components/Board/BoardBox';
 import { connect } from 'react-redux';
@@ -7,19 +7,18 @@ import { updateAuthDetails } from '../../actions/actionDispatchers';
 import queryString from 'query-string';
 import CreateBoardModal from '../../components/CreateBoardModal/CreateBoardModal';
 import '../BoardLayout/BoardLayout.css';
-import { errorToast } from '../../components/Toast/Toast';
 import Cookies from 'js-cookie';
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateAuthDetails: userData => dispatch(updateAuthDetails(userData))
+    updateAuthDetails: userData => dispatch(updateAuthDetails(userData)),
   };
 };
 
 export class BoardLayout extends React.Component {
   state = {
     boards: [],
-    openModal: false
+    openModal: false,
   };
 
   componentDidMount() {
@@ -31,8 +30,6 @@ export class BoardLayout extends React.Component {
         localStorage.setItem('Auth-Token', token);
         this.props.updateAuthDetails(userDetails);
         this.getAllBoards();
-      } else {
-        errorToast('Unable to get user information');
       }
     }
   }
@@ -40,12 +37,13 @@ export class BoardLayout extends React.Component {
   getAllBoards = async () => {
     let boards;
     try {
+      axios.defaults.headers.common['Authorization'] = localStorage.getItem('Auth-Token');
       boards = await axios.get(`${BASE_URL}/boards`);
       if (boards) {
         this.setState({ boards: boards.data });
       }
     } catch (e) {
-      errorToast(e.message);
+      console.log(e);
     }
   };
 
@@ -84,11 +82,7 @@ export class BoardLayout extends React.Component {
               />
             );
           })}
-          <Box
-            boardName={'Create New'}
-            addNewBoard={this.openModal}
-            boardRole={'CREATE'}
-          />
+          <Box boardName={'Create New'} addNewBoard={this.openModal} boardRole={'CREATE'} />
         </div>
       </>
     );
@@ -97,5 +91,5 @@ export class BoardLayout extends React.Component {
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(BoardLayout);

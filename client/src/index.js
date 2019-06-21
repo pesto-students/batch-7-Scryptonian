@@ -8,13 +8,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reducer from './reducers/reducers';
-import axios from 'axios';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('Auth-Token');
 
 ReactDOM.render(
   <Provider store={store}>
