@@ -12,7 +12,7 @@ class PickDate extends React.Component {
   state = {
     closeOnSelection: true,
     date: null,
-    disabled: false,
+    disabled: false
   };
 
   handleDateChange = date => {
@@ -27,8 +27,8 @@ class PickDate extends React.Component {
       axios(setDueDateURL, {
         method: 'patch',
         data: {
-          duedate: date,
-        },
+          duedate: date
+        }
       })
         .then(() => {
           const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -46,8 +46,8 @@ class PickDate extends React.Component {
     axios(setDueDateURL, {
       method: 'patch',
       data: {
-        duedate: null,
-      },
+        duedate: null
+      }
     })
       .then(() => {
         const { boardid, getDataForKanbanView, currentUserId } = this.props;
@@ -58,7 +58,10 @@ class PickDate extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.dueDate !== nextProps.dueDate && nextProps.dueDate !== null) {
+    if (
+      this.props.dueDate !== nextProps.dueDate &&
+      nextProps.dueDate !== null
+    ) {
       this.setState({ date: new Date(nextProps.dueDate) });
     }
   }
@@ -66,9 +69,7 @@ class PickDate extends React.Component {
   render() {
     return (
       <div>
-        <div className="content">
-          <span> DueDate: </span>
-        </div>
+        <span style={{ fontWeight: '600' }}>Due Date : </span>
         <DateInput
           formatDate={date => date.toLocaleString().substring(0, 10)}
           onChange={this.handleDateChange}
@@ -97,18 +98,18 @@ class PickDate extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    boardid: state.currentBoardId,
+    boardid: state.currentBoardId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(PickDate);
