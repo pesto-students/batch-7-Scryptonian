@@ -236,7 +236,6 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
   try {
     const msgsent = await sg.send(msg);
   } catch (e) {
-    console.log(e);
     return next(e.message);
   }
 
