@@ -23,10 +23,12 @@ router.get('/', async (req, res, next) => {
   try {
     boards = await Board.find({ 'members.member': userid })
       .populate({ path: 'createdBy' })
+      .lean()
       .exec();
-    const boardFilter = boards.filter((board) => {
-      const newBoard = board.members.filter(el => el.member === userid);
-      return newBoard;
+    const boardFilter = boards.map((board) => {
+      const filterMembers = board.members.filter(el => el.member.toString() === userid.toString());
+      board.members = filterMembers; // eslint-disable-line no-param-reassign
+      return board;
     });
     return res.status(OK).send(boardFilter);
   } catch (e) {
