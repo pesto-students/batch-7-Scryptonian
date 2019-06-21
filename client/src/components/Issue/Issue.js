@@ -62,11 +62,12 @@ export class Issue extends React.Component {
             ref={provided.innerRef}
           >
             <Card
+              onClick={() => showIssueDetails(id)}
               className={[classes.issue, classes.issueCard]}
               interactive={true}
               elevation={Elevation.TWO}
             >
-              <div onClick={() => showIssueDetails(id)}>
+              <div>
                 <p className={classes.issueText}>{issue}</p>
                 {allLabels}
               </div>
