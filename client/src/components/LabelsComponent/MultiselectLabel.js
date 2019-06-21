@@ -44,7 +44,7 @@ class Multiselect extends React.Component {
     return (
       <>
         <div className="content">
-          <span> Assign Tags : </span>
+          <span style={{ fontWeight: '600' }}>Assign tags : </span>
         </div>
         <Select
           value={selectedOption}

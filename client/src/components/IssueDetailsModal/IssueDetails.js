@@ -206,37 +206,45 @@ export class IssueDetails extends React.Component {
                 />
               </div> */}
             </div>
+            <Multiselect currentBoardId={this.props.currentBoardId} />
             <div className="row">
               <div className="column">
-                <Multiselect currentBoardId={this.props.currentBoardId} />
+                <div className="assignee">
+                  <div className="content">
+                    <span style={{ fontWeight: '600' }}>Assign to : </span>
+                  </div>
+                  <Popover
+                    position={Position.BOTTOM}
+                    content={
+                      <Menu
+                        className={Classes.ELEVATION_ONE}
+                        style={{ display: 'block' }}
+                      >
+                        {this.props.members.map(member => (
+                          <MenuItem
+                            text={member.membername}
+                            intent="primary"
+                            onClick={() =>
+                              this.changeAssignee(
+                                member.membername,
+                                member.member
+                              )
+                            }
+                          />
+                        ))}
+                      </Menu>
+                    }
+                  >
+                    <Button
+                      rightIcon="arrow-down"
+                      text={this.state.memberName}
+                    />
+                  </Popover>
+                </div>
               </div>
               <div className="column">
                 <PickDate dueDate={issue.dueDate} issueid={issue._id} />
               </div>
-            </div>
-            <div className="assignee">
-              <span>Assign to:</span>
-              <Popover
-                position={Position.BOTTOM}
-                content={
-                  <Menu
-                    className={Classes.ELEVATION_ONE}
-                    style={{ display: 'block' }}
-                  >
-                    {this.props.members.map(member => (
-                      <MenuItem
-                        text={member.membername}
-                        intent="primary"
-                        onClick={() =>
-                          this.changeAssignee(member.membername, member.member)
-                        }
-                      />
-                    ))}
-                  </Menu>
-                }
-              >
-                <Button rightIcon="arrow-down" text={this.state.memberName} />
-              </Popover>
             </div>
             <div className="comments">
               {issue.comments
