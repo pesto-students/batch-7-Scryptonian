@@ -27,7 +27,8 @@ export class BoardLayout extends React.Component {
       const userDetails = queryString.parse(this.props.location.search);
       if (userDetails) {
         Cookies.set('user-info', userDetails);
-        localStorage.setItem('Auth-Token', userDetails.token);
+        const token = userDetails.token.toString();
+        localStorage.setItem('Auth-Token', token);
         this.props.updateAuthDetails(userDetails);
         this.getAllBoards();
       } else {
