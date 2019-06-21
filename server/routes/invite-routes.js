@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/:boardid/:userid', async (req, res) => {
   const { boardid, userid } = req.params;
 
+  console.log('invite accepted');
   try {
     await Board.updateOne(
       { _id: boardid, 'members.member': userid },

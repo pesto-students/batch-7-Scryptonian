@@ -23,7 +23,7 @@ router.get(
     } = req.user;
     jwt.sign({ userId: req.user._id }, session.keys[0], (err, token) => {
       res.setHeader('X-token', token);
-      res.redirect(
+      return res.redirect(
         `${clientUrl}/boards/userdata?name=${name}&emailId=${emailId}&imageUrl=${imageUrl}&userId=${_id}&token=${token}`,
       );
     });
@@ -32,7 +32,7 @@ router.get(
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect(clientUrl);
+  return res.redirect(clientUrl);
 });
 
 export default router;
