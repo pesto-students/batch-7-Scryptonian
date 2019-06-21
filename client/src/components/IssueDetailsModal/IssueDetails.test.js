@@ -16,16 +16,7 @@ describe(' <IssueDetails />', () => {
   it('should render a Dialog component', () => {
     expect(wrapper.find(Dialog)).toHaveLength(1);
   });
-
-  it('should render a Upvote component', () => {
-    expect(wrapper.find(Upvote)).toHaveLength(1);
-  });
-
   it(' should render a DueDate component', () => {
     expect(wrapper.find(PickDate)).toHaveLength(1);
-  });
-
-  it('should render a comment component', () => {
-    expect(wrapper.find(Comment)).toHaveLength(1);
   });
 });
