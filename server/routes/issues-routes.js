@@ -274,13 +274,14 @@ router.patch('/reorder', async (req, res) => {
 // Set a label to an issue
 router.patch('/:issueid/label', async (req, res) => {
   const { issueid } = req.params;
-  const { labelid } = req.body;
+  const { allLabels } = req.body;
 
   let updatedIssue;
   try {
+    updatedIssue = await Issue.findByIdAndUpdate(issueid, { $set: { labels: [] } }, { new: true });
     updatedIssue = await Issue.findByIdAndUpdate(
       issueid,
-      { $push: { labels: labelid } },
+      { $push: { labels: allLabels } },
       { new: true },
     );
   } catch (e) {
