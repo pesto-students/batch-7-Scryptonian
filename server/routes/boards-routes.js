@@ -18,7 +18,6 @@ sg.setApiKey(process.env.SendGridAPIKey);
 
 // Get list of boards for a particular user
 router.get('/', async (req, res, next) => {
-  console.log('Request authenticated?', req.isAuthenticated());
   const userid = '5cfe8d55b9d4e349154c4517'; // Remove this hardcoded value after cors issue resolve
   let boards;
   try {
@@ -231,7 +230,7 @@ router.post('/invite', userRoleCheck(roles.ADMIN), async (req, res, next) => {
     subject: 'New Invitation | Issue Tracker',
     html: `<h2><center>Welcome To Issue Tracker</center></h2><p>Hi <b>${invitedUserName}</b>!<br/><br />Consider yourself lucky! You're about to use the best Issue Tracker available! Your friend ${senderUserName} has invited you to join the <b>${
       updatedBoard.name
-    }</b> board.</p><p>To get started, <a href='https://issuetracker-scryptonians.netlify.com/${boardid}/${userid}'>click here.</a></p><p>Excited to have you on-board</p>`,
+    }</b> board.</p><p>To get started, <a href='https://issuetracker-scryptonians.netlify.com/invite/${boardid}/${userid}'>click here.</a></p><p>Excited to have you on-board</p>`,
   };
   try {
     const msgsent = await sg.send(msg);

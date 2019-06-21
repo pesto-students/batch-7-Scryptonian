@@ -7,6 +7,7 @@ import passport from 'passport';
 import cookieSession from 'cookie-session';
 import './configs/passport-setup';
 
+import invite from './routes/invite-routes';
 import users from './routes/users';
 import boards from './routes/boards-routes';
 import issues from './routes/issues-routes';
@@ -17,6 +18,7 @@ import { INTERNAL_SERVER_ERROR } from './configs/httpStatusCodes';
 
 const app = express();
 
+app.use('/invite/', invite);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
