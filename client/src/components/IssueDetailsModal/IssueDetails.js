@@ -10,7 +10,7 @@ import {
   InputGroup,
   Card,
   Intent,
-  Divider
+  Divider,
 } from '@blueprintjs/core';
 import './IssueDetails.css';
 import Upvote from '../Upvote/Upvote';
@@ -38,7 +38,7 @@ export class IssueDetails extends React.Component {
     round: true,
     commentInputText: '',
     memberName: 'None',
-    memberId: ''
+    memberId: '',
   };
 
   handleOpen = () => {
@@ -63,12 +63,7 @@ export class IssueDetails extends React.Component {
 
   handleAddCommentOnClick = () => {
     const { commentInputText } = this.state;
-    const {
-      showIssueDetails,
-      getDataForKanbanView,
-      currentBoardId,
-      currentUserId
-    } = this.props;
+    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
     const issueid = this.props.selectedIssue._id;
 
     if (commentInputText === '') {
@@ -79,8 +74,8 @@ export class IssueDetails extends React.Component {
     axios(ADD_COMMENT_URL, {
       method: 'post',
       data: {
-        comment: commentInputText
-      }
+        comment: commentInputText,
+      },
     })
       .then(res => {
         this.setState({ commentInputText: '' });
@@ -99,7 +94,7 @@ export class IssueDetails extends React.Component {
     const deleteIssueURL = `${BASE_URL}/issues/${issueid}`;
     axios(deleteIssueURL, {
       method: 'delete',
-      params: { boardid }
+      params: { boardid },
     })
       .then(res => {
         this.handleClose();
@@ -112,15 +107,10 @@ export class IssueDetails extends React.Component {
   handleDeleteCommentOnClick = comment => {
     const issueid = this.props.selectedIssue._id;
     const commentid = comment._id;
-    const {
-      showIssueDetails,
-      getDataForKanbanView,
-      currentBoardId,
-      currentUserId
-    } = this.props;
+    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
     const deleteCommentURL = `${BASE_URL}/issues/${issueid}/comment/${commentid}`;
     axios(deleteCommentURL, {
-      method: 'delete'
+      method: 'delete',
     })
       .then(res => {
         successToast('Comment deleted');
@@ -156,13 +146,20 @@ export class IssueDetails extends React.Component {
 
   changeAssignee = (member, id) => {
     const issueid = this.props.selectedIssue._id;
+    const { showIssueDetails, getDataForKanbanView, currentBoardId, currentUserId } = this.props;
     this.setState({ memberName: member, memberId: id });
     axios(`${BASE_URL}/issues/${issueid}/assignee`, {
       method: 'patch',
       data: {
-        assigneeid: this.state.memberId
-      }
-    });
+        assigneeid: id,
+      },
+    })
+      .then(res => {
+        successToast('Assigned succesfully.');
+        showIssueDetails(res.data._id);
+        getDataForKanbanView(currentBoardId, currentUserId);
+      })
+      .catch(e => errorToast(e.message));
   };
 
   render() {
@@ -172,7 +169,7 @@ export class IssueDetails extends React.Component {
           issue: 'Loading...',
           upvotes: 0,
           assignee: 'Loading...',
-          upvotedBy: []
+          upvotedBy: [],
         };
     const userId = this.props.currentUserId;
     const upvotedState = issue.upvotedBy.includes(userId);
@@ -182,11 +179,7 @@ export class IssueDetails extends React.Component {
       <div className="all-labels">
         {issue.labels
           ? issue.labels.map(label => (
-              <Label
-                label={label.labelName}
-                color={label.color}
-                key={label._id}
-              />
+              <Label label={label.labelName} color={label.color} key={label._id} />
             ))
           : null}
       </div>
@@ -205,7 +198,8 @@ export class IssueDetails extends React.Component {
                 />
               </div> */}
             </div>
-            <Multiselect currentBoardId={this.props.currentBoardId} />
+            <Multiselect currentBoardId={this.props.currentBoardId} issue={issue._id} />
+            {allLabels}
             <div className="row">
               <div className="column">
                 <div className="assignee">
@@ -215,29 +209,23 @@ export class IssueDetails extends React.Component {
                   <Popover
                     position={Position.BOTTOM}
                     content={
-                      <Menu
-                        className={Classes.ELEVATION_ONE}
-                        style={{ display: 'block' }}
-                      >
+                      <Menu className={Classes.ELEVATION_ONE} style={{ display: 'block' }}>
                         {this.props.members.map(member => (
                           <MenuItem
                             text={member.membername}
                             intent="primary"
-                            onClick={() =>
-                              this.changeAssignee(
-                                member.membername,
-                                member.member
-                              )
-                            }
+                            onClick={() => this.changeAssignee(member.membername, member.member)}
                           />
                         ))}
+                        <MenuItem
+                          text="Remove"
+                          intent="danger"
+                          onClick={() => this.changeAssignee('None', null)}
+                        />
                       </Menu>
                     }
                   >
-                    <Button
-                      rightIcon="arrow-down"
-                      text={this.state.memberName}
-                    />
+                    <Button rightIcon="arrow-down" text={this.state.memberName} />
                   </Popover>
                 </div>
               </div>
@@ -251,33 +239,19 @@ export class IssueDetails extends React.Component {
                     <>
                       <Card key={comment._id} className="plain-card">
                         <p>
-                          <span
-                            className="theme-color"
-                            style={{ fontWeight: '600' }}
-                          >
-                            {comment.commentedBy
-                              ? comment.commentedBy.name
-                              : null}
+                          <span className="theme-color" style={{ fontWeight: '600' }}>
+                            {comment.commentedBy ? comment.commentedBy.name : null}
                           </span>
                           {' : '}
                           {comment.comment}
                           {/* {this.getTimeDifference(comment.createdAt)} */}
                         </p>
-                        <div
-                          className="row"
-                          style={{ justifyContent: 'space-between' }}
-                        >
+                        <div className="row" style={{ justifyContent: 'space-between' }}>
                           <div style={{ padding: '5px' }}>
                             <Popover commentid={comment._id}>
-                              <Button
-                                intent={Intent.NONE}
-                                minimal="true"
-                                icon="trash"
-                              />
+                              <Button intent={Intent.NONE} minimal="true" icon="trash" />
                               <DeleteConfirmation
-                                onSuccess={() =>
-                                  this.handleDeleteCommentOnClick(comment)
-                                }
+                                onSuccess={() => this.handleDeleteCommentOnClick(comment)}
                                 item="comment"
                               />
                             </Popover>
@@ -305,19 +279,13 @@ export class IssueDetails extends React.Component {
                 />
               </div>
             </form>
-            <Button
-              intent="success"
-              onClick={() => this.handleAddCommentOnClick()}
-            >
+            <Button intent="success" onClick={() => this.handleAddCommentOnClick()}>
               Add Comment
             </Button>
             {/* <Comment /> */}
             <Popover>
               <Button text="Delete Issue" />
-              <DeleteConfirmation
-                onSuccess={this.handleDeleteIssue}
-                item="issue"
-              />
+              <DeleteConfirmation onSuccess={this.handleDeleteIssue} item="issue" />
             </Popover>
           </div>
         </Dialog>
@@ -331,21 +299,20 @@ const mapStateToProps = state => {
     selectedIssue: state.selectedIssue,
     currentUserId: state.currentUserId,
     currentBoardId: state.currentBoardId,
-    members: state.boardMemberList
+    members: state.boardMemberList,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => dispatch(actionCreators.closeIssueDetailsModal()),
-    showIssueDetails: issueid =>
-      dispatch(actionCreators.showIssueDetails(issueid)),
+    showIssueDetails: issueid => dispatch(actionCreators.showIssueDetails(issueid)),
     getDataForKanbanView: (boardid, userid) =>
-      dispatch(actionCreators.getDataForKanbanView(boardid, userid))
+      dispatch(actionCreators.getDataForKanbanView(boardid, userid)),
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(IssueDetails);
