@@ -33,7 +33,11 @@ class BoardBox extends React.Component {
         >
           {props.boardRole === 'SUPERADMIN' ? (
             <>
-              <EditButtonPopover className="edit-icon" />
+              <EditButtonPopover
+                className="edit-icon"
+                boardid={props.boardid}
+                getAllBoards={this.props.getAllBoards}
+              />
               <span
                 className={'bp3-icon-standard bp3-icon-crown custom-icon'}
               />

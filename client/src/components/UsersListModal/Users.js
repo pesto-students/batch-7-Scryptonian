@@ -21,7 +21,6 @@ export class Users extends React.Component {
     isOpen: true
   };
   handleRole = (user, newRole) => {
-    console.log('Inside handleRole', user, this.props.boardid);
     axios(`${BASE_URL}/boards/changerole`, {
       method: 'patch',
       data: {
@@ -76,7 +75,6 @@ export class Users extends React.Component {
 
   removeUser = user => {
     this.setState({ deleteUser: true, user: user });
-    console.log('Inside handleRole', user, this.props.boardid);
   };
   getLowercase(role) {
     const firstLetter = role.split('')[0];
@@ -88,7 +86,6 @@ export class Users extends React.Component {
     return firstLetter + rest;
   }
   render() {
-    console.log(this.props.roleInCurrentBoard);
     return (
       <div className="row">
         <div className="column">

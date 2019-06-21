@@ -87,6 +87,8 @@ export class BoardLayout extends React.Component {
                 boardRole={board.members[0].role}
                 createdBy={board.createdBy.name || null}
                 openKanban={() => this.routeChange(board._id)}
+                boardid={board._id}
+                getAllBoards={this.getAllBoards}
               />
             );
           })}
