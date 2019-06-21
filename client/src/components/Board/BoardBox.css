@@ -8,6 +8,7 @@
     height: 90px;
     margin: 20px;
     text-align: center;
+    cursor: none;
 }
 
 .custom-icon{
@@ -15,4 +16,10 @@
     right: 5px;
     top: 5px;
     color: blue;
+}
+
+.edit-icon {
+    position: absolute;
+    right: 27px;
+    top: 0;
 }

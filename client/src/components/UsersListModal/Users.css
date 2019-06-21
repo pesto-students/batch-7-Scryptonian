@@ -9,7 +9,7 @@ body {
 .column {
     flex: 50%;
     padding: 10px;
-    height: 200px;
+    /* height: 200px; */
 }
 
 .content {
