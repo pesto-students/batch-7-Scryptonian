@@ -66,6 +66,10 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       currentBoardName: null,
+      currentBoardId: null,
+      lifecycles: null,
+      roleInCurrentBoard: ROLE.USER,
+      boardMemberList: null,
     };
   }
 

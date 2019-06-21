@@ -17,7 +17,7 @@ import Upvote from '../Upvote/Upvote';
 import Comment from '../Comment/Comment';
 import AddLabels from '../LabelsComponent/AddLabels';
 import ViewLabels from '../LabelsComponent/ViewLabels';
-import Labels from '../Label/Label';
+import Label from '../Label/Label';
 import PickDate from '../PickDate/PickDate';
 import DeleteConfirmation from '../DeleteConfirmation/DeleteConfirmation';
 import { connect } from 'react-redux';
@@ -178,6 +178,20 @@ export class IssueDetails extends React.Component {
     const upvotedState = issue.upvotedBy.includes(userId);
     const { commentInputText } = this.state;
 
+    const allLabels = (
+      <div className="labels">
+        {issue.labels
+          ? issue.labels.map(label => (
+              <Label
+                label={label.labelName}
+                color={label.color}
+                key={label._id}
+              />
+            ))
+          : null}
+      </div>
+    );
+
     return (
       <div>
         <Dialog
@@ -202,6 +216,7 @@ export class IssueDetails extends React.Component {
               <ViewLabels />
               <AddLabels />
             </div>
+            {allLabels}
             <div className="due-date">
               <PickDate dueDate={issue.dueDate} issueid={issue._id} />
             </div>
